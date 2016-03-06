@@ -1,6 +1,6 @@
 const config = {
-  mongoURL: process.env.MONGO_URL || 'mongodb://localhost:27017/mern-starter',
-  port: process.env.PORT || 8000,
+  mongoURL: 'mongodb://optc:optcpass@ds023478.mlab.com:23478/optc' || process.env.MONGO_URL,
+  port: 8000 || process.env.PORT
 };
 
 export default config;
