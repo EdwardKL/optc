@@ -1,22 +1,11 @@
-![](http://res.cloudinary.com/hashnode/image/upload/w_200/v1455647564/static_imgs/mern/imgs/favicon-mern.png)
 
-# mern-starter
-![title](https://travis-ci.org/Hashnode/mern-starter.svg?branch=master)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
+# OPTC Grand Line
 
-
-MERN is a scaffolding tool which makes it easy to build isomorphic apps using Mongo, Express, React and NodeJS. It minimizes the setup time and gets you up to speed using proven technologies.
-
-- [Website](http://mern.io)
-- [Documentation](http://mern.io/documentation.html)
-- [Discussions](https://hashnode.com/n/mern)
+Your one stop destination for OPTC! Built on Mongo, Express, React, NodeJS.
 
 ## Quickstart
 
 ```
-  npm install -g mern-cli
-  mern your_new_app
-  cd your_new_app
   npm install
   npm start
 ```
@@ -98,16 +87,6 @@ Shared directory contains all the components, routes, actions and reducers.
 
 Index.js simply does client side rendering using the data provided from `window.__INITIAL_STATE__`.
 
-## Roadmap
-####MERN Starter
-- [ ] Add GraphQL to mern-starter
-- [ ] Add SCSS support
-- [ ] Improve file structure (needs discussion)
-
-####[MERN CLI](https://github.com/Hashnode/mern-cli)
-- [ ] Generators for Containers, Components, Routes, Reducers, Actions
-- [ ] Generators for Models, Router, Controllers
-- [ ] Add flags to CLI e.g. for adding lifecycle
 
 ## License
 MERN is released under the [MIT License](http://www.opensource.org/licenses/MIT).
