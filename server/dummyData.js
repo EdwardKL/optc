@@ -62,7 +62,7 @@ export default function () {
       return;
     }
 
-    const testUser = new User({username: 'testoptc', user_id: 1});
+    const testUser = new User({username: 'testoptc', user_id: 1, password: "test"});
     User.create(testUser, (error) => {
       if (!error) {
         // console.log('ready to go....');
