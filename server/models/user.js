@@ -6,7 +6,6 @@ import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
-  _id: { type: Schema.Types.ObjectId },
   username: { type: 'String', required: true },
   password: { type: 'String', required: true },
   pirate_lvl: { type: 'Number' },

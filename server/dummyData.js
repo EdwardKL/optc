@@ -66,6 +66,8 @@ export default function () {
     User.create(testUser, (error) => {
       if (!error) {
         // console.log('ready to go....');
+      } else {
+        console.log('error: ' + error);
       }
     });
   });
