@@ -366,7 +366,7 @@
 { "_id": 366, "description": "Boosts ATK of Fighter characters by 2.5x if HP is below 30% at the start of the turn" }
 { "_id": 367, "description": "Boosts ATK of Fighter characters by 3x if HP is below 30% at the start of the turn" }
 { "_id": 368, "description": "Boosts ATK of Knowledge and Ambition characters by 2x" }
-{ "_id": 369, "description": "Boosts ATK of Knowledge and Ambition characters by 2.25x, makes [TND] and [RCV] orbs "beneficial" to Knowledge and Ambition characters" }
+{ "_id": 369, "description": "Boosts ATK of Knowledge and Ambition characters by 2.25x, makes [TND] and [RCV] orbs \"beneficial\" to Knowledge and Ambition characters" }
 { "_id": 370, "description": "Boosts amount of beli received by 2x" }
 { "_id": 371, "description": "Boosts ATK of all characters by 1.5x, boosts amount of beli received by 2x" }
 { "_id": 372, "description": "Reduces cooldown of all specials by 2 turns at the start of the fight, boosts ATK of Fighter characters by 1.75x" }
@@ -387,7 +387,7 @@
 { "_id": 387, "description": "Boosts ATK of Slasher characters by 2.75x if HP is below 30% at the start of the turn" }
 { "_id": 388, "description": "Boosts ATK and RCV of Knowledge characters by 1.5x if HP is below 30% at the start of the turn" }
 { "_id": 389, "description": "Boosts ATK of Knowledge characters by 2.5x and their RCV by 1.75x if HP is below 30% at the start of the turn" }
-{ "_id": 390, "description": "Boosts ATK of PSY characters by 2x, their RCV by 1.5x, makes [INT] orbs "beneficial" to PSY characters" }
+{ "_id": 390, "description": "Boosts ATK of PSY characters by 2x, their RCV by 1.5x, makes [INT] orbs \"beneficial\" to PSY characters" }
 { "_id": 391, "description": "Boosts ATK of Tough characters by 2.25x, their HP by 1.5x, recovers 4x character's RCV in HP at the end of each turn" }
 { "_id": 392, "description": "Boosts ATK of QCK characters by 2.5x if they have a matching orb" }
 { "_id": 393, "description": "Boosts ATK of QCK characters by 3x if they have a matching orb, by 1.2x otherwise" }
