@@ -1,0 +1,396 @@
+{ "_id": 1, "description": "Boosts ATK of STR characters by 1.5x" }
+{ "_id": 2, "description": "Boosts ATK of STR characters by 2x" }
+{ "_id": 3, "description": "Boosts ATK of DEX characters by 1.5x" }
+{ "_id": 4, "description": "Boosts ATK and HP of DEX characters by 2x" }
+{ "_id": 5, "description": "Reduces damage received from INT enemies by 20%" }
+{ "_id": 6, "description": "Boosts ATK of INT characters by 1.5x" }
+{ "_id": 7, "description": "Boosts ATK and HP of INT characters by 1.5x" }
+{ "_id": 8, "description": "Boosts ATK of Shooter characters by 1.2x" }
+{ "_id": 9, "description": "Boosts ATK of PSY characters by 1.5x" }
+{ "_id": 10, "description": "Boosts ATK and HP of PSY characters by 1.5x" }
+{ "_id": 11, "description": "Boosts ATK of QCK characters by 1.5x" }
+{ "_id": 12, "description": "Boosts HP of QCK characters by 1.5x" }
+{ "_id": 13, "description": "Boosts ATK and HP of QCK characters by 1.5x" }
+{ "_id": 14, "description": "Boosts RCV of PSY characters by 1.2x" }
+{ "_id": 15, "description": "Boosts RCV of PSY characters by 1.5x" }
+{ "_id": 16, "description": "Boosts RCV of INT characters by 1.5x" }
+{ "_id": 17, "description": "Boosts RCV of STR characters by 1.5x" }
+{ "_id": 18, "description": "Boosts RCV of QCK characters by 1.5x" }
+{ "_id": 19, "description": "Boosts RCV of DEX characters by 1.5x" }
+{ "_id": 20, "description": "Boosts HP of QCK characters by 1.2x" }
+{ "_id": 21, "description": "Boosts ATK of Fighter characters by 1.2x" }
+{ "_id": 22, "description": "Reduces damage received from STR enemies by 30%" }
+{ "_id": 23, "description": "Reduces damage received from STR enemies by 50%" }
+{ "_id": 24, "description": "Recovers 2x character's RCV in HP at the end of each turn" }
+{ "_id": 25, "description": "Reduces damage received from INT enemies by 30%" }
+{ "_id": 26, "description": "Boosts HP of Slasher characters by 1.2x" }
+{ "_id": 27, "description": "Boosts ATK of INT characters by 2x" }
+{ "_id": 28, "description": "Reduces damage received from Shooter enemies by 30%" }
+{ "_id": 29, "description": "Boosts RCV of INT characters by 1.2x" }
+{ "_id": 30, "description": "Boosts ATK of STR characters by 1.2x" }
+{ "_id": 31, "description": "Reduces damage received by 10%" }
+{ "_id": 32, "description": "Boosts ATK of QCK characters by 1.2x" }
+{ "_id": 33, "description": "Recovers 4x character's RCV in HP at the end of each turn" }
+{ "_id": 34, "description": "Recovers 3x character's RCV in HP at the end of each turn" }
+{ "_id": 35, "description": "Boosts ATK of Fighter characters by 2.5x" }
+{ "_id": 36, "description": "Reduces damage received from QCK enemies by 30%" }
+{ "_id": 37, "description": "Reduces damage received from QCK enemies by 50%" }
+{ "_id": 38, "description": "Reduces damage received by 20%" }
+{ "_id": 39, "description": "Boosts ATK of INT characters by 1.2x" }
+{ "_id": 40, "description": "Boosts HP of Shooter characters by 1.5x" }
+{ "_id": 41, "description": "Boosts HP of Fighter characters by 1.5x" }
+{ "_id": 42, "description": "Reduces damage received from DEX enemies by 30%" }
+{ "_id": 43, "description": "Reduces damage received from DEX enemies by 50%" }
+{ "_id": 44, "description": "Boosts ATK of Slasher characters by 2x" }
+{ "_id": 45, "description": "Boosts RCV of Slasher characters by 1.5x" }
+{ "_id": 46, "description": "Boosts RCV of Slasher characters by 2x" }
+{ "_id": 47, "description": "Recovers 5x character's RCV in HP at the end of each turn" }
+{ "_id": 48, "description": "Boosts ATK of QCK characters by 2x" }
+{ "_id": 49, "description": "Boosts ATK of QCK characters by 2.5x" }
+{ "_id": 50, "description": "Boosts ATK of PSY characters by 2x" }
+{ "_id": 51, "description": "Boosts ATK of PSY characters by 2.5x" }
+{ "_id": 52, "description": "Reduces damage received from PSY enemies by 20%" }
+{ "_id": 53, "description": "Boosts ATK of Shooter characters by 1.5x" }
+{ "_id": 54, "description": "Boosts HP of Fighter characters by 2x" }
+{ "_id": 55, "description": "Reduces damage received from INT enemies by 10%" }
+{ "_id": 56, "description": "Boosts HP and RCV of DEX characters by 1.2x" }
+{ "_id": 57, "description": "Reduces damage received from PSY enemies by 10%" }
+{ "_id": 58, "description": "Boosts RCV of INT characters by 2x" }
+{ "_id": 59, "description": "Boosts ATK of Striker characters by 1.2x" }
+{ "_id": 60, "description": "Boosts ATK of Striker characters by 1.5x" }
+{ "_id": 61, "description": "Protects from defeat as long as HP is above 50%" }
+{ "_id": 62, "description": "Boosts HP of Striker characters by 1.5x" }
+{ "_id": 63, "description": "Boosts ATK by 3.5x after scoring 3 Perfects in a row" }
+{ "_id": 64, "description": "Reduces damage received by 80% if HP is above 99% at the start of the turn" }
+{ "_id": 65, "description": "Boosts ATK of INT characters by 2.5x" }
+{ "_id": 66, "description": "Boosts ATK of PSY characters by 1.2x" }
+{ "_id": 67, "description": "Boosts ATK by 2x after scoring 2 Perfects in a row" }
+{ "_id": 68, "description": "Boosts ATK by 2.5x after scoring 2 Perfects in a row" }
+{ "_id": 69, "description": "Boosts ATK of Slasher characters by 2.5x" }
+{ "_id": 70, "description": "Boosts HP of Slasher characters by 1.5x" }
+{ "_id": 71, "description": "Boosts HP of PSY characters by 1.5x" }
+{ "_id": 72, "description": "Boosts HP of PSY characters by 2x" }
+{ "_id": 73, "description": "Boosts ATK of Fighter characters by 1.5x" }
+{ "_id": 74, "description": "Boosts ATK of STR characters by 2.5x and reduces their HP by 60%" }
+{ "_id": 75, "description": "Boosts ATK of STR characters by 3x and reduces their HP by 60%" }
+{ "_id": 76, "description": "Boosts ATK of PSY characters by 3x if HP is above 99% at the start of the turn" }
+{ "_id": 77, "description": "Boosts ATK and HP of QCK characters by 2x" }
+{ "_id": 78, "description": "Boosts ATK and HP of INT characters by 2x" }
+{ "_id": 79, "description": "Boosts ATK and RCV of DEX characters by 2x" }
+{ "_id": 80, "description": "Boosts ATK and RCV of STR characters by 2x" }
+{ "_id": 81, "description": "Boosts ATK of all characters by 3x if HP is below 30% at the start of the turn" }
+{ "_id": 82, "description": "Boosts ATK of Fighter characters by 2x" }
+{ "_id": 83, "description": "Boosts ATK and HP of Slasher characters by 1.5x" }
+{ "_id": 84, "description": "Boosts ATK of all characters by 1.5x" }
+{ "_id": 85, "description": "Reduces damage received by 25%" }
+{ "_id": 86, "description": "Reduces damage received from INT enemies by 50%" }
+{ "_id": 87, "description": "Reduces damage received from PSY enemies by 50%" }
+{ "_id": 88, "description": "Boosts HP of QCK characters by 2x" }
+{ "_id": 89, "description": "Boosts HP of STR characters by 2x" }
+{ "_id": 90, "description": "Boosts HP of DEX characters by 2x" }
+{ "_id": 91, "description": "Boosts ATK of Shooter characters by 2x" }
+{ "_id": 92, "description": "Boosts ATK of DEX characters by 2x" }
+{ "_id": 93, "description": "Boosts ATK and HP of PSY characters by 2x" }
+{ "_id": 94, "description": "Boosts ATK of DEX characters by 2.5x" }
+{ "_id": 95, "description": "Reduces RCV of all characters by 90%, reduces damage received by 40%" }
+{ "_id": 96, "description": "Boosts ATK by 3.5x after scoring 3 hits below Good in a row" }
+{ "_id": 97, "description": "Boosts ATK of Striker characters by 2x and their HP by 1.5x" }
+{ "_id": 98, "description": "Boosts ATK, HP and RCV of Fighter characters by 1.5x" }
+{ "_id": 99, "description": "Recovers 500 HP at end of turn, reduces damage received by 10%" }
+{ "_id": 100, "description": "Recovers 1,000 HP at end of turn, reduces damage received by 15%" }
+{ "_id": 101, "description": "Boosts ATK of Striker characters by 2x" }
+{ "_id": 102, "description": "Boosts ATK of QCK type characters by 2x" }
+{ "_id": 103, "description": "Boosts HP and RCV of QCK characters by 1.5x" }
+{ "_id": 104, "description": "Recovers 10x character's RCV in HP at the end of each turn" }
+{ "_id": 105, "description": "Boosts RCV of all characters by 5x if HP is below 30% at the start of the turn" }
+{ "_id": 106, "description": "Boosts ATK, HP and RCV of Striker characters by 1.2x" }
+{ "_id": 107, "description": "Boosts ATK and RCV of PSY and INT characters by 1.5x" }
+{ "_id": 108, "description": "Reduces damage received by 10% if HP is above 50% at the start of the turn, boosts ATK of PSY characters by 2x and reduces ATK of every other character by 20% if HP is above 50% at the start of the turn" }
+{ "_id": 109, "description": "Reduces damage received by 10% if HP is above 50% at the start of the turn, boosts ATK of PSY characters by 2.5x and reduces ATK of every other character by 20% if HP is above 50% at the start of the turn" }
+{ "_id": 110, "description": "Boosts ATK of Shooter characters by 2.5x" }
+{ "_id": 111, "description": "Boosts ATK of Striker characters by 2.5x" }
+{ "_id": 112, "description": "Boosts ATK of DEX characters by 2.5x if HP is above 99% at the start of the turn" }
+{ "_id": 113, "description": "Boosts ATK of DEX characters by 3x if HP is above 99% at the start of the turn" }
+{ "_id": 114, "description": "Boosts ATK of INT characters by 3x if HP is below 30% at the start of the turn" }
+{ "_id": 115, "description": "Boosts ATK and RCV of PSY characters by 2x" }
+{ "_id": 116, "description": "Boosts ATK and RCV of QCK characters by 2x" }
+{ "_id": 117, "description": "Boosts chain multiplier by 4x" }
+{ "_id": 118, "description": "Boosts ATK of Slasher characters by 1.5x" }
+{ "_id": 119, "description": "Boosts RCV of all characters by 1.5x" }
+{ "_id": 120, "description": "Boosts ATK and RCV of STR characters by 1.5x" }
+{ "_id": 121, "description": "Reduces damage received by 10%, boosts ATK of INT characters by 2x" }
+{ "_id": 122, "description": "Reduces damage received by 20%, boosts ATK of INT characters by 2x" }
+{ "_id": 123, "description": "Boosts ATK by 2.25x following a chain of DEX > INT > QCK attacks no lower than Good" }
+{ "_id": 124, "description": "Boosts ATK by 2.75x following a chain of DEX > INT > QCK attacks no lower than Good" }
+{ "_id": 125, "description": "Boosts RCV of DEX characters by 2x" }
+{ "_id": 126, "description": "Boosts ATK and RCV of QCK characters by 1.2x" }
+{ "_id": 127, "description": "Boosts ATK by 3x after scoring 5 Perfects in a row" }
+{ "_id": 128, "description": "Boosts ATK by 4x after scoring 5 Perfects in a row" }
+{ "_id": 129, "description": "Boosts HP of Striker characters by 2x" }
+{ "_id": 130, "description": "Reduces damage received by 10%, boosts ATK of Slasher characters by 1.5x" }
+{ "_id": 131, "description": "Reduces damage received by 10%, boosts ATK of Slasher characters by 2x" }
+{ "_id": 132, "description": "Reduces damage received by 50% if HP is low, boosts RCV of all characters by 3x if HP is low" }
+{ "_id": 133, "description": "Reduces damage received by 20%, boosts ATK of Slasher characters by 2x" }
+{ "_id": 134, "description": "Boosts ATK and HP of STR characters by 2x" }
+{ "_id": 135, "description": "Boosts ATK of INT characters by 2.5x if HP is above 99% at the start of the turn" }
+{ "_id": 136, "description": "Boosts ATK of INT characters by 3x if HP is above 99% at the start of the turn" }
+{ "_id": 137, "description": "Boosts ATK of QCK and PSY characters by 2.75x and their RCV by 1.5x if HP is above 70% at the start of the turn" }
+{ "_id": 138, "description": "Boosts ATK and HP of Slasher characters by 2x" }
+{ "_id": 139, "description": "Boosts ATK, HP and RCV of STR characters by 1.5x" }
+{ "_id": 140, "description": "Boosts ATK, HP and RCV of DEX characters by 1.5x" }
+{ "_id": 141, "description": "Boosts ATK, HP and RCV of INT characters by 1.5x" }
+{ "_id": 142, "description": "Protects from defeat as long as HP is above 70%" }
+{ "_id": 143, "description": "Boosts ATK and HP of DEX characters by 1.5x" }
+{ "_id": 144, "description": "Boosts ATK by 2x following a chain of QCK > STR > DEX attacks no lower than Good" }
+{ "_id": 145, "description": "Boosts ATK by 2x following a chain of PSY > INT > INT attacks no lower than Good" }
+{ "_id": 146, "description": "Boosts ATK by 2x following a chain of INT > PSY > QCK attacks no lower than Good" }
+{ "_id": 147, "description": "Boosts ATK by 2.25x following a chain of INT > PSY > QCK attacks no lower than Good" }
+{ "_id": 148, "description": "Boosts RCV of all characters by 3x if HP is below 30% at the start of the turn" }
+{ "_id": 149, "description": "Recovers 7x character's RCV in HP at the end of each turn" }
+{ "_id": 150, "description": "Boosts ATK of Evolver and Booster characters by 2x if HP is above 50% at the start of the turn" }
+{ "_id": 151, "description": "Boosts ATK of Evolver and Booster characters by 2.5x if HP is above 50% at the start of the turn" }
+{ "_id": 152, "description": "Doubles damage received, boosts ATK of STR characters by 2x and their HP by 1.5x" }
+{ "_id": 153, "description": "Doubles damage received, boosts ATK of STR characters by 2.5x and their HP by 2.25x" }
+{ "_id": 154, "description": "Boosts ATK of QCK characters by 3x if HP is above 99% at the start of the turn" }
+{ "_id": 155, "description": "Boosts ATK of Fighter characters by 2x and their HP by 1.5x" }
+{ "_id": 156, "description": "Reduces cooldown of all specials by 3 turns at the start of the fight, boosts ATK of Striker characters by 2x" }
+{ "_id": 157, "description": "Boosts ATK of STR characters by 2x, boosts damage of STR specials by 2x" }
+{ "_id": 158, "description": "Boosts ATK of Shooter characters by 2x and their RCV by 1.5x" }
+{ "_id": 159, "description": "Reduces cooldown of all specials by 2 turns at the start of the fight, boosts ATK of characters with cost 20 or less by 3x" }
+{ "_id": 160, "description": "Reduces cooldown of all specials by 2 turns at the start of the fight, boosts own ATK and ATK of characters with cost 20 or less by 3x" }
+{ "_id": 161, "description": "Boosts ATK and HP of Striker characters by 1.5x" }
+{ "_id": 162, "description": "Boosts ATK by 3x after scoring 4 hits below Good in a row" }
+{ "_id": 163, "description": "Boosts ATK and HP of Shooter characters by 1.5x" }
+{ "_id": 164, "description": "Boosts HP and RCV of PSY characters by 1.2x" }
+{ "_id": 165, "description": "Boosts ATK and HP of Striker characters by 1.2x" }
+{ "_id": 166, "description": "Boosts RCV of Striker characters by 1.5x" }
+{ "_id": 167, "description": "Boosts ATK of DEX characters by 1.2x" }
+{ "_id": 168, "description": "Recovers 500 HP at the end of each turn" }
+{ "_id": 169, "description": "Boosts RCV of Shooter characters by 1.5x" }
+{ "_id": 170, "description": "Boosts RCV of Shooter characters by 2x" }
+{ "_id": 171, "description": "Boosts ATK, HP and RCV of PSY characters by 1.2x" }
+{ "_id": 172, "description": "Boosts ATK, HP and RCV of PSY characters by 1.5x" }
+{ "_id": 173, "description": "Boosts HP of INT characters by 1.5x" }
+{ "_id": 174, "description": "Boosts HP of INT characters by 2x" }
+{ "_id": 175, "description": "Protects from defeat as long as HP is above 30%" }
+{ "_id": 176, "description": "Boosts ATK and HP of STR characters by 1.2x" }
+{ "_id": 177, "description": "Boosts ATK and HP of STR characters by 1.5x" }
+{ "_id": 178, "description": "Reduces damage received by 10%, boosts ATK of Striker characters by 2x" }
+{ "_id": 179, "description": "Protects from defeat as long as HP is above 50%, boosts ATK of PSY characters by 1.5x if HP is above 50% at the start of the turn" }
+{ "_id": 180, "description": "Boosts ATK, HP and RCV of Shooter characters by 1.5x" }
+{ "_id": 181, "description": "Boosts ATK, HP and RCV of Shooter characters by 1.5x, recovers 1x character's RCV in HP at the end of each turn" }
+{ "_id": 182, "description": "Boosts HP of PSY characters by 2x, boosts chances of getting [RCV] orbs" }
+{ "_id": 183, "description": "Boosts ATK of STR characters by 2.5x" }
+{ "_id": 184, "description": "Boosts ATK and RCV of Striker characters by 1.5x" }
+{ "_id": 185, "description": "Boosts ATK of Striker characters by 2x and their RCV by 1.5x" }
+{ "_id": 186, "description": "Boosts ATK of PSY characters by 2x, reduces damage received from INT enemies by 30%" }
+{ "_id": 187, "description": "Boosts ATK and RCV of DEX characters by 1.5x" }
+{ "_id": 188, "description": "Boosts chances of getting [PSY] orbs, boosts ATK of PSY characters proportionally to the crew's current HP" }
+{ "_id": 189, "description": "Reduces damage received from STR, DEX and QCK enemies by 30%" }
+{ "_id": 190, "description": "Boosts chain multiplier by 2x" }
+{ "_id": 191, "description": "Boosts chain multiplier by 2x, recovers 2x character's RCV in HP at the end of each turn" }
+{ "_id": 192, "description": "Boosts ATK of STR characters by 2.5x if HP is below 50% at the start of the turn" }
+{ "_id": 193, "description": "Boosts HP of all characters by 1.5x" }
+{ "_id": 194, "description": "Boosts ATK and HP of Shooter characters by 1.5x, reduces crew's RCV to 0" }
+{ "_id": 195, "description": "Boosts ATK of Shooter characters by 2.25x and their HP by 1.5x, reduces crew's RCV to 0" }
+{ "_id": 196, "description": "Boosts ATK of PSY characters by 2x, reduces damage received by 20%" }
+{ "_id": 197, "description": "Boosts chances of getting [RCV] orbs" }
+{ "_id": 198, "description": "Boosts chances of getting [RCV] orbs, boosts ATK of all characters by 1.2x" }
+{ "_id": 199, "description": "Boosts ATK by 2x after scoring 3 Perfects in a row" }
+{ "_id": 200, "description": "Boosts ATK by 2.5x after scoring 3 Perfects in a row" }
+{ "_id": 201, "description": "Boosts ATK of DEX characters by 2.75x if HP is below 30% at the start of the turn" }
+{ "_id": 202, "description": "Boosts ATK of DEX characters by 3x if HP is below 30% at the start of the turn" }
+{ "_id": 203, "description": "Boosts ATK and RCV of INT characters by 1.5x" }
+{ "_id": 204, "description": "Boosts ATK and RCV of INT characters by 2x" }
+{ "_id": 205, "description": "Boosts ATK of STR characters by 2x, deals 2x character's ATK in STR damage to all enemies at the end of each turn" }
+{ "_id": 206, "description": "Boosts ATK of STR characters by 2.25x, deals 2x character's ATK in STR damage to all enemies at the end of each turn" }
+{ "_id": 207, "description": "Boosts HP of Shooter characters by 1.5x and their ATK by 3x if they have a matching orb, by 2x otherwise" }
+{ "_id": 208, "description": "Boosts ATK, HP and RCV of all characters by 1.25x" }
+{ "_id": 209, "description": "Boosts ATK, HP and RCV of all characters by 1.5x, reduces cooldown of all specials by 1 turn at the start of the fight" }
+{ "_id": 210, "description": "Boosts ATK of STR and Fighter characters by 1.5x" }
+{ "_id": 211, "description": "Boosts ATK of STR and Fighter characters by 1.5x, reduces cooldown of all specials by 1 turn at the start of the fight" }
+{ "_id": 212, "description": "Boosts ATK of Fighter characters by 2.5x if HP is above 99% at the start of the turn" }
+{ "_id": 213, "description": "Boosts RCV of all characters by 1.2x" }
+{ "_id": 214, "description": "Boosts ATK and HP of Striker characters by 2x" }
+{ "_id": 215, "description": "Boosts ATK of all characters by 1.5x, boosts RCV of all characters by 1.2x" }
+{ "_id": 216, "description": "Boosts ATK by 4x following a chain of Good > Great > Perfect hits" }
+{ "_id": 217, "description": "Boosts ATK of QCK and DEX characters by 1.5x" }
+{ "_id": 218, "description": "Boosts ATK of QCK and DEX characters by 2x" }
+{ "_id": 219, "description": "Boosts ATK and RCV of Shooter characters by 1.5x" }
+{ "_id": 220, "description": "Reduces cooldown of all specials by 3 turns at the start of the fight, reduces ATK, HP and RCV of all characters by 90%" }
+{ "_id": 221, "description": "Boosts HP and RCV of PSY characters by 1.5x" }
+{ "_id": 222, "description": "Boosts ATK of all characters by 1.5x, reduces HP and RCV of all characters by 80%" }
+{ "_id": 223, "description": "Boosts ATK of all characters by 2x, reduces HP and RCV of all characters by 80%" }
+{ "_id": 224, "description": "Boosts ATK of STR characters by 1.5x, recovers 500 HP at the end of each turn" }
+{ "_id": 225, "description": "Boosts ATK of STR characters by 1.75x, recovers 750 HP at the end of each turn" }
+{ "_id": 226, "description": "Boosts ATK of characters with fewer than 3 stars by 2.5x" }
+{ "_id": 227, "description": "Boosts ATK of characters with fewer than 3 stars by 3x" }
+{ "_id": 228, "description": "Boosts ATK of QCK characters by 2.25x, recovers 5x character's RCV in HP at the end of each turn" }
+{ "_id": 229, "description": "Boosts ATK of Fighter characters by 2x, reduces damage received by 20%" }
+{ "_id": 230, "description": "Boosts ATK of Fighter characters by 2x if HP is above 50% at the start of the turn" }
+{ "_id": 231, "description": "Boosts ATK of Fighter characters by 2.5x if HP is above 50% at the start of the turn" }
+{ "_id": 232, "description": "Boosts ATK, HP and RCV of Slasher characters by 1.5x" }
+{ "_id": 233, "description": "Boosts ATK of characters with cost 20 or less by 2.25x if HP is below 30% at the start of the turn" }
+{ "_id": 234, "description": "Boosts ATK of characters with 3 or fewer stars by 2x" }
+{ "_id": 235, "description": "Reduces cooldown of all specials by 1 turn at the start of the fight, boosts ATK and RCV of QCK and PSY characters by 1.25x" }
+{ "_id": 236, "description": "Reduces cooldown of all specials by 1 turn at the start of the fight, boosts ATK and RCV of QCK and PSY characters by 1.5x" }
+{ "_id": 237, "description": "Boosts ATK of characters with cost 2 or less by 3x" }
+{ "_id": 238, "description": "Recovers 618 HP at the end of each turn, boosts ATK of Slasher characters by 1.5x" }
+{ "_id": 239, "description": "Reduces cooldown of all specials by 1 turn at the start of the fight, boosts ATK of Slasher characters by 2x" }
+{ "_id": 240, "description": "Reduces cooldown of all specials by 3 turns at the start of the fight, boosts ATK of Slasher characters by 2x" }
+{ "_id": 241, "description": "Boosts ATK of Fighter characters by 2x, deals 2x character's ATK in DEX damage to all enemies at the end of each turn" }
+{ "_id": 242, "description": "Boosts ATK of Fighter characters by 2.25x, deals 2x character's ATK in DEX damage to all enemies at the end of each turn" }
+{ "_id": 243, "description": "Boosts ATK of PSY characters by 2.5x if HP is below 30% at the start of the turn" }
+{ "_id": 244, "description": "Boosts ATK of PSY characters by 3x if HP is below 30% at the start of the turn" }
+{ "_id": 245, "description": "Boosts ATK of Shooter characters by 2.5x if HP is below 30% at the start of the turn" }
+{ "_id": 246, "description": "Boosts ATK of Shooter characters by 2.75x if HP is below 30% at the start of the turn" }
+{ "_id": 247, "description": "Reduces damage received by 30% if HP is above 70% at the start of the turn, boosts ATK of QCK and PSY characters by 2.75x if HP is above 70% at the start the turn" }
+{ "_id": 248, "description": "Boosts ATK of INT characters by 2x and their RCV by 1.5x" }
+{ "_id": 249, "description": "Reduces cooldown of all specials by 1 turn at the start of the fight, boosts ATK of DEX characters by 2x if they have matching orbs" }
+{ "_id": 250, "description": "Reduces cooldown of all specials by 2 turns at the start of the fight, boosts ATK of DEX characters by 2.25x if they have matching orbs" }
+{ "_id": 251, "description": "Reduces cooldown of all specials by 3 turns at the start of the fight, boosts ATK of DEX characters by 2.75x if they have matching orbs" }
+{ "_id": 252, "description": "Reduces cooldown of all specials by 1 turn at the start of the fight, boosts ATK of STR characters by 2x" }
+{ "_id": 253, "description": "Boosts ATK of Shooter characters by 2x, reduces cooldown of all specials by 1 turn at the start of the fight" }
+{ "_id": 254, "description": "Boosts ATK of all characters by 1.2x, reduces HP and RCV of all characters by 80%" }
+{ "_id": 255, "description": "Boosts ATK of all characters by 1.75x, reduces HP and RCV of all characters by 80%" }
+{ "_id": 256, "description": "Reduces damage received by 10%, boosts ATK of all characters by 1.5x" }
+{ "_id": 257, "description": "Boosts HP and RCV of all characters by 1.2x, boosts ATK of Freedom characters proportionally to the crew's current HP" }
+{ "_id": 258, "description": "Boosts ATK of Fighter characters by 2.25x and their RCV by 1.5x" }
+{ "_id": 259, "description": "Reduces cooldown of all specials by 3 turns at the start of the fight, boosts ATK of Fighter characters by 2x" }
+{ "_id": 260, "description": "Boosts ATK of Freedom characters by 2x" }
+{ "_id": 261, "description": "Boosts ATK of Freedom characters by 2.5x" }
+{ "_id": 262, "description": "Boosts ATK of Slasher characters by 1.5x, deals 5x character's ATK in QCK damage to all enemies at the end of each turn" }
+{ "_id": 263, "description": "Boosts ATK and RCV of PSY characters by 1.2x, boosts chances of getting [PSY] orbs" }
+{ "_id": 264, "description": "Boosts ATK and RCV of PSY characters by 1.5x, boosts chances of getting [PSY] orbs" }
+{ "_id": 265, "description": "Boosts ATK and RCV of Fighter characters by 1.5x" }
+{ "_id": 266, "description": "Boosts ATK and RCV of Slasher characters by 1.5x" }
+{ "_id": 267, "description": "Boosts ATK of Freedom characters by 1.5x" }
+{ "_id": 268, "description": "Reduces cooldown of all specials by 1 turn at the start of the fight, boosts ATK of Freedom characters by 2x" }
+{ "_id": 269, "description": "Boosts ATK and RCV of Slasher characters by 1.2x" }
+{ "_id": 270, "description": "Boosts ATK of Striker characters by 1.75x" }
+{ "_id": 271, "description": "Boosts ATK of Shooter characters by 1.75x" }
+{ "_id": 272, "description": "Boosts ATK of Slasher characters by 1.75x" }
+{ "_id": 273, "description": "Boosts ATK of Shooter characters by 500 units, reduces damage received by 10%" }
+{ "_id": 274, "description": "Boosts ATK of Fighter characters by 1.75x" }
+{ "_id": 275, "description": "Boosts HP of PSY characters by 2.25x" }
+{ "_id": 276, "description": "Boosts HP of INT characters by 2.25x" }
+{ "_id": 277, "description": "Boosts ATK and HP of STR characters, DEX characters and QCK characters by 1.25x" }
+{ "_id": 278, "description": "Boosts ATK and RCV of PSY characters by 1.2x" }
+{ "_id": 279, "description": "Boosts ATK and RCV of PSY characters by 1.5x" }
+{ "_id": 280, "description": "Boosts ATK of Striker characters by 2x if HP is above 50% at the start of the turn" }
+{ "_id": 281, "description": "Boosts ATK of Striker characters by 2.5x if HP is above 50% at the start of the turn" }
+{ "_id": 282, "description": "Boosts RCV of all characters by 2x if HP is below 30% at the start of the turn" }
+{ "_id": 283, "description": "Boosts ATK of Slasher characters by a variable factor between 2x and 2.75x based on the timing of the attack of the previous unit in the chain" }
+{ "_id": 284, "description": "Boosts ATK of Knowledge characters proportionally to the crew's current HP" }
+{ "_id": 285, "description": "Boosts ATK of Fighter characters by 1.5x if HP is is above 99% at the start of the turn" }
+{ "_id": 286, "description": "Boosts ATK of Fighter characters by 2x if HP is is above 99% at the start of the turn" }
+{ "_id": 287, "description": "Boosts ATK of Slasher characters by 1.5x, recovers 1.2x character's RCV in HP at the end of each turn" }
+{ "_id": 288, "description": "Boosts ATK of Slasher characters by 1.75x, recovers 1.5x character's RCV in HP at the end of each turn" }
+{ "_id": 289, "description": "Recovers 1,000 HP at the end of each turn" }
+{ "_id": 290, "description": "Recovers 2,000 HP at the end of each turn" }
+{ "_id": 291, "description": "Reduces cooldown of all specials by 2 turns at the start of the fight, boosts ATK of Freedom and Fighter characters by 1.75x" }
+{ "_id": 292, "description": "Boosts ATK and RCV of DEX characters by 1.2x, slightly boosts chances of getting [DEX] orbs" }
+{ "_id": 293, "description": "Boosts ATK and RCV of DEX characters by 1.2x, boosts chances of getting [DEX] orbs" }
+{ "_id": 294, "description": "Boosts ATK and HP of INT characters by 1.2x, deals 9 HP as fixed damage to all enemies at the end of each turn" }
+{ "_id": 295, "description": "Boosts ATK and HP of INT characters by 1.5x, deals 9 HP as fixed damage to all enemies at the end of each turn" }
+{ "_id": 296, "description": "Boosts ATK of STR characters by 1.5x, reduces damage received by 10%" }
+{ "_id": 297, "description": "Boosts ATK of STR characters by 1.5x, reduces damage received by 20%" }
+{ "_id": 298, "description": "Boosts ATK of Slasher characters by 2.5x if HP is above 50% at the start of the turn" }
+{ "_id": 299, "description": "Boosts ATK of Fighter characters by 2.75x if HP is below 30% at the start of the turn" }
+{ "_id": 300, "description": "Boosts ATK of characters with cost 21 or more by 2x" }
+{ "_id": 301, "description": "Reduces cooldown of all specials by 2 turns at the start of the fight" }
+{ "_id": 302, "description": "Reduces cooldown of all specials by 3 turns at the start of the fight" }
+{ "_id": 303, "description": "Boosts ATK and RCV of Freedom characters by 1.2x" }
+{ "_id": 304, "description": "Boosts ATK and RCV of Freedom characters by 1.5x" }
+{ "_id": 305, "description": "Boosts ATK of Tough characters by 3x if they have a matching orb, by 2.5x otherwise, reduces crew's RCV to 0" }
+{ "_id": 306, "description": "Boosts ATK of DEX characters by 1.5x, boosts damage of DEX specials by 1.5x" }
+{ "_id": 307, "description": "Boosts ATK of DEX characters by 2x, boosts damage of DEX specials by 2x" }
+{ "_id": 308, "description": "Boosts ATK and RCV of Knowledge characters by 1.5x" }
+{ "_id": 309, "description": "Boosts ATK of Knowledge characters by 2.25x and their RCV by 1.5x" }
+{ "_id": 310, "description": "Boosts ATK of Tough characters by 2x" }
+{ "_id": 311, "description": "Boosts ATK of Tough characters by 2.5x" }
+{ "_id": 312, "description": "Boosts ATK of INT characters by 1.5x, reduces damage received from PSY enemies by 20%" }
+{ "_id": 313, "description": "Boosts ATK of INT characters by 2x, reduces damage received from PSY enemies by 30%" }
+{ "_id": 314, "description": "Boosts ATK of PSY characters by 2x, recovers 3x character's RCV in HP at the end of each turn" }
+{ "_id": 315, "description": "Boosts ATK of STR characters by 2.5x if HP is below 30% at the start of the turn" }
+{ "_id": 316, "description": "Boosts ATK of STR characters by 3x if HP is below 30% at the start of the turn" }
+{ "_id": 317, "description": "Reduces cooldown of all specials by 2 turns at the start of the fight, boosts ATK of STR characters by 2x" }
+{ "_id": 318, "description": "Boosts ATK of Knowledge characters by 2.5x" }
+{ "_id": 319, "description": "Boosts ATK of Slasher characters by 2x, reduces damage received from QCK enemies by 20%" }
+{ "_id": 320, "description": "Boosts ATK and HP of Knowledge characters by 1.5x" }
+{ "_id": 321, "description": "Boosts ATK and RCV of PSY characters by 1.25x" }
+{ "_id": 322, "description": "Boosts ATK and RCV of PSY characters by 1.75x" }
+{ "_id": 323, "description": "Boosts ATK of all characters by 2x if HP is below 30% at the start of the turn" }
+{ "_id": 324, "description": "Boosts ATK of all characters by 2.5x if HP is below 30% at the start of the turn" }
+{ "_id": 325, "description": "Boosts ATK of Slasher characters by 2x and their RCV by 1.5x" }
+{ "_id": 326, "description": "Reduces damage received by 50%, reduces crew's current HP by 10% at the end of each turn" }
+{ "_id": 327, "description": "Boosts ATK, HP and RCV of STR, DEX and QCK characters by 1.25x" }
+{ "_id": 328, "description": "Boosts ATK of Tough characters by 3x, reduces crew's current HP by 10% at the end of each turn, reduces his own ATK multiplier by 0.1x at the end of each turn" }
+{ "_id": 329, "description": "Boosts ATK of Tough characters by 3.5x, reduces crew's current HP by 10% at the end of each turn, reduces his own ATK multiplier by 0.1x at the end of each turn" }
+{ "_id": 330, "description": "Boosts ATK of Knowledge characters by 2x" }
+{ "_id": 331, "description": "Boosts ATK of Knowledge and Tough characters by 2x" }
+{ "_id": 332, "description": "Boosts ATK and RCV of DEX characters by 1.2x" }
+{ "_id": 333, "description": "Boosts ATK and RCV of DEX characters by 1.5x, deals 1x character's ATK in DEX damage to all enemies at the end of each turn" }
+{ "_id": 334, "description": "Boosts ATK of Striker characters by 2x, reduces damage received up to 30% depending on the crew's current HP" }
+{ "_id": 335, "description": "Boosts ATK and RCV of Knowledge characters by 1.5x, recovers 2x character's RCV in HP at the end of each turn" }
+{ "_id": 336, "description": "Boosts ATK and RCV of Tough characters by 1.5x" }
+{ "_id": 337, "description": "Boosts ATK of Tough characters by 2x and their RCV by 1.5x, reduces crew's current HP by 10% at the end of each turn" }
+{ "_id": 338, "description": "Boosts ATK by 2.5x following a chain of STR > INT > DEX attacks no lower than Good" }
+{ "_id": 339, "description": "Boosts ATK by 2.75x following a chain of STR > INT > DEX attacks no lower than Good" }
+{ "_id": 340, "description": "Boosts ATK of Knowledge and Striker characters by 1.75x, deals 2 times the damage received in the previous turn in DEX damage to all enemies at the end of each turn" }
+{ "_id": 341, "description": "Boosts ATK of Knowledge and Striker characters by 2x, deals 5 times the damage received in the previous turn in DEX damage to all enemies at the end of each turn" }
+{ "_id": 342, "description": "Boosts ATK of Freedom characters proportionally to the crew's current HP, reduces crew's current HP by 10% at the end of each turn" }
+{ "_id": 343, "description": "Boosts ATK and HP of Knowledge characters by 2x" }
+{ "_id": 344, "description": "Boosts ATK and HP of Knowledge characters by 2x, deals 5 times the damage received in the previous turn in STR damage to all enemies at the end of each turn" }
+{ "_id": 345, "description": "Boosts ATK of Ambition characters by 2x" }
+{ "_id": 346, "description": "Boosts ATK of Ambition characters by 2.5x" }
+{ "_id": 347, "description": "Recovers 3x character's RCV in HP at the end of each turns, deals 3x character's ATK in PSY damage to all enemies at the end of each turn" }
+{ "_id": 348, "description": "Recovers 5x character's RCV in HP at the end of each turns, deals 5x character's ATK in PSY damage to all enemies at the end of each turn" }
+{ "_id": 349, "description": "Boosts ATK of Slasher, Striker and Shooter characters by 1.5x" }
+{ "_id": 350, "description": "Boosts ATK of Slasher, Striker and Shooter characters by 2x" }
+{ "_id": 351, "description": "Boosts ATK of all characters by 1.5x after the 11th hit in the chain, by 2.5x after the 22nd hit" }
+{ "_id": 352, "description": "Boosts ATK of all characters by 1.5x after the 11th hit in the chain, by 2.5x after the 22nd hit, by 2.75x after the 30th hit, by 3.5x after the 40th hit" }
+{ "_id": 353, "description": "Boosts ATK of all characters by 1.5x if HP is below 30% at the start of the turn" }
+{ "_id": 354, "description": "Boosts ATK of Striker and Knowledge characters by 1.5x" }
+{ "_id": 355, "description": "Boosts ATK of Ambition characters by 1.5x" }
+{ "_id": 356, "description": "Boosts ATK of DEX chracters by 1.5x, reduces damage received by 10%" }
+{ "_id": 357, "description": "Boosts ATK of Ambition characters by 1.5x, reduces damage received up to 10% depending on the crew's current HP" }
+{ "_id": 358, "description": "Boosts ATK of Ambition characters by 2x, reduces damage received up to 30% depending on the crew's current HP" }
+{ "_id": 359, "description": "Boosts ATK of QCK characters by 2x, reduces damage received by 10%" }
+{ "_id": 360, "description": "Boosts ATK of QCK characters by 1.75x, recovers 2x character's RCV in HP at the end of each turn" }
+{ "_id": 361, "description": "Boosts ATK and HP of Freedom characters by 2x" }
+{ "_id": 362, "description": "Boosts ATK of all characters by 1.5x after the 12th hit in the chain" }
+{ "_id": 363, "description": "Boosts ATK of all characters by 1.2x, recovers 1,000 HP at the end of the turn" }
+{ "_id": 364, "description": "Boosts ATK of Ambition characters by 3x until the first hit other than Perfect" }
+{ "_id": 365, "description": "Boosts ATK and RCV of QCK characters by 1.5x" }
+{ "_id": 366, "description": "Boosts ATK of Fighter characters by 2.5x if HP is below 30% at the start of the turn" }
+{ "_id": 367, "description": "Boosts ATK of Fighter characters by 3x if HP is below 30% at the start of the turn" }
+{ "_id": 368, "description": "Boosts ATK of Knowledge and Ambition characters by 2x" }
+{ "_id": 369, "description": "Boosts ATK of Knowledge and Ambition characters by 2.25x, makes [TND] and [RCV] orbs "beneficial" to Knowledge and Ambition characters" }
+{ "_id": 370, "description": "Boosts amount of beli received by 2x" }
+{ "_id": 371, "description": "Boosts ATK of all characters by 1.5x, boosts amount of beli received by 2x" }
+{ "_id": 372, "description": "Reduces cooldown of all specials by 2 turns at the start of the fight, boosts ATK of Fighter characters by 1.75x" }
+{ "_id": 373, "description": "Boosts ATK of Shooter and Freedom characters by 2x following a chain of Good > Great > Perfect hits" }
+{ "_id": 374, "description": "Boosts ATK of Shooter and Freedom characters by 3x following a chain of Good > Great > Perfect hits" }
+{ "_id": 375, "description": "Boosts ATK and HP of Tough characters by 1.25x" }
+{ "_id": 376, "description": "Boosts ATK and HP of Tough characters by 1.5x" }
+{ "_id": 377, "description": "Boosts ATK of Fighter characters by 2x, reduces damage received by 10%" }
+{ "_id": 378, "description": "Boosts ATK of Ambition characters by 1.5x, boosts amount of beli received by 1.2x" }
+{ "_id": 379, "description": "Boosts ATK and RCV of Tough characters by 1.75x" }
+{ "_id": 380, "description": "Boosts ATK of Tough characters by 3x after scoring 3 Perfects in a row" }
+{ "_id": 381, "description": "Boosts ATK of Ambition characters by 3x following a chain of Good > Great > Perfect hits" }
+{ "_id": 382, "description": "Boosts ATK and HP of Striker and Knowledge characters by 1.5x" }
+{ "_id": 383, "description": "Boosts ATK of Fighter and Freedom characters by 1.75x and their RCV by 1.25x" }
+{ "_id": 384, "description": "Boosts ATK of Shooter characters by 2x if HP is above 99% at the start of the turn" }
+{ "_id": 385, "description": "Boosts ATK of Shooter characters by 2.75x if HP is above 99% at the start of the turn" }
+{ "_id": 386, "description": "Boosts ATK of Slasher characters by 2.5x if HP is below 30% at the start of the turn" }
+{ "_id": 387, "description": "Boosts ATK of Slasher characters by 2.75x if HP is below 30% at the start of the turn" }
+{ "_id": 388, "description": "Boosts ATK and RCV of Knowledge characters by 1.5x if HP is below 30% at the start of the turn" }
+{ "_id": 389, "description": "Boosts ATK of Knowledge characters by 2.5x and their RCV by 1.75x if HP is below 30% at the start of the turn" }
+{ "_id": 390, "description": "Boosts ATK of PSY characters by 2x, their RCV by 1.5x, makes [INT] orbs "beneficial" to PSY characters" }
+{ "_id": 391, "description": "Boosts ATK of Tough characters by 2.25x, their HP by 1.5x, recovers 4x character's RCV in HP at the end of each turn" }
+{ "_id": 392, "description": "Boosts ATK of QCK characters by 2.5x if they have a matching orb" }
+{ "_id": 393, "description": "Boosts ATK of QCK characters by 3x if they have a matching orb, by 1.2x otherwise" }
+{ "_id": 394, "description": "Boosts ATK and RCV of Knowledge characters by 1.2x" }
+{ "_id": 395, "description": "Boosts ATK and RCV of Knowledge characters by 1.75x" }
+{ "_id": 396, "description": "Boosts ATK of Shooter characters by 1.75x, recovers a small amount of health at the end of each turn" }
