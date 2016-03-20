@@ -62,12 +62,9 @@ class Signup extends React.Component {
   }
 
   render() {
-    hello = function(e) {
-      alert("HELLO");
-      e.preventDefault();
-    }
 
     return(
+
       <Grid>
         <Row>
           <h2>
@@ -77,7 +74,7 @@ class Signup extends React.Component {
           <Col md={12}>
 
 
-            <form onSubmit={hello}>
+            <form onSubmit={this.formSubmit}>
               <Input
                 placeholder="User Name"
                 onChange={this.handleInputUserName}
@@ -98,7 +95,7 @@ class Signup extends React.Component {
                 min = "1"
                 max = "10000" />
               <br/>
-              <Button bsStyle="primary">
+              <Button bsStyle="primary" type="submit">
                 Sign up
               </Button> &nbsp; or&nbsp;
               <LinkContainer to="/signin"><a>Sign In</a></LinkContainer>

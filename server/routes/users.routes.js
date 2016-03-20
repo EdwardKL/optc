@@ -1,13 +1,15 @@
-import { Router } from 'express';
-import * as UserController from '../controllers/users.controller.js';
-const router = new Router();
 
-// Get all Users
-router.route('/getUsers').get(UserController.getUsers);
+module.exports = function(app) {
+  var users = require('../controllers/users.controller');
 
-router.route('/auth/signup').post(users.signup);
-router.route('/auth/signin').post(users.signin);
-router.route('/auth/signout').get(users.signout);
+  // Get all Users
+  //app.route('/getUsers').get(UserController.getUsers);
+
+  app.route('/auth/signup').post(users.signup);
+  app.route('/auth/signin').post(users.signin);
+  app.route('/auth/signout').get(users.signout);
+}
+
 
 //module.exports = function(app) {
 //  // User Routes

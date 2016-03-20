@@ -1,15 +1,18 @@
-var mongoose = require('mongoose');
-var User = mongoose.model('User');
+var _ = require('lodash'),
+  errorHandler = require('../errors.controller'),
+  mongoose = require('mongoose'),
+  passport = require('passport'),
+  User = mongoose.model('User');
 
 /**
  * Signup
  */
 exports.signup = function(req, res) {
-
+  console.log("SIGNUP");
   // Init Variables
   var user = new User(req.body);
   var message = null;
-
+  console.log(user);
   // Then save the user
   user.save(function(err) {
     if (err) {
@@ -23,8 +26,10 @@ exports.signup = function(req, res) {
 
       req.login(user, function(err) {
         if (err) {
+          console.log(err);
           res.status(400).send(err);
         } else {
+          console.log("success");
           res.json(user);
         }
       });
@@ -48,6 +53,7 @@ exports.signin = function(req, res, next) {
 
       req.login(user, function(err) {
         if (err) {
+          console.log(err);
           res.status(400).send(err);
         } else {
           res.json(user);

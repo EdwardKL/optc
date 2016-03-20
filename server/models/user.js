@@ -7,7 +7,6 @@ var crypto = require('crypto');
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
-  _id: { type: 'Number', required: true },
   username: { type: 'String', required: true },
   password: { type: 'String', required: true },
   pirate_level: { type: 'Number', min: 1, required: true},

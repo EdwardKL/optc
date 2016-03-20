@@ -32,6 +32,9 @@ import posts from './routes/post.routes';
 import dummyData from './dummyData';
 import serverConfig from './config';
 
+var glob = require('glob'),
+  _ = require('lodash');
+
 // MongoDB Connection
 mongoose.connect(serverConfig.mongoURL, (error) => {
   if (error) {
@@ -48,6 +51,63 @@ app.use(bodyParser.json({ limit: '20mb' }));
 app.use(bodyParser.urlencoded({ limit: '20mb', extended: false }));
 app.use(Express.static(path.resolve(__dirname, '../static')));
 app.use('/api', posts);
+
+
+// passport stuff
+var cookieParser = require('cookie-parser');
+var session = require('express-session');
+var passport = require('passport');
+passport.serializeUser(function(user, done) {
+  done(null, user);
+});
+
+passport.deserializeUser(function(user, done) {
+  done(null, user);
+});
+app.use(cookieParser());
+app.use(session({ secret: 'secret' }));
+app.use(passport.initialize());
+app.use(passport.session());
+
+require(path.resolve('./server/strategies/local.js'))();
+  // Initialize strategies
+  getGlobbedFiles('./strategies/*.js').forEach(function(strategy) {
+    require(path.resolve(strategy))();
+  });
+
+function getGlobbedFiles(globPatterns, removeRoot) {
+  // For context switching
+  var _this = this;
+
+  // URL paths regex
+  var urlRegex = new RegExp('^(?:[a-z]+:)?\/\/', 'i');
+
+  // The output array
+  var output = [];
+
+  // If glob pattern is array so we use each pattern in a recursive way, otherwise we use glob
+  if (_.isArray(globPatterns)) {
+    globPatterns.forEach(function(globPattern) {
+      output = _.union(output, _this.getGlobbedFiles(globPattern, removeRoot));
+    });
+  } else if (_.isString(globPatterns)) {
+    if (urlRegex.test(globPatterns)) {
+      output.push(globPatterns);
+    } else {
+      var files = glob(globPatterns, {sync: true});
+      if (removeRoot) {
+        files = files.map(function(file) {
+          return file.replace(removeRoot, '');
+        });
+      }
+      output = _.union(output, files);
+
+    }
+  }
+
+  return output;
+};
+
 
 // Render Initial HTML
 const renderFullPage = (html, initialState) => {
@@ -74,6 +134,8 @@ const renderFullPage = (html, initialState) => {
     </html>
   `;
 };
+
+require('./routes/users.routes.js')(app);
 
 // Server Side Rendering based on routes matched by React-router.
 app.use((req, res) => {
