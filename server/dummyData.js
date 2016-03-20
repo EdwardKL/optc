@@ -1,5 +1,6 @@
 import Post from './models/post';
 import User from './models/user';
+import Captain from './models/captain';
 
 export default function () {
   //Post.count().exec((err, count) => {
@@ -65,10 +66,13 @@ export default function () {
     const testUser = new User({username: 'testoptc', user_id: 1, password: "test"});
     User.create(testUser, (error) => {
       if (!error) {
-        // console.log('ready to go....');
+        console.log('test user created successfully');
       } else {
         console.log('error: ' + error);
       }
     });
+
+    // Create a test captain
+    testUser.create({current_level: 95, current_special_level: 5, user_id: 1})
   });
 }

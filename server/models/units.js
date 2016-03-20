@@ -4,7 +4,7 @@ var Schema = mongoose.Schema;
 
 // Create the unit schema.
 var unitSchema = new Schema({
-  _id: Number
+  _id: Number,
   name: String,
   type: { type: String, enum: ['STR', 'DEX', 'QCK', 'INT', 'PSY'] },
   classes: [ { type: String, enum: ['Fighter', 'Freedom', 'Slasher', 'Ambition', 'Striker', 'Knowledge', 'Shooter', 'Tough', 'Evolver', 'Booster'] } ],
