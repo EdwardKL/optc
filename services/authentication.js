@@ -20,7 +20,7 @@ module.exports = {
       });
   },
 
-  login(email, pass, cb) {
+  login(username, pass, cb) {
     cb = arguments[arguments.length - 1];
     var token = (typeof window !== 'undefined') ? localStorage.token : undefined;
     if (token) {
@@ -29,7 +29,7 @@ module.exports = {
       return;
     }
 
-    post('/auth/signin', { email: email, password: pass })
+    post('/auth/signin', { username: username, password: pass })
       .then((data) => {
         localStorage.userId = data._id;
         localStorage.username = data.username;

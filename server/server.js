@@ -52,6 +52,9 @@ app.use(bodyParser.urlencoded({ limit: '20mb', extended: false }));
 app.use(Express.static(path.resolve(__dirname, '../static')));
 app.use('/api', posts);
 
+var flash = require('connect-flash');
+app.use(flash());
+
 
 // passport stuff
 var cookieParser = require('cookie-parser');
@@ -108,6 +111,7 @@ function getGlobbedFiles(globPatterns, removeRoot) {
   return output;
 };
 
+require('./routes/users.routes.js')(app);
 
 // Render Initial HTML
 const renderFullPage = (html, initialState) => {
@@ -134,8 +138,6 @@ const renderFullPage = (html, initialState) => {
     </html>
   `;
 };
-
-require('./routes/users.routes.js')(app);
 
 // Server Side Rendering based on routes matched by React-router.
 app.use((req, res) => {
