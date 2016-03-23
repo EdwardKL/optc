@@ -60,6 +60,7 @@ app.use(flash());
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var passport = require('passport');
+// maybe store user id instead and look it up in deserialization
 passport.serializeUser(function(user, done) {
   done(null, user);
 });
@@ -72,11 +73,10 @@ app.use(session({ secret: 'secret' }));
 app.use(passport.initialize());
 app.use(passport.session());
 
-require(path.resolve('./server/strategies/local.js'))();
   // Initialize strategies
-  getGlobbedFiles('./strategies/*.js').forEach(function(strategy) {
-    require(path.resolve(strategy))();
-  });
+getGlobbedFiles('./server/strategies/*.js').forEach(function(strategy) {
+	require(path.resolve(strategy))();
+});
 
 function getGlobbedFiles(globPatterns, removeRoot) {
   // For context switching

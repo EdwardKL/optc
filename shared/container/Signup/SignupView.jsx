@@ -2,7 +2,6 @@ import React from 'react';
 import { Link } from 'react-router';
 import {Grid, Row, Col, Panel, Pagination,Button, Well, Label, Input, ButtonInput, MenuItem} from 'react-bootstrap';
 import {LinkContainer} from 'react-router-bootstrap';
-import auth from '../../../services/authentication';
 
 class Signup extends React.Component {
   constructor(props, context){
@@ -17,7 +16,6 @@ class Signup extends React.Component {
     this.handleInputUserName = this.handleInputUserName.bind(this);
     this.handleInputPassword =  this.handleInputPassword.bind(this);
     this.handleInputPirateLevel = this.handleInputPirateLevel.bind(this);
-    this.formSubmit = this.formSubmit.bind(this);
   }
 
 
@@ -40,27 +38,6 @@ class Signup extends React.Component {
     this.setState({userInfo: this.state.userInfo});
   }
 
-  formSubmit(e) {
-    alert("Submitting form");
-
-    e.preventDefault();
-    if(!this.validUserName){
-      this.setState({error : 'Please Input the User Name'});
-      alert("invalid user");
-    }
-    else if(!this.validPassword){
-      this.setState({error : 'Please input password.'});
-    }
-    else if(!this.validPirateLevel) {
-      this.setState({error : 'Please input pirate level.'})
-    }
-    else{
-      alert("signing up");
-      var newUser = this.state.userInfo;
-      auth.signup(newUser);
-    }
-  }
-
   render() {
 
     return(
@@ -72,19 +49,19 @@ class Signup extends React.Component {
           </h2>
           <hr/>
           <Col md={12}>
-
-
-            <form onSubmit={this.formSubmit}>
+            <form action="/signup" method="POST">
               <Input
                 placeholder="User Name"
                 onChange={this.handleInputUserName}
                 label="User Name"
+				name="username"
                 type ="text"/>
               <br/>
               <Input
                 placeholder="Enter Password"
                 onChange={this.handleInputPassword}
                 label="Password"
+				name="password"
                 type="password" />
               <br/>
               <Input
@@ -92,6 +69,7 @@ class Signup extends React.Component {
                 onChange={this.handleInputPirateLevel}
                 label="Pirate Level"
                 type ="number"
+				name = "pirate_level"
                 min = "1"
                 max = "10000" />
               <br/>

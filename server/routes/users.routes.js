@@ -1,13 +1,13 @@
 
 module.exports = function(app) {
-  var users = require('../controllers/users.controller');
+  var passport = require('passport');
 
-  // Get all Users
-  //app.route('/getUsers').get(UserController.getUsers);
-
-  app.route('/auth/signup').post(users.signup);
-  app.route('/auth/signin').post(users.signin);
-  app.route('/auth/signout').get(users.signout);
+  app.route('/signup').post(passport.authenticate('register', { successRedirect: '/',
+	   						          failureRedirect: '/signup',
+								      failureFlash: true }));
+  app.route('/signin').post(passport.authenticate('local', { successRedirect: '/',
+								   failureRedirect: '/signup',
+								   failureFlash: true }));
 };
 
 
