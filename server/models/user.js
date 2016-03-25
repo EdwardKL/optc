@@ -9,11 +9,11 @@ const Schema = mongoose.Schema;
 const userSchema = new Schema({
   username: { type: 'String', required: true },
   password: { type: 'String', required: true },
-  pirate_level: { type: 'Number', min: 1, required: true},
+  pirate_level: { type: 'Number', min: 1, required: true },
   captains: [Schema.Types.ObjectId],
   accounts: [{
-    region : {type: String, enum: ['global', 'japan', 'france']},
-    friend_id : { type: Number, min: 100000000, max: 999999999}
+    region: { type: String, enum: ['global', 'japan', 'france'] },
+    friend_id: { type: Number, min: 100000000, max: 999999999 }
   }],
   last_login: { type: 'Date', default: Date.now }
 });
