@@ -1,1 +1,3 @@
-{ "_id": 1453453495, "current_level": 24, "current_sockets": [{ "socket_id": 1, "socket_level": 3 }, { "socket_id": 3, "socket_level": 5 }], "current_special_level": 8, "unit_id": 3, "_user": { "$oid": "56f23f29780b8e30590f8d50" } }
+{ "_id": 1453453495, "current_level": 24, "current_sockets": [{ "socket_id": 1, "socket_level": 3 }, { "socket_id": 3, "socket_level": 5 }], "current_special_level": 8, "_unit": 3, "_user": { "$oid": "56f7000a1a2a4e145551922f" } }
+{ "_id": 14534495, "current_level": 62, "current_sockets": [{ "socket_id": 4, "socket_level": 1 }], "current_special_level": 3, "_unit": 3, "_user": { "$oid": "56f700491a2a4e1455519230" } }
+{ "_id": 145345, "current_level": 99, "current_sockets": [], "current_special_level": 15, "_unit": 1, "_user": { "$oid": "56f700491a2a4e1455519230" } }
