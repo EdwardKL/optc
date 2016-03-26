@@ -69,7 +69,11 @@ passport.deserializeUser(function(user, done) {
   done(null, user);
 });
 app.use(cookieParser());
-app.use(session({ secret: 'secret' }));
+app.use(session({
+  secret: 'secret',
+  resave: true,
+  saveUninitialized: true
+}));
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -175,7 +179,7 @@ app.use((req, res) => {
 // start app
 app.listen(serverConfig.port, (error) => {
   if (!error) {
-    console.log(`MERN is running on port: ${serverConfig.port}! Build something amazing!`); // eslint-disable-line
+    console.log(`MERN is running on port: ${serverConfig.port}!`); // eslint-disable-line
   }
 });
 
