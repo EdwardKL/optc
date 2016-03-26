@@ -1,5 +1,6 @@
 var _ = require('lodash');
-import Captain from '../models/captain';
+import CaptainModel from '../models/captain';
+import UserModel from '../models/user';
 
 // Searches for captains.
 exports.search = function(req, res) {
@@ -8,9 +9,10 @@ exports.search = function(req, res) {
 	var callback = function(err, captains) {
 		res.json(captains);
 	};
-	Captain
+	CaptainModel
 		.find({ 'unit_id': captain_id })
 		.sort('current_level current_special_level')
-		.select('current_level current_sockets current_special_level user_id')
+		.populate('_user')
+		.select('current_level current_sockets current_special_level _user')
 		.exec(callback);
 };

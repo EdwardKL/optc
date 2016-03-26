@@ -46,7 +46,6 @@ userSchema.methods.authenticate = function(password) {
   return this.password === this.hashPassword(password);
 };
 
-
 var User = mongoose.model('User', userSchema);
 module.exports = User;
 

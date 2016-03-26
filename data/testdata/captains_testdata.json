@@ -1,1 +1,1 @@
-{ "_id": 1453453495, "current_level": 24, "current_sockets": [{ "socket_id": 1, "socket_level": 3 }, { "socket_id": 3, "socket_level": 5 }], "current_special_level": 8, "unit_id": 3, "user_id": { "$oid": "56f23f29780b8e30590f8d50" } }
+{ "_id": 1453453495, "current_level": 24, "current_sockets": [{ "socket_id": 1, "socket_level": 3 }, { "socket_id": 3, "socket_level": 5 }], "current_special_level": 8, "unit_id": 3, "_user": { "$oid": "56f23f29780b8e30590f8d50" } }

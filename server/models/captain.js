@@ -12,7 +12,7 @@ const captainSchema = new Schema({
   }],
   current_special_level: Schema.Types.Number,
   unit_id: { type: Number, min: 0 },
-  user_id: { type: Schema.Types.ObjectId, ref: 'User'}
+  _user: { type: Schema.Types.ObjectId, ref: 'User'}
 });
 
 export default mongoose.model('Captain', captainSchema);
