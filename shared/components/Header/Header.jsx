@@ -6,11 +6,11 @@ function Header(props, context) {
     <div className="header">
       <div className="header-content">
         <h1 className="site-title">
-          <Link to="/" onClick={props.handleLogoClick}>MERN Starter Blog</Link>
+          <Link to="/" onClick={props.handleLogoClick}>Welcome to the Grand Line!</Link>
         </h1>
         {
           context.router.isActive('/', true)
-            ? <a className="add-post-button" href="#" onClick={props.onClick}>Add Post</a>
+            ? <a className="add-post-button" href="#" onClick={props.onClick}>Add Account</a>
             : null
         }
       </div>
