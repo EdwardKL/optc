@@ -112,6 +112,7 @@ function getGlobbedFiles(globPatterns, removeRoot) {
 };
 
 require('./routes/users.routes.js')(app);
+require('./routes/finder.routes.js')(app);
 
 // Render Initial HTML
 const renderFullPage = (html, initialState) => {
