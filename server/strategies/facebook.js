@@ -4,9 +4,9 @@ var passport = require('passport'),
 
 module.exports = function() {
   passport.use(new FacebookStrategy({
-		clientID: process.env.FACEBOOK_ID,
-		clientSecret: process.env.FACEBOOK_SECRET,
-		callbackURL: "/auth/facebook/callback"
+      clientID: process.env.FACEBOOK_ID,
+      clientSecret: process.env.FACEBOOK_SECRET,
+      callbackURL: "https://optc.herokuapp.com/auth/facebook/callback"
     },
     function(accessToken, refreshToken, profile, done) {
 	  console.log("Starting facebook auth...");
