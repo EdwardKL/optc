@@ -14,6 +14,10 @@ module.exports = function(app) {
   app.route('/auth/facebook').get(passport.authenticate('facebook'));
   app.route('/auth/facebook/callback').get(passport.authenticate('facebook', { successRedirect: '/', failureRedirect: '/signup' }));
   
+  // Google signin routes
+  app.route('/auth/google').get(passport.authenticate('google', { scope: ['profile'] }));
+  app.route('/auth/google/callback').get(passport.authenticate('google', { successRedirect: '/', failureRedirect: '/signup' }));
+  
   // Reddit signin routes
   app.route('/auth/reddit').get(function(req, res, next) {
 	req.session.state = crypto.randomBytes(32).toString('hex');
@@ -26,6 +30,10 @@ module.exports = function(app) {
 	  next(new Error(403));
 	}
   });
+  
+  // Twitter signin routes
+  app.route('/auth/twitter').get(passport.authenticate('twitter'));
+  app.route('/auth/twitter/callback').get(passport.authenticate('twitter', { successRedirect: '/', failureRedirect: '/signup' }));
 };
 
 

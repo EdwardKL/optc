@@ -16,7 +16,11 @@ const userSchema = new Schema({
   }],
   last_login: { type: 'Date', default: Date.now },
   _captains: [Schema.Types.ObjectId],
-  _facebook_id: { type: 'String' }
+  // OAuth IDs
+  _facebook_id: { type: 'String' },
+  _google_id: { type: 'String' },
+  _reddit_id: { type: 'String' },
+  _twitter_id: { type: 'String' }
 });
 
 /**
