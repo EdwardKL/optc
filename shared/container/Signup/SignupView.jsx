@@ -18,7 +18,6 @@ class Signup extends React.Component {
     this.handleInputPirateLevel = this.handleInputPirateLevel.bind(this);
   }
 
-
   handleInputUserName(e){
     this.validUserName = e.target.value !== "";
     this.state.userInfo.username = e.target.value;

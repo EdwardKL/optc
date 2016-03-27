@@ -7,9 +7,9 @@ var crypto = require('crypto');
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
-  username: { type: 'String', required: true },
-  password: { type: 'String', required: true },
-  pirate_level: { type: 'Number', min: 1, required: true },
+  username: { type: 'String' },
+  password: { type: 'String' },
+  pirate_level: { type: 'Number', min: 1 },
   accounts: [{
     region: { type: String, enum: ['global', 'japan', 'france'] },
     friend_id: { type: Number, min: 100000000, max: 999999999 }
