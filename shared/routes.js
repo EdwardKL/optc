@@ -10,8 +10,8 @@ import HomeView from './container/Home/HomeView.jsx';
 const routes = (
   <Route path="/" component={App} >
     <IndexRoute component={HomeView} />
-    <Route path="/signup" component={SignupView}/>
-    <Route path="/friend_finder" component={FriendFinderView}/>
+    <Route path="/signup" component={SignupView} />
+    <Route path="/friend_finder" component={FriendFinderView} />
   </Route>
 
 );
