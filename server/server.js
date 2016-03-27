@@ -28,7 +28,6 @@ import { match, RouterContext } from 'react-router';
 // Import required modules
 import routes from '../shared/routes';
 import { fetchComponentData } from './util/fetchData';
-import posts from './routes/post.routes';
 import serverConfig from './config';
 
 var glob = require('glob'),
@@ -50,7 +49,6 @@ require('./models/user');
 app.use(bodyParser.json({ limit: '20mb' }));
 app.use(bodyParser.urlencoded({ limit: '20mb', extended: false }));
 app.use(Express.static(path.resolve(__dirname, '../static')));
-app.use('/api', posts);
 
 var flash = require('connect-flash');
 app.use(flash());
