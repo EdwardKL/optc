@@ -50,7 +50,8 @@ class Signup extends React.Component {
           </h2>
           <hr/>
           <Col md={6}>
-            <a href="/auth/facebook">Login with Facebook</a>
+            <a href="/auth/facebook">Login with Facebook</a> <br />
+            <a href="/auth/reddit">Login with Reddit</a>
           </Col>
           <Col md={6}>
             <form action="/signup" method="POST">

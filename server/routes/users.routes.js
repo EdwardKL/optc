@@ -1,6 +1,7 @@
 
 module.exports = function(app) {
   var passport = require('passport');
+  var crypto = require('crypto');
 
   app.route('/signup').post(passport.authenticate('register', { successRedirect: '/',
 	   						          failureRedirect: '/signup',
@@ -12,6 +13,19 @@ module.exports = function(app) {
   // Facebook signin routes
   app.route('/auth/facebook').get(passport.authenticate('facebook'));
   app.route('/auth/facebook/callback').get(passport.authenticate('facebook', { successRedirect: '/', failureRedirect: '/signup' }));
+  
+  // Reddit signin routes
+  app.route('/auth/reddit').get(function(req, res, next) {
+	req.session.state = crypto.randomBytes(32).toString('hex');
+	passport.authenticate('reddit', { state: req.session.state, duration: 'permanent' })(req, res, next);
+  });
+  app.route('/auth/reddit/callback').get(function(req, res, next) {
+    if (req.query.state == req.session.state) {
+	  passport.authenticate('reddit', { successRedirect: '/', failureRedirect: '/signup' }))(req, res, next);
+	} else {
+	  next(new Error(403));
+	}
+  });
 };
 
 
