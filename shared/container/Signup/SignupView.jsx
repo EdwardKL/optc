@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import {Grid, Row, Col, Panel, Pagination,Button, Well, Label, Input, ButtonInput, MenuItem} from 'react-bootstrap';
 import {LinkContainer} from 'react-router-bootstrap';
+import Header from '../../components/Header/Header';
 
 class Signup extends React.Component {
   constructor(props, context){
@@ -40,28 +41,31 @@ class Signup extends React.Component {
   render() {
 
     return(
-
+	  <div>
+      <Header />
       <Grid>
         <Row>
           <h2>
             Sign up
           </h2>
           <hr/>
-          <Col md={12}>
+          <Col md={6}>
             <a href="/auth/facebook">Login with Facebook</a>
+          </Col>
+          <Col md={6}>
             <form action="/signup" method="POST">
               <Input
                 placeholder="User Name"
                 onChange={this.handleInputUserName}
                 label="User Name"
-				name="username"
+                name="username"
                 type ="text"/>
               <br/>
               <Input
                 placeholder="Enter Password"
                 onChange={this.handleInputPassword}
                 label="Password"
-				name="password"
+                name="password"
                 type="password" />
               <br/>
               <Input
@@ -69,7 +73,7 @@ class Signup extends React.Component {
                 onChange={this.handleInputPirateLevel}
                 label="Pirate Level"
                 type ="number"
-				name = "pirate_level"
+                name = "pirate_level"
                 min = "1"
                 max = "10000" />
               <br/>
@@ -82,6 +86,7 @@ class Signup extends React.Component {
           </Col>
         </Row>
       </Grid>
+	  </div>
     )
   }
 }

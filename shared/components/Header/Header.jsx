@@ -4,6 +4,7 @@ import { Link } from 'react-router';
 function Header(props, context) {
   return (
     <div className="header">
+	  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css" />
       <div className="header-content">
         <h2 className="site-title">
           <Link to="/" onClick={props.handleLogoClick}>Welcome to the Grand Line!</Link>

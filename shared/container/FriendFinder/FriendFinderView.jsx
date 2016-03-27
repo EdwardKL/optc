@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import {Grid, Row, Col, Panel, Pagination,Button, Well, Label, Input, ButtonInput, MenuItem} from 'react-bootstrap';
 import {LinkContainer} from 'react-router-bootstrap';
+import Header from '../../components/Header/Header';
 
 class FriendFinder extends React.Component {
   constructor(props, context){
@@ -10,6 +11,8 @@ class FriendFinder extends React.Component {
 
   render() {
     return(
+	  <div>
+      <Header />
       <Grid>
         <Row>
           <h2>
@@ -33,6 +36,7 @@ class FriendFinder extends React.Component {
           </Col>
         </Row>
       </Grid>
+	  </div>
     )
   }
 }
