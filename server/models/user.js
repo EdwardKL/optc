@@ -15,7 +15,8 @@ const userSchema = new Schema({
     friend_id: { type: Number, min: 100000000, max: 999999999 }
   }],
   last_login: { type: 'Date', default: Date.now },
-  _captains: [Schema.Types.ObjectId]
+  _captains: [Schema.Types.ObjectId],
+  _facebook_id: { type: 'String' }
 });
 
 /**

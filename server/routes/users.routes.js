@@ -8,6 +8,10 @@ module.exports = function(app) {
   app.route('/signin').post(passport.authenticate('local', { successRedirect: '/',
 								   failureRedirect: '/signup',
 								   failureFlash: true }));
+ 
+  // Facebook signin routes
+  app.route('/auth/facebook').get(passport.authenticate('facebook'));
+  app.route('/auth/facebook/callback').get(passport.authenticate('facebook', { successRedirect: '/', failureRedirect: '/signup' }));
 };
 
 

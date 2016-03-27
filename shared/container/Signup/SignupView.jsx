@@ -49,6 +49,7 @@ class Signup extends React.Component {
           </h2>
           <hr/>
           <Col md={12}>
+            <a href="/auth/facebook">Login with Facebook</a>
             <form action="/signup" method="POST">
               <Input
                 placeholder="User Name"
