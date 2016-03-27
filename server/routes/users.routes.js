@@ -21,7 +21,7 @@ module.exports = function(app) {
   });
   app.route('/auth/reddit/callback').get(function(req, res, next) {
     if (req.query.state == req.session.state) {
-	  passport.authenticate('reddit', { successRedirect: '/', failureRedirect: '/signup' }))(req, res, next);
+	  passport.authenticate('reddit', { successRedirect: '/', failureRedirect: '/signup' })(req, res, next);
 	} else {
 	  next(new Error(403));
 	}
