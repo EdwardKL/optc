@@ -10,6 +10,8 @@ Your one stop destination for OPTC! Built on Mongo, Express, React, NodeJS.
   npm start
 ```
 
+**You need to set FACEBOOK_ID and FACEBOOK_SECRET to some value, otherwise passport will crash.**
+
 **Note : Please make sure your MongoDB is running.** For MongoDB installation guide see [this](https://docs.mongodb.org/v3.0/installation/).
 
 ## File Structure
