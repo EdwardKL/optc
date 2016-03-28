@@ -15,6 +15,8 @@ function Header(props, context) {
         <a href="/friend_finder" style={linkStyle}> Friend Finder</a>
         <br/>
         <a href="/signup" style={linkStyle}> Sign In</a>
+        <br/>
+        <a href="/account" style={linkStyle}>My Account</a>
       </div>
     </div>
   );

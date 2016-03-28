@@ -159,6 +159,8 @@ const renderFullPage = (header_html, body_html, info_message, error_message) => 
   `;
 };
 
+const protected_paths = ['/account'];
+
 import { Alert, Row, Grid } from 'react-bootstrap';
 // Server Side Rendering based on routes matched by React-router.
 app.use((req, res) => {
@@ -169,6 +171,15 @@ app.use((req, res) => {
 
     if (!renderProps) {
       return res.status(404).end('Not found!');
+    }
+    
+    if (protected_paths.indexOf(req.url) != -1) {
+        console.log('Accessing protected path. Checking authentication status...');
+        if (!req.isAuthenticated()) {
+            // TODO: Maybe redirect to login instead?
+            req.flash('error_message', 'Please sign in.');
+            return res.redirect('/signup');
+        }
     }
 
     const initialState = { posts: [], post: {} };
@@ -190,7 +201,9 @@ app.use((req, res) => {
         );
         const initialView = renderToString(
           <Provider store={store}>
-            <RouterContext {...renderProps} />
+            <RouterContext {...renderProps} createElement={(Component, props) => {
+                return <Component user={req.user} {...props} />;
+            }}/>
           </Provider>
         );
 

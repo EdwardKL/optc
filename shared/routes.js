@@ -6,10 +6,12 @@ import App from './container/App';
 import SignupView from './container/Signup/SignupView';
 import FriendFinderView from './container/FriendFinder/FriendFinderView';
 import HomeView from './container/Home/HomeView.jsx';
+import AccountView from './container/Account/AccountView';
 
 const routes = (
   <Route path="/" component={App} >
     <IndexRoute component={HomeView} />
+    <Route path="/account" component={AccountView} />
     <Route path="/signup" component={SignupView} />
     <Route path="/friend_finder" component={FriendFinderView} />
   </Route>
