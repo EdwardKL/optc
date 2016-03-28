@@ -118,7 +118,7 @@ require('./routes/users.routes.js')(app);
 require('./routes/finder.routes.js')(app);
 
 // Render Initial HTML
-const renderFullPage = (html, initialState) => {
+const renderFullPage = (html, initialState, message) => {
   const cssPath = process.env.NODE_ENV === 'production' ? '/css/app.min.css' : '/css/app.css';
   return `
     <!doctype html>
@@ -134,6 +134,7 @@ const renderFullPage = (html, initialState) => {
         <link rel="shortcut icon" href="http://res.cloudinary.com/hashnode/image/upload/v1455629445/static_imgs/mern/mern-favicon-circle-fill.png" type="image/png" />
       </head>
       <body>
+        ${message}
         <div id="root">${html}</div>
         <script>
           window.__INITIAL_STATE__ = ${JSON.stringify(initialState)};
@@ -168,7 +169,7 @@ app.use((req, res) => {
         );
         const finalState = store.getState();
 
-        res.status(200).end(renderFullPage(initialView, finalState));
+        res.status(200).end(renderFullPage(initialView, finalState, req.flash('message')));
       })
       .catch(() => {
         res.end(renderFullPage('Error', {}));

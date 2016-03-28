@@ -42,7 +42,7 @@ class Signup extends React.Component {
   }
   validateConfirmation() {
     var length = this.state.password_confirmation.length;
-    if (length == 0) return '';
+    if (length == 0) return;
     if (this.state.password == this.state.password_confirmation) {
         return 'success';
     }
@@ -65,7 +65,8 @@ class Signup extends React.Component {
           <h2>
             Sign up
           </h2>
-          <hr/>
+        </Row>
+        <Row>
           <Col md={6}>
             <a href="/auth/google">Login with Google</a><br /><br />
             <a href="/auth/facebook">Login with Facebook</a><br /><br />

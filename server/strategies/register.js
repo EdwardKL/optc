@@ -24,8 +24,7 @@ module.exports = function() {
                 // already exists
                 if (user) {
                   console.log('User already exists');
-                  return done(null, false, 
-                     req.flash('message', 'User Already Exists'));
+                  return done(null, false, req.flash('message', 'User already exists.'));
                 } else {
                   var user = new User(req.body);
                   var message = null;
