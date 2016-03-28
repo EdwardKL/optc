@@ -10,7 +10,7 @@ module.exports = function() {
         // Validation
         var password_confirmation = req.body['password_confirmation'];
         if (password != password_confirmation) {
-            return done(null, false, req.flash('message', 'Passwords do not match.'));
+            return done(null, false, req.flash('error_message', 'Password confirmation does not match.'));
         }
         
         var findOrCreateUser = function(){
@@ -24,7 +24,7 @@ module.exports = function() {
                 // already exists
                 if (user) {
                   console.log('User already exists');
-                  return done(null, false, req.flash('message', 'User already exists.'));
+                  return done(null, false, req.flash('error_message', 'User already exists.'));
                 } else {
                   var user = new User(req.body);
                   var message = null;

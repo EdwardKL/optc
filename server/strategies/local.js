@@ -16,16 +16,16 @@ module.exports = function() {
           return done(err);
         // Username does not exist, log error & redirect back
         if (!user) {
-          return done(null, false, req.flash('message', 'User not found.'));
+          return done(null, false, req.flash('error_message', 'User not found.'));
         }
         // User exists but wrong password, log the error
         if (!user.authenticate(password)) {
           console.log('Invalid password');
-          return done(null, false, req.flash('message', 'Invalid password.'));
+          return done(null, false, req.flash('error_message', 'Invalid password.'));
         }
         // User and password both match, return user from
         // done method which will be treated like success
-        return done(null, user);
+        return done(null, user, req.flash('info_message', 'Welcome, ' + username + '!'));
       });
     }));
 }

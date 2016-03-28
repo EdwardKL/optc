@@ -119,8 +119,20 @@ require('./routes/finder.routes.js')(app);
 
 import Header from '../shared/components/Header/Header';
 // Render Initial HTML
-const renderFullPage = (header_html, body_html, initialState, message) => {
+const renderFullPage = (header_html, body_html, info_message, error_message) => {
   const cssPath = process.env.NODE_ENV === 'production' ? '/css/app.min.css' : '/css/app.css';
+  var info_message_injector = '';
+  var error_message_injector = '';
+  if (info_message.length > 0) {
+    info_message_injector = "document.getElementById('info-alert').innerHTML = '" + info_message + "';";
+  } else {
+    info_message_injector = "document.getElementById('info-alert').style.display = 'none';";
+  }
+  if (error_message.length > 0) {
+    error_message_injector = "document.getElementById('error-alert').innerHTML = '" + error_message + "';";
+  } else {
+    error_message_injector = "document.getElementById('error-alert').style.display = 'none';";
+  }
   return `
     <!doctype html>
     <html>
@@ -136,11 +148,10 @@ const renderFullPage = (header_html, body_html, initialState, message) => {
       </head>
       <body>
         ${header_html}
-        </div>
-        ${message}
         <div id="root">${body_html}</div>
         <script>
-          window.__INITIAL_STATE__ = ${JSON.stringify(initialState)};
+          ${info_message_injector}
+          ${error_message_injector}
         </script>
         <script src="/dist/bundle.js"></script>
       </body>
@@ -148,6 +159,7 @@ const renderFullPage = (header_html, body_html, initialState, message) => {
   `;
 };
 
+import { Alert, Row, Grid } from 'react-bootstrap';
 // Server Side Rendering based on routes matched by React-router.
 app.use((req, res) => {
   match({ routes, location: req.url }, (err, redirectLocation, renderProps) => {
@@ -165,15 +177,24 @@ app.use((req, res) => {
 
     fetchComponentData(store.dispatch, renderProps.components, renderProps.params)
       .then(() => {
-        const headerView = renderToString(<Header />);
+        const headerView = renderToString(
+            <div>
+                <Header /> 
+                <Grid>
+                <Row>
+                    <Alert bsStyle="info" id="info-alert"></Alert>
+                    <Alert bsStyle="danger" id="error-alert"></Alert>
+                </Row>
+                </Grid>
+            </div>
+        );
         const initialView = renderToString(
           <Provider store={store}>
             <RouterContext {...renderProps} />
           </Provider>
         );
-        const finalState = store.getState();
 
-        res.status(200).end(renderFullPage(headerView, initialView, finalState, req.flash('message')));
+        res.status(200).end(renderFullPage(headerView, initialView, req.flash('info_message'), req.flash('error_message')));
       })
       .catch(() => {
         res.end(renderFullPage('Error', {}));
