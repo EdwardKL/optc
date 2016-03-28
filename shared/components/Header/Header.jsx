@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 import { Link } from 'react-router';
 
 var linkStyle = {
@@ -10,23 +10,14 @@ function Header(props, context) {
     <div className="header">
       <div className="header-content">
         <h2 className="site-title">
-          <Link to="/">OPTC Ohara</Link>
+          <a href="/">OPTC Ohara</a>
         </h2>
-        <Link to="/friend_finder" style={linkStyle}> Friend Finder</Link>
+        <a href="/friend_finder" style={linkStyle}> Friend Finder</a>
         <br/>
-        <Link to="/signup" style={linkStyle}> Sign In</Link>
+        <a href="/signup" style={linkStyle}> Sign In</a>
       </div>
     </div>
   );
 }
-
-Header.contextTypes = {
-  router: React.PropTypes.object,
-};
-/*
-Header.propTypes = {
-  onClick: PropTypes.func.isRequired,
-  handleLogoClick: PropTypes.func,
-};*/
 
 export default Header;

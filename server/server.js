@@ -117,8 +117,9 @@ function getGlobbedFiles(globPatterns, removeRoot) {
 require('./routes/users.routes.js')(app);
 require('./routes/finder.routes.js')(app);
 
+import Header from '../shared/components/Header/Header';
 // Render Initial HTML
-const renderFullPage = (html, initialState, message) => {
+const renderFullPage = (header_html, body_html, initialState, message) => {
   const cssPath = process.env.NODE_ENV === 'production' ? '/css/app.min.css' : '/css/app.css';
   return `
     <!doctype html>
@@ -134,8 +135,10 @@ const renderFullPage = (html, initialState, message) => {
         <link rel="shortcut icon" href="http://res.cloudinary.com/hashnode/image/upload/v1455629445/static_imgs/mern/mern-favicon-circle-fill.png" type="image/png" />
       </head>
       <body>
+        ${header_html}
+        </div>
         ${message}
-        <div id="root">${html}</div>
+        <div id="root">${body_html}</div>
         <script>
           window.__INITIAL_STATE__ = ${JSON.stringify(initialState)};
         </script>
@@ -162,6 +165,7 @@ app.use((req, res) => {
 
     fetchComponentData(store.dispatch, renderProps.components, renderProps.params)
       .then(() => {
+        const headerView = renderToString(<Header />);
         const initialView = renderToString(
           <Provider store={store}>
             <RouterContext {...renderProps} />
@@ -169,7 +173,7 @@ app.use((req, res) => {
         );
         const finalState = store.getState();
 
-        res.status(200).end(renderFullPage(initialView, finalState, req.flash('message')));
+        res.status(200).end(renderFullPage(headerView, initialView, finalState, req.flash('message')));
       })
       .catch(() => {
         res.end(renderFullPage('Error', {}));
