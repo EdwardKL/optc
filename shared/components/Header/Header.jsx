@@ -1,17 +1,20 @@
 import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
 
+var linkStyle = {
+    color: 'white'
+};
+
 function Header(props, context) {
   return (
     <div className="header">
-	  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css" />
       <div className="header-content">
         <h2 className="site-title">
-          <Link to="/" onClick={props.handleLogoClick}>Welcome to the Grand Line!</Link>
+          <Link to="/">OPTC Ohara</Link>
         </h2>
-        <Link to="/friend_finder"> Friend Finder</Link>
+        <Link to="/friend_finder" style={linkStyle}> Friend Finder</Link>
         <br/>
-        <Link to="/signup"> Sign In</Link>
+        <Link to="/signup" style={linkStyle}> Sign In</Link>
       </div>
     </div>
   );
@@ -20,10 +23,10 @@ function Header(props, context) {
 Header.contextTypes = {
   router: React.PropTypes.object,
 };
-
+/*
 Header.propTypes = {
   onClick: PropTypes.func.isRequired,
   handleLogoClick: PropTypes.func,
-};
+};*/
 
 export default Header;

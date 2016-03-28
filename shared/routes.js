@@ -13,7 +13,6 @@ const routes = (
     <Route path="/signup" component={SignupView} />
     <Route path="/friend_finder" component={FriendFinderView} />
   </Route>
-
 );
 
 export default routes;
