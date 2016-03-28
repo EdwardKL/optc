@@ -1,5 +1,5 @@
 
-# OPTC Grand Line
+# OPTC Ohara
 
 Your one stop destination for OPTC! Built on Mongo, Express, React, NodeJS.
 
