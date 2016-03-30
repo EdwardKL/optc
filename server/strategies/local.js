@@ -18,7 +18,6 @@ module.exports = function() {
         }
         // User exists but wrong password, log the error
         if (!user.authenticate(password)) {
-          console.log('Invalid password');
           return done(null, false, req.flash('error_message', 'Invalid password.'));
         }
         // User and password both match, return user from

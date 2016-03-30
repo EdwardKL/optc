@@ -9,6 +9,7 @@ const Schema = mongoose.Schema;
 const userSchema = new Schema({
   username: { type: 'String' },
   password: { type: 'String' },
+  salt: { type: 'String'},
   pirate_level: { type: 'Number', min: 1 },
   accounts: [{
     region: { type: String, enum: ['global', 'japan', 'france'] },
