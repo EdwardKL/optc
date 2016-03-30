@@ -90,8 +90,7 @@ class Signup extends React.Component {
               <br/>
               <Button bsStyle="primary" type="submit">
                 Sign up
-              </Button> &nbsp; or&nbsp;
-              <LinkContainer to="/signin"><a>Sign In</a></LinkContainer>
+              </Button>
             </form>
           </Col>
         </Row>
