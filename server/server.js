@@ -190,7 +190,7 @@ app.use((req, res) => {
       .then(() => {
         const headerView = renderToString(
             <div>
-                <Header /> 
+                <Header user={req.user}/> 
                 <Grid>
                 <Row>
                     <Alert bsStyle="info" id="info-alert"></Alert>

@@ -49,7 +49,7 @@ class Signup extends React.Component {
       <Grid>
         <Row>
           <h2>
-            Sign up
+            Sign Up
           </h2>
         </Row>
         <Row>

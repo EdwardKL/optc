@@ -6,9 +6,14 @@ module.exports = function(app) {
   app.route('/signup').post(passport.authenticate('register', { successRedirect: '/',
 	   						          failureRedirect: '/signup',
 								      failureFlash: true }));
-  app.route('/signin').post(passport.authenticate('local', { successRedirect: '/',
+  app.route('/login').post(passport.authenticate('local', { successRedirect: '/',
 								   failureRedirect: '/signup',
 								   failureFlash: true }));
+  app.route('/logout').get(function(req, res) {
+    req.flash('info_message', 'Bye, '+ req.user.username + '!');
+    req.logout();
+    res.redirect('/');
+  });
 
   // Facebook signin routes
   app.route('/auth/facebook').get(passport.authenticate('facebook'));

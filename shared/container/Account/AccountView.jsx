@@ -6,8 +6,6 @@ import {LinkContainer} from 'react-router-bootstrap';
 class Account extends React.Component {
   constructor(props, context){
     super(props, context);
-    console.log("context", context);
-    console.log("props", props);
     this.state = {};
     this.state.username = props.user.username;
   }
