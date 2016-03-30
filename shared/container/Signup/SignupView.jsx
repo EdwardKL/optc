@@ -6,17 +6,13 @@ import {LinkContainer} from 'react-router-bootstrap';
 class Signup extends React.Component {
   constructor(props, context){
     super(props, context);
-    console.log("context", context);
-    console.log("props", props);
     this.state = {};
-    this.state.error = '';
     this.state.username = '';
     this.state.password = '';
     this.state.password_confirmation = '';
     this.handleInputUserName = this.handleInputUserName.bind(this);
     this.handleInputPassword =  this.handleInputPassword.bind(this);
     this.handleInputConfirmation =  this.handleInputConfirmation.bind(this);
-    this.handleInputPirateLevel = this.handleInputPirateLevel.bind(this);
   }
 
   handleInputUserName(e){
@@ -44,18 +40,10 @@ class Signup extends React.Component {
   validateConfirmation() {
     var length = this.state.password_confirmation.length;
     if (length == 0) return;
-    if (this.state.password == this.state.password_confirmation) {
-        return 'success';
-    }
+    if (this.state.password == this.state.password_confirmation) return 'success';
     if (length > 0) return 'error';
   }
-
-  handleInputPirateLevel(e) {
-    this.validPirateLevel = e.target.value !== "";
-    this.state.userInfo.pirate_level = e.target.value;
-    this.setState({userInfo: this.state.userInfo});
-  }
-
+  
   render() {
     return(
       <Grid>
@@ -104,7 +92,6 @@ class Signup extends React.Component {
                 Sign up
               </Button> &nbsp; or&nbsp;
               <LinkContainer to="/signin"><a>Sign In</a></LinkContainer>
-              <p>{this.state.error}</p>
             </form>
           </Col>
         </Row>

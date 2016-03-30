@@ -8,11 +8,16 @@ module.exports = function() {
     },
     function (req, username, password, done) {
         // Validation
+        if (username.length <= 2) {
+            return done(null, false, req.flash('error_message', 'Usernames must be at least 3 characters long.'));
+        }
+        if (password.length <= 4) {
+            return done(null, false, req.flash('error_message', 'Passwords must be at least 5 characters long.'));
+        }
         var password_confirmation = req.body['password_confirmation'];
         if (password != password_confirmation) {
             return done(null, false, req.flash('error_message', 'Password confirmation does not match.'));
         }
-        
         var findOrCreateUser = function(){
             // find a user in Mongo with provided username
             User.findOne({ 'username' : username }, function(err, user) {
@@ -23,7 +28,6 @@ module.exports = function() {
                 }
                 // already exists
                 if (user) {
-                  console.log('User already exists');
                   return done(null, false, req.flash('error_message', 'User already exists.'));
                 } else {
                   var user = new User(req.body);
