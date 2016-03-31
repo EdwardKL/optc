@@ -12,11 +12,11 @@ const userSchema = new Schema({
   salt: { type: 'String'},
   pirate_level: { type: 'Number', min: 1 },
   accounts: [{
-    region: { type: String, enum: ['global', 'japan', 'france'] },
-    friend_id: { type: Number, min: 100000000, max: 999999999 }
+    region: { type: String, enum: ['global', 'japan'] },
+    friend_id: { type: Number, min: 100000000, max: 999999999 },
+    _captains: [Schema.Types.ObjectId],
   }],
   last_login: { type: 'Date', default: Date.now },
-  _captains: [Schema.Types.ObjectId],
   // OAuth IDs
   _facebook_id: { type: 'String' },
   _google_id: { type: 'String' },

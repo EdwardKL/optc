@@ -20,7 +20,6 @@ class Account extends React.Component {
   }
 
   open(e) {
-    console.log("open");
     this.setState({ showModal: true });
   }
 
@@ -34,6 +33,36 @@ class Account extends React.Component {
         </Row>
         <Row>
             <Button bsStyle="primary" onClick={this.open} type="button">Add Account</Button>
+            <Modal show={this.state.showModal} onHide={this.close}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Add Account</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <form action="/accounts/add" method="POST">
+                      <Row>
+                          <Col md={6}>
+                          <Input
+                            placeholder="Friend ID"
+                            label="Friend ID"
+                            name="friend_id"
+                            type="number"
+                            min="100000000"
+                            max="999999999"/>
+                          </Col>
+                          <Col md={3}>
+                          <Input type="select" label="Region" placeholder="global">
+                            <option value="global">Global</option>
+                            <option value="japan">Japan</option>
+                          </Input>
+                          </Col>
+                      </Row>
+                      <Button bsStyle="primary" type="submit">Add</Button>
+                    </form>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button onClick={this.close}>Cancel</Button>
+                </Modal.Footer>
+            </Modal>
         </Row>
       </Grid>
     )
@@ -41,7 +70,6 @@ class Account extends React.Component {
 }
 
 function mapStateToProps(store) {
-  console.log("mapping state to props using store: ", store);
   return {
     user: store.user,
   };
