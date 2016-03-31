@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
 import {Grid, Row, Col, Button, ButtonInput, Modal, Input} from 'react-bootstrap';
 import {LinkContainer} from 'react-router-bootstrap';
+import * as Actions from '../../redux/actions/actions';
+import { connect } from 'react-redux';
 
 class Account extends React.Component {
   constructor(props, context){
@@ -11,7 +13,6 @@ class Account extends React.Component {
     this.state.showModal = false;
     this.close = this.close.bind(this);
     this.open = this.open.bind(this);
-    console.log("asdf");
   }
   
   close(e) {
@@ -39,4 +40,17 @@ class Account extends React.Component {
   }
 }
 
-export default Account;
+function mapStateToProps(store) {
+  console.log("mapping state to props using store: ", store);
+  return {
+    user: store.user,
+  };
+}
+
+Account.propTypes = {
+  user: PropTypes.object.isRequired,
+  // This comes by default with connect below.
+  dispatch: PropTypes.func.isRequired,
+};
+
+export default connect(mapStateToProps)(Account);

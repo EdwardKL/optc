@@ -119,7 +119,7 @@ require('./routes/finder.routes.js')(app);
 
 import Header from '../shared/components/Header/Header';
 // Render Initial HTML
-const renderFullPage = (header_html, body_html, info_message, error_message) => {
+const renderFullPage = (header_html, body_html, info_message, error_message, initialState) => {
   const cssPath = process.env.NODE_ENV === 'production' ? '/css/app.min.css' : '/css/app.css';
   var info_message_injector = '';
   var error_message_injector = '';
@@ -150,6 +150,7 @@ const renderFullPage = (header_html, body_html, info_message, error_message) => 
         ${header_html}
         <div id="root">${body_html}</div>
         <script>
+          window.__INITIAL_STATE__ = ${JSON.stringify(initialState)};
           ${info_message_injector}
           ${error_message_injector}
         </script>
@@ -182,7 +183,14 @@ app.use((req, res) => {
         }
     }
 
-    const initialState = { posts: [], post: {} };
+    var user = req.user;
+    var initialState = {};
+    if (typeof user != 'undefined') {
+        // Clear out sensitive data first.
+        user.salt = '';
+        user.password = '';
+        initialState = { user: user };
+    }
 
     const store = configureStore(initialState);
 
@@ -206,8 +214,10 @@ app.use((req, res) => {
             }}/>
           </Provider>
         );
+        
+        const finalState = store.getState();
 
-        res.status(200).end(renderFullPage(headerView, initialView, req.flash('info_message'), req.flash('error_message')));
+        res.status(200).end(renderFullPage(headerView, initialView, req.flash('info_message'), req.flash('error_message'), finalState));
       })
       .catch(() => {
         res.end(renderFullPage('Error', {}));

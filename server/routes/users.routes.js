@@ -3,6 +3,7 @@ module.exports = function(app) {
   var passport = require('passport');
   var crypto = require('crypto');
 
+  // Auth
   app.route('/signup').post(passport.authenticate('register', { successRedirect: '/',
 	   						          failureRedirect: '/signup',
 								      failureFlash: true }));

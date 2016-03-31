@@ -1,5 +1,7 @@
 import * as ActionTypes from '../constants/constants';
 
+// Note, if you want to add more reducers, consider using combineReducers http://redux.js.org/docs/basics/Reducers.html
+
 const initialState = { posts: [], selectedPost: null };
 
 const postReducer = (state = initialState, action) => {
@@ -43,5 +45,4 @@ const postReducer = (state = initialState, action) => {
       return state;
   }
 };
-
 export default postReducer;
