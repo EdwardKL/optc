@@ -1,7 +1,7 @@
 import CaptainModel from '../models/captain';
 import UserModel from '../models/user';
 
-// Adds an account.
+// Adds (or edits) an account.
 exports.add = function(req, res) {
   if (typeof req.user == 'undefined') {
     req.flash('error_message', 'Please sign in.');
@@ -29,9 +29,19 @@ exports.add = function(req, res) {
     }
     // Found user
     if (user) {
-      var account_id = user.accounts.length;
-      account.id = account_id;
+      if (account.id == -1) {
+        var account_id = user.accounts.length;
+        account.id = account_id;
+      } else {
+        // This is an edit, not an add request. Delete the old account and re-add the new one.
+        var accounts = [];
+        user.accounts.map(function(existing_account) {
+          if (existing_account.id != account.id) accounts.push(existing_account);
+        });
+        user.accounts = accounts;
+      }
       user.accounts.push(account);
+      user.accounts.sort(function(a, b) { return a.id < b.id });
       user.save(function(err) {
         if (err) {
           console.log('Error saving user: '+err);  
