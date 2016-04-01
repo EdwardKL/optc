@@ -4,8 +4,9 @@ import {Grid, Row, Col, Button, ButtonInput, Modal, Panel, Input} from 'react-bo
 import {LinkContainer} from 'react-router-bootstrap';
 import * as Actions from '../../redux/actions/actions';
 import { connect } from 'react-redux';
+import Account from '../../components/Account/Account';
 
-class Account extends React.Component {
+class AccountView extends React.Component {
   constructor(props, context){
     super(props, context);
     this.state = {};
@@ -33,11 +34,7 @@ class Account extends React.Component {
         </Row>
         <Row>
             {this.state.user.accounts.map(function(account) {
-              return <Panel key={account.id}>
-                        <h3>{account.crew_name}</h3>
-                        <b>Friend ID:</b> {account.friend_id}<br />
-                        <b>Region:</b> {account.region}<br />
-                     </Panel>;
+              return <Account account_data={account} key={account.id}/>;
             })}
             <Button bsStyle="primary" onClick={this.open} type="button">Add Account</Button>
             <Modal show={this.state.showModal} onHide={this.close}>
@@ -92,10 +89,10 @@ function mapStateToProps(store) {
   };
 }
 
-Account.propTypes = {
+AccountView.propTypes = {
   user: PropTypes.object.isRequired,
   // This comes by default with connect below.
   dispatch: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps)(Account);
+export default connect(mapStateToProps)(AccountView);
