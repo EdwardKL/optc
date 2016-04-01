@@ -31,6 +31,7 @@ module.exports = function() {
                   return done(null, false, req.flash('error_message', 'User already exists.'));
                 } else {
                   var user = new User(req.body);
+                  user.updateCredentials();
                   var message = null;
                   console.log(user);
                   // Then save the user

@@ -42,8 +42,8 @@ mongoose.connect(serverConfig.mongoURL, (error) => {
 });
 
 require('./models/captain');
-require('./models/unit');
 require('./models/user');
+import User from './models/user';
 
 // Apply body Parser and server public assets and routes
 app.use(bodyParser.json({ limit: '20mb' }));
@@ -58,13 +58,15 @@ app.use(flash());
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var passport = require('passport');
-// maybe store user id instead and look it up in deserialization
+
 passport.serializeUser(function(user, done) {
-  done(null, user);
+  done(null, user._id);
 });
 
-passport.deserializeUser(function(user, done) {
-  done(null, user);
+passport.deserializeUser(function(id, done) {
+  User.findById(id, function(err, user) {
+    done(err, user);
+  });
 });
 app.use(cookieParser());
 app.use(session({
@@ -114,6 +116,7 @@ function getGlobbedFiles(globPatterns, removeRoot) {
 };
 
 // NOTE: This has to be done after model require statements.
+require('./routes/accounts.routes.js')(app);
 require('./routes/users.routes.js')(app);
 require('./routes/finder.routes.js')(app);
 

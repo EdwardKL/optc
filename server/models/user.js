@@ -12,7 +12,9 @@ const userSchema = new Schema({
   salt: { type: 'String'},
   pirate_level: { type: 'Number', min: 1 },
   accounts: [{
+    id: { type: Number, min: 0 },
     region: { type: String, enum: ['global', 'japan'] },
+    crew_name: { type: String },
     friend_id: { type: Number, min: 100000000, max: 999999999 },
     _captains: [Schema.Types.ObjectId],
   }],
@@ -24,15 +26,11 @@ const userSchema = new Schema({
   _twitter_id: { type: 'String' }
 });
 
-/**
- * Hook a pre save method to hash the password
- */
-userSchema.pre('save', function(next) {
+// Updates user with salt and hashed password.
+userSchema.methods.updateCredentials = function() {
   this.salt = new Buffer(crypto.randomBytes(16).toString('base64'), 'base64');
   this.password = this.hashPassword(this.password);
-
-  next();
-});
+};
 
 /**
  * Create instance method for hashing a password
