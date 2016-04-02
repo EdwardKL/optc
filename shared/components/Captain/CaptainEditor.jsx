@@ -1,6 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import {Modal, Input, Row, Col, Button} from 'react-bootstrap';
 import UnitSelector from '../Captain/UnitSelector';
+import { connect } from 'react-redux';
 
 class CaptainEditor extends Component {
   constructor(props, context){
@@ -11,13 +12,20 @@ class CaptainEditor extends Component {
     this.state.title = this.state.edit ? "Edit Captain" : "Add Captain";
     this.state.link_type = "link";
     this.state.action_name = this.state.edit ? "Edit" : "Add";
-    /*
-    this.state.account_id = this.state.edit ? props.account_id : -1;
-    this.state.default_crew_name = this.state.edit ? props.crew_name : "";
-    this.state.default_friend_id = this.state.edit ? props.friend_id : '';
-    this.state.default_region = this.state.edit ? props.region : "global";*/
+    this.state.unit_selections = props.unit_selections;
+    this.state.level_value = this.state.edit ? props.default_level : 1;
+    this.state.special_value = this.state.edit ? props.default_special : 1;
+    this.state.unit = this.state.edit ? this.state.unit_selections[props.unit_id] : this.state.unit_selections[0];
     this.close = this.close.bind(this);
     this.open = this.open.bind(this);
+    this.getMaxLevel = this.getMaxLevel.bind(this);
+    this.getMaxSpecial = this.getMaxSpecial.bind(this);
+    this.getMaxSockets = this.getMaxSockets.bind(this);
+    this.unitSelected = this.unitSelected.bind(this);
+    this.handleLevelChange = this.handleLevelChange.bind(this);
+    this.getLevelValue = this.getLevelValue.bind(this);
+    this.handleSpecialChange = this.handleSpecialChange.bind(this);
+    this.getSpecialValue = this.getSpecialValue.bind(this);
   }
   
   close(e) {
@@ -26,6 +34,37 @@ class CaptainEditor extends Component {
 
   open(e) {
     this.setState({ showModal: true });
+  }
+  
+  getMaxLevel() {
+    return this.state.unit.max_level;
+  }
+  
+  getMaxSpecial() {
+    return this.state.unit.max_special_level;
+  }
+  
+  getMaxSockets() {
+    return this.state.unit.max_sockets;
+  }
+  
+  unitSelected(e) {
+    this.setState({ unit_id: e.target.value,
+                    unit: this.state.unit_selections[e.target.value - 1] });
+  }
+  
+  handleLevelChange(e) {
+    this.setState({ level_value: e.target.value });
+  }
+  getLevelValue() {
+    return Math.min(this.state.level_value, this.getMaxLevel());
+  }
+  
+  handleSpecialChange(e) {
+    this.setState({ special_value: e.target.value });
+  }
+  getSpecialValue() {
+    return Math.min(this.state.special_value, this.getMaxSpecial());
   }
   
   render() {
@@ -40,7 +79,31 @@ class CaptainEditor extends Component {
                 <form action="/captains/add" method="POST">
                   <Row>
                       <Col md={12}>
-                      <UnitSelector/>
+                        <UnitSelector unit_selections={this.state.unit_selections} onChange={this.unitSelected} />
+                      </Col>
+                  </Row>
+                  <Row>
+                      <Col md={3}>
+                        <Input
+                          placeholder="Level"
+                          label="Level"
+                          name="current_level"
+                          type="number"
+                          onChange={this.handleLevelChange}
+                          value={this.getLevelValue()}
+                          min="1"
+                          max={this.getMaxLevel()}/>
+                      </Col>
+                      <Col md={3}>
+                        <Input
+                          placeholder="Special Level"
+                          label="Special Level"
+                          name="current_special_level"
+                          type="number"
+                          onChange={this.handleSpecialChange}
+                          value={this.getSpecialValue()}
+                          min="1"
+                          max={this.getMaxSpecial()}/>
                       </Col>
                   </Row>
                   <Button bsStyle="primary" type="submit">{this.state.action_name}</Button>
@@ -55,8 +118,15 @@ class CaptainEditor extends Component {
   }
 }
 
+function mapStateToProps(store) {
+  return {
+    unit_selections: store.unit_selections,
+  };
+}
+
 CaptainEditor.propTypes = {
   edit: PropTypes.bool.isRequired,
+  unit_selections: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
-export default CaptainEditor;
+export default connect(mapStateToProps)(CaptainEditor);

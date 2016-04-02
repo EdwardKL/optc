@@ -20,8 +20,9 @@ var unitSchema = new Schema({
   max_hp: { type: Number, min: 20, max: 4000 },
   max_atk: { type: Number, min: 10, max: 1600 },
   max_rcv: { type: Number, min: -999, max: 600 },
+  _unit: { type: Number, min: 0, ref: 'Unit' },
   captain_ability: Number,
-  special_ability: Number,
+  special_ability: { type: Number, min: 0, ref: 'Special' },
   region: { type: String, enum: ['all', 'japan'] }
 });
 

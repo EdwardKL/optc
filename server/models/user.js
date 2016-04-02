@@ -7,10 +7,10 @@ var crypto = require('crypto');
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
-  username: { type: 'String' },
-  password: { type: 'String' },
-  salt: { type: 'String'},
-  pirate_level: { type: 'Number', min: 1 },
+  username: { type: String },
+  password: { type: String },
+  salt: { type: String },
+  pirate_level: { type: Number, min: 1 },
   accounts: [{
     id: { type: Number, min: 0 },
     region: { type: String, enum: ['global', 'japan'] },
@@ -18,12 +18,12 @@ const userSchema = new Schema({
     friend_id: { type: Number, min: 100000000, max: 999999999 },
     _captains: [Schema.Types.ObjectId],
   }],
-  last_login: { type: 'Date', default: Date.now },
+  last_login: { type: Date, default: Date.now },
   // OAuth IDs
-  _facebook_id: { type: 'String' },
-  _google_id: { type: 'String' },
-  _reddit_id: { type: 'String' },
-  _twitter_id: { type: 'String' }
+  _facebook_id: { type: String },
+  _google_id: { type: String },
+  _reddit_id: { type: String },
+  _twitter_id: { type: String }
 });
 
 // Updates user with salt and hashed password.

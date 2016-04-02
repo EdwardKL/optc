@@ -8,6 +8,7 @@ class AccountEditor extends Component {
     this.state.showModal = false;
     this.state.edit = props.edit;
     this.state.account_id = this.state.edit ? props.account_id : -1;
+    this.state.label = this.state.edit ? "Edit" : "Add Account";
     this.state.title = this.state.edit ? "Edit Account" : "Add Account";
     this.state.link_type = this.state.edit ? "link" : "primary";
     this.state.action_name = this.state.edit ? "Edit" : "Add";
@@ -29,7 +30,7 @@ class AccountEditor extends Component {
   render() {
     return (
       <div>
-        <Button bsStyle="primary" onClick={this.open} bsStyle={this.state.link_type}>{this.state.title}</Button>
+        <Button bsStyle="primary" onClick={this.open} bsStyle={this.state.link_type}>{this.state.label}</Button>
         <Modal show={this.state.showModal} onHide={this.close}>
             <Modal.Header closeButton>
                 <Modal.Title>{this.state.title}</Modal.Title>

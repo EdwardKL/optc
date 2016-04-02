@@ -42,7 +42,8 @@ mongoose.connect(serverConfig.mongoURL, (error) => {
 });
 
 require('./models/captain');
-require('./models/user');
+require('./models/special');
+require('./models/unit');
 import User from './models/user';
 
 // Apply body Parser and server public assets and routes
@@ -52,7 +53,6 @@ app.use(Express.static(path.resolve(__dirname, '../static')));
 
 var flash = require('connect-flash');
 app.use(flash());
-
 
 // passport stuff
 var cookieParser = require('cookie-parser');
@@ -118,6 +118,8 @@ function getGlobbedFiles(globPatterns, removeRoot) {
 // NOTE: This has to be done after model require statements.
 require('./routes/accounts.routes.js')(app);
 require('./routes/users.routes.js')(app);
+// Only used to populate unit_selections.
+// require('./routes/units.routes.js')(app);
 require('./routes/finder.routes.js')(app);
 
 import Header from '../shared/components/Header/Header';
@@ -197,7 +199,6 @@ app.use((req, res) => {
     }
 
     const store = configureStore(initialState);
-    console.log(store);
 
     fetchComponentData(store.dispatch, renderProps.components, renderProps.params)
       .then(() => {
