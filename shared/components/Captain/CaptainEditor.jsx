@@ -34,6 +34,8 @@ class CaptainEditor extends Component {
     this.getSpecialValue = this.getSpecialValue.bind(this);
     this.addSocket = this.addSocket.bind(this);
     this.addSocketDisabled = this.addSocketDisabled.bind(this);
+    this.removeSocket = this.removeSocket.bind(this);
+    this.removeSocketDisabled = this.removeSocketDisabled.bind(this);
     this.getSocketSelections = this.getSocketSelections.bind(this);
     this.getSelectedSocket = this.getSelectedSocket.bind(this);
   }
@@ -59,12 +61,13 @@ class CaptainEditor extends Component {
   }
   
   unitSelected(e) {
-    console.log("CURRENT NUM SOCKETS: ", this.state.num_sockets);
-    console.log("MAX SOCKETS: ", this.getMaxSockets());
-    this.setState({ num_sockets: Math.min(this.state.num_sockets, this.state.unit_selections[e.target.value - 1].max_sockets),
-                    unit_id: e.target.value,
-                    unit: this.state.unit_selections[e.target.value - 1] });
-    console.log("NEW NUM SOCKETS:", this.state.num_sockets);
+    var unit = this.state.unit_selections[e.target.value - 1];
+    while (unit.max_sockets < this.state.num_sockets) {
+      this.state.num_sockets -=1;
+      delete this.state.current_sockets[this.state.num_sockets];
+    }
+    this.setState({ unit_id: e.target.value,
+                    unit: unit });
   }
   
   handleLevelChange(e) {
@@ -92,6 +95,15 @@ class CaptainEditor extends Component {
     return this.state.num_sockets >= this.getMaxSockets();
   }
   
+  removeSocket() {
+    delete this.state.current_sockets[this.state.num_sockets - 1];
+    this.setState({ num_sockets: this.state.num_sockets - 1 });
+  }
+  removeSocketDisabled() {
+    console.log(this.state.num_sockets);
+    return this.state.num_sockets <= 0;
+  }
+
   socketChanged(key, e) {
     var sockets = this.state.current_sockets;
     sockets[key] = e.target.value;
@@ -167,7 +179,8 @@ class CaptainEditor extends Component {
                     {_.times(this.state.num_sockets, i =>
                       <SocketSelector key={i} key_prop={i} getSocketSelections={this.getSocketSelections} getSelectedSocket={this.getSelectedSocket} onChange={this.socketChanged.bind(this, i)}/>
                     )}
-                    <Button bsStyle="default" onClick={this.addSocket} disabled={this.addSocketDisabled()}>Add Socket</Button>
+                    <Button bsStyle="default" onClick={this.addSocket} disabled={this.addSocketDisabled()}>Add Socket</Button>&nbsp;
+                    <Button bsStyle="default" onClick={this.removeSocket} disabled={this.removeSocketDisabled()}>Remove Socket</Button>
               </Modal.Body>
               <Modal.Footer>
                   <Button bsStyle="primary" type="submit">{this.state.action_name}</Button>
