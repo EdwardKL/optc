@@ -121,6 +121,7 @@ require('./routes/users.routes.js')(app);
 require('./routes/finder.routes.js')(app);
 
 import Header from '../shared/components/Header/Header';
+import unit_selections from '../data/unit_selections.json';
 // Render Initial HTML
 const renderFullPage = (header_html, body_html, info_message, error_message, initialState) => {
   const cssPath = process.env.NODE_ENV === 'production' ? '/css/app.min.css' : '/css/app.css';
@@ -187,15 +188,16 @@ app.use((req, res) => {
     }
 
     var user = req.user;
-    var initialState = {};
+    var initialState = {unit_selections: unit_selections};
     if (typeof user != 'undefined') {
         // Clear out sensitive data first.
         user.salt = '';
         user.password = '';
-        initialState = { user: user };
+        initialState.user = user;
     }
 
     const store = configureStore(initialState);
+    console.log(store);
 
     fetchComponentData(store.dispatch, renderProps.components, renderProps.params)
       .then(() => {

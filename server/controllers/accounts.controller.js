@@ -41,7 +41,7 @@ exports.add = function(req, res) {
         user.accounts = accounts;
       }
       user.accounts.push(account);
-      user.accounts.sort(function(a, b) { return a.id < b.id });
+      user.accounts.sort(function(a, b) { return a.id - b.id });
       user.save(function(err) {
         if (err) {
           console.log('Error saving user: '+err);  

@@ -1,6 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import {Panel, Row, Col, Button} from 'react-bootstrap';
 import AccountEditor from '../../components/Account/AccountEditor';
+import CaptainEditor from '../../components/Captain/CaptainEditor';
 
 class Account extends Component {
   constructor(props, context){
@@ -18,6 +19,7 @@ class Account extends Component {
         <Col md={7}>
           <Row><b>Friend ID:</b> {this.state.account_data.friend_id}</Row>
           <Row><b>Region:</b> {this.state.account_data.region}</Row>
+          <CaptainEditor edit={false}/>
         </Col>
         <Col md={1}>
           <Row><AccountEditor edit={true} crew_name={this.state.account_data.crew_name} friend_id={this.state.account_data.friend_id} region={this.state.account_data.region} account_id={this.state.account_data.id}/></Row>

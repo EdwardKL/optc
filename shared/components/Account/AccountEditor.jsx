@@ -8,7 +8,7 @@ class AccountEditor extends Component {
     this.state.showModal = false;
     this.state.edit = props.edit;
     this.state.account_id = this.state.edit ? props.account_id : -1;
-    this.state.title = this.state.edit ? "Edit" : "Add Account";
+    this.state.title = this.state.edit ? "Edit Account" : "Add Account";
     this.state.link_type = this.state.edit ? "link" : "primary";
     this.state.action_name = this.state.edit ? "Edit" : "Add";
     this.state.default_crew_name = this.state.edit ? props.crew_name : "";
