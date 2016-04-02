@@ -1,6 +1,8 @@
+import _ from 'lodash';
 import React, {Component, PropTypes} from 'react';
 import {Modal, Input, Row, Col, Button} from 'react-bootstrap';
 import UnitSelector from '../Captain/UnitSelector';
+import SocketSelector from '../Captain/SocketSelector';
 import { connect } from 'react-redux';
 
 class CaptainEditor extends Component {
@@ -13,8 +15,12 @@ class CaptainEditor extends Component {
     this.state.link_type = "link";
     this.state.action_name = this.state.edit ? "Edit" : "Add";
     this.state.unit_selections = props.unit_selections;
+    this.state.socket_selections = props.socket_selections;
     this.state.level_value = this.state.edit ? props.default_level : 1;
     this.state.special_value = this.state.edit ? props.default_special : 1;
+    // TODO: support editing for sockets
+    this.state.current_sockets = {};
+    this.state.num_sockets = 0;
     this.state.unit = this.state.edit ? this.state.unit_selections[props.unit_id] : this.state.unit_selections[0];
     this.close = this.close.bind(this);
     this.open = this.open.bind(this);
@@ -26,6 +32,10 @@ class CaptainEditor extends Component {
     this.getLevelValue = this.getLevelValue.bind(this);
     this.handleSpecialChange = this.handleSpecialChange.bind(this);
     this.getSpecialValue = this.getSpecialValue.bind(this);
+    this.addSocket = this.addSocket.bind(this);
+    this.addSocketDisabled = this.addSocketDisabled.bind(this);
+    this.getSocketSelections = this.getSocketSelections.bind(this);
+    this.getSelectedSocket = this.getSelectedSocket.bind(this);
   }
   
   close(e) {
@@ -49,8 +59,12 @@ class CaptainEditor extends Component {
   }
   
   unitSelected(e) {
-    this.setState({ unit_id: e.target.value,
+    console.log("CURRENT NUM SOCKETS: ", this.state.num_sockets);
+    console.log("MAX SOCKETS: ", this.getMaxSockets());
+    this.setState({ num_sockets: Math.min(this.state.num_sockets, this.state.unit_selections[e.target.value - 1].max_sockets),
+                    unit_id: e.target.value,
                     unit: this.state.unit_selections[e.target.value - 1] });
+    console.log("NEW NUM SOCKETS:", this.state.num_sockets);
   }
   
   handleLevelChange(e) {
@@ -67,51 +81,99 @@ class CaptainEditor extends Component {
     return Math.min(this.state.special_value, this.getMaxSpecial());
   }
   
+  addSocket() {
+    var new_id = this.state.num_sockets;
+    var sockets = this.state.current_sockets;
+    sockets[new_id] = this.getSocketSelections(new_id)[0]._id;
+    this.setState({ num_sockets: this.state.num_sockets + 1,
+                    current_sockets: sockets });
+  }
+  addSocketDisabled() {
+    return this.state.num_sockets >= this.getMaxSockets();
+  }
+  
+  socketChanged(key, e) {
+    var sockets = this.state.current_sockets;
+    sockets[key] = e.target.value;
+    this.setState({ current_sockets: sockets });
+  }
+  
+  getSocketSelections(key) {
+    // Copy the object so we don't modify the state.
+    var result = JSON.parse(JSON.stringify(this.state.socket_selections));
+    for (var selector_key in this.state.current_sockets) {
+      // Skip the one this component selected.
+      if (key == selector_key) continue;
+      // Remove the ones the other components selected.
+      for (var j in result) {
+        if (result[j]._id == this.state.current_sockets[selector_key]) {
+          result.splice(j, 1);
+          break;
+        }
+      }
+    }
+    return result;
+  }
+  
+  getSelectedSocket(key) {
+    var result = 0;
+    if (key in this.state.current_sockets) {
+      result = this.state.current_sockets[key];
+    } else {
+      result = getSocketSelections(key)[0]._id;
+    }
+    return result;
+  }
+  
   render() {
     return (
       <div>
         <Button bsStyle="primary" onClick={this.open} bsStyle={this.state.link_type}>{this.state.title}</Button>
         <Modal show={this.state.showModal} onHide={this.close}>
-            <Modal.Header closeButton>
-                <Modal.Title>{this.state.title}</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-                <form action="/captains/add" method="POST">
-                  <Row>
-                      <Col md={12}>
-                        <UnitSelector unit_selections={this.state.unit_selections} onChange={this.unitSelected} />
-                      </Col>
-                  </Row>
-                  <Row>
-                      <Col md={3}>
-                        <Input
-                          placeholder="Level"
-                          label="Level"
-                          name="current_level"
-                          type="number"
-                          onChange={this.handleLevelChange}
-                          value={this.getLevelValue()}
-                          min="1"
-                          max={this.getMaxLevel()}/>
-                      </Col>
-                      <Col md={3}>
-                        <Input
-                          placeholder="Special Level"
-                          label="Special Level"
-                          name="current_special_level"
-                          type="number"
-                          onChange={this.handleSpecialChange}
-                          value={this.getSpecialValue()}
-                          min="1"
-                          max={this.getMaxSpecial()}/>
-                      </Col>
-                  </Row>
+            <form action="/captains/add" method="POST">
+              <Modal.Header closeButton>
+                  <Modal.Title>{this.state.title}</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                    <Row>
+                        <Col md={12}>
+                          <UnitSelector unit_selections={this.state.unit_selections} onChange={this.unitSelected} />
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col md={3}>
+                          <Input
+                            placeholder="Level"
+                            label="Level"
+                            name="current_level"
+                            type="number"
+                            onChange={this.handleLevelChange}
+                            value={this.getLevelValue()}
+                            min="1"
+                            max={this.getMaxLevel()}/>
+                        </Col>
+                        <Col md={3}>
+                          <Input
+                            placeholder="Special Level"
+                            label="Special Level"
+                            name="current_special_level"
+                            type="number"
+                            onChange={this.handleSpecialChange}
+                            value={this.getSpecialValue()}
+                            min="1"
+                            max={this.getMaxSpecial()}/>
+                        </Col>
+                    </Row>
+                    {_.times(this.state.num_sockets, i =>
+                      <SocketSelector key={i} key_prop={i} getSocketSelections={this.getSocketSelections} getSelectedSocket={this.getSelectedSocket} onChange={this.socketChanged.bind(this, i)}/>
+                    )}
+                    <Button bsStyle="default" onClick={this.addSocket} disabled={this.addSocketDisabled()}>Add Socket</Button>
+              </Modal.Body>
+              <Modal.Footer>
                   <Button bsStyle="primary" type="submit">{this.state.action_name}</Button>
-                </form>
-            </Modal.Body>
-            <Modal.Footer>
-                <Button onClick={this.close}>Cancel</Button>
-            </Modal.Footer>
+                  <Button onClick={this.close}>Cancel</Button>
+              </Modal.Footer>
+            </form>
         </Modal>
       </div>
     )
@@ -121,12 +183,14 @@ class CaptainEditor extends Component {
 function mapStateToProps(store) {
   return {
     unit_selections: store.unit_selections,
+    socket_selections: store.socket_selections,
   };
 }
 
 CaptainEditor.propTypes = {
   edit: PropTypes.bool.isRequired,
   unit_selections: PropTypes.arrayOf(PropTypes.object).isRequired,
+  socket_selections: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default connect(mapStateToProps)(CaptainEditor);

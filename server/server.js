@@ -123,7 +123,6 @@ require('./routes/users.routes.js')(app);
 require('./routes/finder.routes.js')(app);
 
 import Header from '../shared/components/Header/Header';
-import unit_selections from '../data/unit_selections.json';
 // Render Initial HTML
 const renderFullPage = (header_html, body_html, info_message, error_message, initialState) => {
   const cssPath = process.env.NODE_ENV === 'production' ? '/css/app.min.css' : '/css/app.css';
@@ -169,6 +168,8 @@ const renderFullPage = (header_html, body_html, info_message, error_message, ini
 const protected_paths = ['/account'];
 
 import { Alert, Row, Grid } from 'react-bootstrap';
+import unit_selections from '../data/unit_selections.json';
+import socket_selections from '../data/socket_selections.json';
 // Server Side Rendering based on routes matched by React-router.
 app.use((req, res) => {
   match({ routes, location: req.url }, (err, redirectLocation, renderProps) => {
@@ -190,7 +191,7 @@ app.use((req, res) => {
     }
 
     var user = req.user;
-    var initialState = {unit_selections: unit_selections};
+    var initialState = {unit_selections: unit_selections, socket_selections: socket_selections};
     if (typeof user != 'undefined') {
         // Clear out sensitive data first.
         user.salt = '';
