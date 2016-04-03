@@ -230,7 +230,6 @@ function mapStateToProps(store) {
 
 CaptainEditor.propTypes = {
   account_id: PropTypes.number.isRequired,
-  captain_id: PropTypes.string,
   edit: PropTypes.bool.isRequired,
   unit_selections: PropTypes.arrayOf(PropTypes.object).isRequired,
   socket_selections: PropTypes.arrayOf(PropTypes.object).isRequired,

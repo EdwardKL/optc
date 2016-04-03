@@ -1,0 +1,19 @@
+#brand:hover {
+  color: darkred;
+  text-decoration: none;
+}
+
+#brand{
+  color: violet;
+}
+
+#navbar-image {
+  padding: 20px 15px;
+  margin: 3px 10px 0px 0px;
+  background-size: cover;
+	background-image: url('/img/robin_run.png');
+}
+
+#login-bar input {
+  margin: 0px 10px 0px 0px;
+}

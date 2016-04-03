@@ -157,7 +157,6 @@ body {
 
 .header {
 	background-color: #eee;
-	background-image: url('/img/header-bk.png');
 	background-position: center;
 	background-size: cover;
 	border-bottom: 1px solid #ccc;

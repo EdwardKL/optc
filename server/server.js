@@ -130,7 +130,7 @@ require('./routes/captains.routes.js')(app);
 import Header from '../shared/components/Header/Header';
 // Render Initial HTML
 const renderFullPage = (header_html, body_html, info_message, error_message, initialState) => {
-  const cssPath = process.env.NODE_ENV === 'production' ? '/css/app.min.css' : '/css/app.css';
+  const cssPath = process.env.NODE_ENV === 'production' ? '/css/header.min.css' : '/css/header.css';
   var info_message_injector = '';
   var error_message_injector = '';
   if (info_message.length > 0) {
@@ -152,7 +152,7 @@ const renderFullPage = (header_html, body_html, info_message, error_message, ini
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>OPTC Ohara</title>
         <link rel="stylesheet" href=${cssPath} />
-	    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css" />
         <link href='https://fonts.googleapis.com/css?family=Lato:400,300,700' rel='stylesheet' type='text/css'/>
         <link rel="shortcut icon" href="http://res.cloudinary.com/hashnode/image/upload/v1455629445/static_imgs/mern/mern-favicon-circle-fill.png" type="image/png" />
       </head>

@@ -1,62 +1,49 @@
 import React from 'react';
-import {Grid, Row, Col, Button, Input} from 'react-bootstrap';
-
-var linkStyle = {
-    color: 'white'
-};
+import {Grid, Row, Col, Button, Input, Nav, Navbar, NavItem, NavDropdown, MenuItem} from 'react-bootstrap';
 
 function Header(props, context) {
-  var links = 
-    <div>
-        <a href='/signup' style={linkStyle}>Sign Up or Login With...</a> <br />
-    </div>;
+  var links = [];
+  links.push(<NavItem href='/signup'>Sign Up</NavItem>);
   var login_form = 
-        <Row>
-            <form action="/login" method="POST">
-                <Col md={3} mdOffset={5}>
-                  <Input
-                    placeholder="User Name"
-                    bsSize="small"
-                    name="username"
-                    type="text"/>
-                </Col>
-                <Col md={3}>
-                  <Input
-                    placeholder="Password"
-                    bsSize="small"
-                    name="password"
-                    type="password" />
-                </Col>
-                <Col md={1}>
-                  <Button bsStyle="primary" bsSize="small" type="submit">
-                    Login
-                  </Button>
-                </Col>
-            </form>
-        </Row>;
+    <Navbar.Form pullRight id="login-bar">
+      <form action="/login" method="POST">
+        <Input
+          placeholder="User Name"
+          bsSize="small"
+          name="username"
+          type="text"/>
+        <Input
+          placeholder="Password"
+          bsSize="small"
+          name="password"
+          type="password" />
+        <Button bsStyle="primary" bsSize="small" type="submit">Login</Button>
+      </form>
+    </Navbar.Form>;
   if (typeof props.user != 'undefined') {
-    links = <div><span style={linkStyle}>Welcome, {props.user.username}!</span> <a href='/account' style={linkStyle}>My Account</a>  |  <a href='/logout' style={linkStyle}>Log out</a><br/></div>;
+    links = [];
+    links.push(<NavItem href='/account'>Accounts</NavItem>);
+    links.push(<NavItem href='/logout'>Logout</NavItem>);
     login_form = '';
   }
   return (
-    <div className="header">
-      <div className="header-content">
-        <Grid>
-        <Row>
-        <Col md={5}>
-        <h2 className="site-title">
-          <a href="/">OPTC Ohara</a>
-        </h2>
-        </Col>
-        <Col md={6}>
-            <a href='/friend_finder' style={linkStyle}>Friend Finder</a>
-            {links}
-        </Col>
-        </Row>
+  <Grid>
+    <Row>
+      <Navbar id="nav-bar">
+        <div className="nav navbar-nav" id="navbar-image"></div>
+        <Navbar.Header>
+          <Navbar.Brand>
+            <a href="/" id="brand">Ohara</a> 
+          </Navbar.Brand>
+        </Navbar.Header>
+        <Nav>
+          <NavItem href="/friend_finder">Friend Finder</NavItem>
+          {links}
+        </Nav>
         {login_form}
-        </Grid>
-      </div>
-    </div>
+      </Navbar>
+    </Row>
+  </Grid>
   );
 }
 
