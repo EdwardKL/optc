@@ -2,6 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import {Panel, Row, Col, Button} from 'react-bootstrap';
 import AccountEditor from '../../components/Account/AccountEditor';
 import CaptainEditor from '../../components/Captain/CaptainEditor';
+import Captain from '../../components/Captain/Captain';
 
 // TODO: Maybe move this to a library.
 String.prototype.capitalizeFirstLetter = function() {
@@ -13,6 +14,7 @@ class Account extends Component {
     super(props, context);
     this.state = {};
     this.state.account_data = props.account_data;
+    console.log("ACCOUNTS DATA: ", this.state.account_data);
   }
   
   render() {
@@ -24,6 +26,9 @@ class Account extends Component {
         <Col xs={7}>
           <Row><b>Friend ID:</b>{this.state.account_data.friend_id}</Row>
           <Row><b>Region:</b>{this.state.account_data.region.capitalizeFirstLetter()}</Row>
+          {this.state.account_data._captains.map(function(captain) {
+            return <Captain captain_data={captain} account_id={this.state.account_data.id}/>
+          }.bind(this))}
           <CaptainEditor edit={false} account_id={this.state.account_data.id}/>
         </Col>
         <Col xs={1}>

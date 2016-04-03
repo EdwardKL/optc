@@ -101,7 +101,6 @@ class CaptainEditor extends Component {
     this.setState({ num_sockets: this.state.num_sockets - 1 });
   }
   removeSocketDisabled() {
-    console.log(this.state.num_sockets);
     return this.state.num_sockets <= 0;
   }
 

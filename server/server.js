@@ -64,9 +64,13 @@ passport.serializeUser(function(user, done) {
 });
 
 passport.deserializeUser(function(id, done) {
-  User.findById(id, function(err, user) {
+  var callback = function(err, user) {
     done(err, user);
-  });
+  };
+  User
+    .findById(id)
+    .populate('accounts._captains')
+    .exec(callback);
 });
 app.use(cookieParser());
 app.use(session({
@@ -192,6 +196,10 @@ app.use((req, res) => {
     }
 
     var user = req.user;
+    console.log(user);
+    if (user) {
+      console.log(user.accounts[0]._captains);
+    }
     var initialState = {unit_selections: unit_selections, socket_selections: socket_selections};
     if (typeof user != 'undefined') {
         // Clear out sensitive data first.
