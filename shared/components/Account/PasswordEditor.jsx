@@ -28,7 +28,7 @@ class PasswordEditor extends Component {
   validatePassword() {
     var length = this.state.password.length;
     if (length > 8) return 'success';
-    if (length > 4) return 'warning';
+    if (length > 3) return 'warning';
     if (length > 0) return 'error';
   }
   
@@ -64,6 +64,7 @@ class PasswordEditor extends Component {
                 bsStyle={this.validatePassword()}
                 hasFeedback
                 label="New Password"
+                help="Must be more than 3 characters."
                 name="password"
                 type="password" />
               <br/>

@@ -20,7 +20,7 @@ class Signup extends React.Component {
   }
   validateUserName() {
     var length = this.state.username.length;
-    if (length > 2) return 'success';
+    if (length > 1) return 'success';
     if (length > 0) return 'error';
   }
 
@@ -30,7 +30,7 @@ class Signup extends React.Component {
   validatePassword() {
     var length = this.state.password.length;
     if (length > 8) return 'success';
-    if (length > 4) return 'warning';
+    if (length > 3) return 'warning';
     if (length > 0) return 'error';
   }
   
@@ -54,13 +54,13 @@ class Signup extends React.Component {
           <hr/>
         </Row>
         <Row>
-          <Col xs={5} xsOffset={1}>
+          <Col xs={5}>
             <a className="btn btn-block btn-social btn-facebook" href="/auth/facebook"><span className="fa fa-facebook"></span>Login with Facebook</a><br /><br />
             <a className="btn btn-block btn-social btn-google" href="/auth/google"><span className="fa fa-google"></span>Login with Google</a><br /><br />
             <a className="btn btn-block btn-social btn-reddit" href="/auth/reddit"><span className="fa fa-reddit"></span>Login with Reddit</a><br /><br />
             <a className="btn btn-block btn-social btn-twitter" href="/auth/twitter"><span className="fa fa-twitter"></span>Login with Twitter</a><br /><br />
           </Col>
-          <Col xs={5} xsOffset={1}>
+          <Col xs={6} xsOffset={1}>
             <form action="/signup" method="POST">
               <Input
                 placeholder="User Name"
@@ -69,6 +69,7 @@ class Signup extends React.Component {
                 hasFeedback
                 label="User Name"
                 name="username"
+                help="This name will be displayed to other users."
                 type="text"/>
               <br/>
               <Input
@@ -78,6 +79,7 @@ class Signup extends React.Component {
                 hasFeedback
                 label="Password"
                 name="password"
+                help="Must be more than 3 characters."
                 type="password" />
               <br/>
               <Input

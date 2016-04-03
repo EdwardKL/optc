@@ -3,6 +3,7 @@
 import { Route, IndexRoute } from 'react-router';
 import React from 'react';
 import App from './container/App';
+import OAuthSignupView from './container/Signup/OAuthSignupView';
 import SignupView from './container/Signup/SignupView';
 import FriendFinderView from './container/FriendFinder/FriendFinderView';
 import HomeView from './container/Home/HomeView.jsx';
@@ -13,6 +14,7 @@ const routes = (
     <IndexRoute component={HomeView} />
     <Route path="/account" component={AccountView} />
     <Route path="/signup" component={SignupView} />
+    <Route path="/auth/oauth-signup" component={OAuthSignupView} />
     <Route path="/friend_finder" component={FriendFinderView} />
   </Route>
 );

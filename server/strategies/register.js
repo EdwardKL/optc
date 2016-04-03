@@ -8,11 +8,11 @@ module.exports = function() {
     },
     function (req, username, password, done) {
         // Validation
-        if (username.length <= 2) {
-            return done(null, false, req.flash('error_message', 'Usernames must be at least 3 characters long.'));
+        if (username.length <= 1) {
+            return done(null, false, req.flash('error_message', 'Usernames must be at least 2 characters long.'));
         }
-        if (password.length <= 4) {
-            return done(null, false, req.flash('error_message', 'Passwords must be at least 5 characters long.'));
+        if (password.length <= 3) {
+            return done(null, false, req.flash('error_message', 'Passwords must be at least 4 characters long.'));
         }
         var password_confirmation = req.body['password_confirmation'];
         if (password != password_confirmation) {

@@ -17,8 +17,10 @@ module.exports = function(app) {
     res.redirect('/');
   });
 
-  app.route('/auth/editpass').post(users.editpass);
+  app.route('/auth/editpass').post(users.editPass);
   app.route('/auth/delete').post(users.delete);
+  
+  app.route('/auth/oauth-signup').post(users.setUser);
   
   // Facebook signin routes
   app.route('/auth/facebook').get(passport.authenticate('facebook'));

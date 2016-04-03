@@ -1,8 +1,31 @@
 import CaptainModel from '../models/captain';
 import UserModel from '../models/user';
 
+exports.setUser = function(req, res) {
+  if (typeof req.user == 'undefined') {
+    req.flash('error_message', 'Please sign in.');
+    res.redirect('/signup');
+    return;
+  }
+  if (req.user.username.length != 0) {
+    res.redirect('/');
+    return;
+  }
+  UserModel.findById(req.user._id, function(err, user) {
+    if (err) throw err;
+    if (!user) throw err;
+    user.username = req.body.username;
+    user.save(function(err) {
+      if (err) throw err;
+      req.flash('info_message', 'Username updated.');
+      res.redirect('/');
+      return;
+    });
+  });
+};
+
 // Edit password.
-exports.editpass = function(req, res) {
+exports.editPass = function(req, res) {
   if (typeof req.user == 'undefined') {
     req.flash('error_message', 'Please sign in.');
     res.redirect('/signup');
@@ -14,8 +37,8 @@ exports.editpass = function(req, res) {
     res.redirect('/account');
     return;
   }
-  if (req.body.password.length <= 4) {
-    req.flash('error_message', 'Passwords must be at least 5 characters long.')
+  if (req.body.password.length <= 3) {
+    req.flash('error_message', 'Passwords must be at least 4 characters long.')
     res.redirect('/account');
     return;
   }

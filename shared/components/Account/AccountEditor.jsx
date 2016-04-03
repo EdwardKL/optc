@@ -44,7 +44,7 @@ class AccountEditor extends Component {
                       placeholder="Crew Name"
                       label="Crew Name"
                       name="crew_name"
-                      help="Helps others make sure they added the right account"
+                      help="Helps others make sure they added the right account."
                       defaultValue={this.state.default_crew_name}
                       type="text"/>
                   </Col>
