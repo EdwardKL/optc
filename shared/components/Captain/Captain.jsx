@@ -37,7 +37,7 @@ class Captain extends Component {
               default_sockets={this.state.captain_data.current_sockets}
               />
           </Row>
-          <Row><a href={"/captains/delete/id".replace("id",this.state.captain_data._id)}>Delete</a></Row>
+          <Row><a href={"/captains/delete/" + this.state.account_id + "/" + this.state.captain_data._id}>Delete</a></Row>
         </Col>
       </Panel>
     )

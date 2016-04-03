@@ -112,14 +112,15 @@ exports.add = function(req, res) {
     }
   });
 };
-/*
-// Deletes an account.
+
+// Deletes a captain.
 exports.delete = function(req, res) {
   if (typeof req.user == 'undefined') {
     req.flash('error_message', 'Please sign in.');
     res.redirect('/signup');
   }
-  var account_id = req.params.id;
+  var account_id = req.params.account_id;
+  var captain_id = req.params.captain_id;
   UserModel.findById(req.user._id, function(err, user) {
     // In case of any error return
     if (err){
@@ -130,19 +131,24 @@ exports.delete = function(req, res) {
     }
     // Found user
     if (user) {
-      var accounts = [];
-      user.accounts.map(function(account) {
-        if (account.id != account_id) accounts.push(account);
-      });
-      user.accounts = accounts;
+      var account;
+      for (var index in user.accounts) {
+        if (user.accounts[index].id == account_id) {
+          account = user.accounts[index].id;
+          break;
+        }
+      }
+      if (!account) {
+        console.log('Could not find account with id: ', account_id);
+        return;
+      }
+      account._captains.splice(account._captains.indexOf(captain_id), 1);
       user.save(function(err) {
         if (err) {
           console.log('Error saving user: '+err);  
           throw err;  
         } else {
-          console.log('Successfully deleted account.');    
-          req.flash('info_message', 'Account deleted.');
-          res.redirect('/account');
+          console.log('Successfully deleted captain reference.');
           return;
         }
       });
@@ -152,4 +158,12 @@ exports.delete = function(req, res) {
       return;
     }
   });
-};*/
+  // Delete the captain.
+  var callback = function(err, captain) {
+    if (err) throw err;
+    console.log('Deleted captain');
+    req.flash('info_message', 'Captain deleted.');
+    res.redirect('/account');
+  };
+  CaptainModel.findById(captain_id).remove().exec(callback);
+};
