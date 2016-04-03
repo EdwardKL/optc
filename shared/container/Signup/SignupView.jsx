@@ -53,13 +53,13 @@ class Signup extends React.Component {
           </h2>
         </Row>
         <Row>
-          <Col md={6}>
-            <a href="/auth/google">Login with Google</a><br /><br />
-            <a href="/auth/facebook">Login with Facebook</a><br /><br />
-            <a href="/auth/reddit">Login with Reddit</a><br /><br />
-            <a href="/auth/twitter">Login with Twitter</a><br /><br />
+          <Col xs={5} xsOffset={1}>
+            <a className="btn btn-block btn-social btn-facebook" href="/auth/facebook"><span className="fa fa-facebook"></span>Login with Facebook</a><br /><br />
+            <a className="btn btn-block btn-social btn-google" href="/auth/google"><span className="fa fa-google"></span>Login with Google</a><br /><br />
+            <a className="btn btn-block btn-social btn-reddit" href="/auth/reddit"><span className="fa fa-reddit"></span>Login with Reddit</a><br /><br />
+            <a className="btn btn-block btn-social btn-twitter" href="/auth/twitter"><span className="fa fa-twitter"></span>Login with Twitter</a><br /><br />
           </Col>
-          <Col md={6}>
+          <Col xs={5} xsOffset={1}>
             <form action="/signup" method="POST">
               <Input
                 placeholder="User Name"
