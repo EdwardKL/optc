@@ -51,6 +51,7 @@ class Signup extends React.Component {
           <h2>
             Sign Up
           </h2>
+          <hr/>
         </Row>
         <Row>
           <Col xs={5} xsOffset={1}>
