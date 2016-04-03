@@ -22,7 +22,7 @@ class Captain extends Component {
           <Row><b>Level:</b>{this.state.captain_data.current_level}</Row>
           <Row><b>Special Level:</b>{this.state.captain_data.current_special_level}</Row>
           {this.state.captain_data.current_sockets.map(function(socket) {
-            return <Row>{this.state.socket_selections[socket._socket - 1].name}, Level {socket.socket_level}</Row>;
+            return <Row key={socket._socket}>{this.state.socket_selections[socket._socket - 1].name}, Level {socket.socket_level}</Row>;
           }.bind(this))}
         </Col>
         <Col xs={1}>
@@ -30,6 +30,7 @@ class Captain extends Component {
             <CaptainEditor
               edit={true}
               account_id={this.state.account_id}
+              captain_id={this.state.captain_data._id}
               unit_id={this.state.captain_data._unit}
               default_level={this.state.captain_data.current_level}
               default_special={this.state.captain_data.current_special_level}

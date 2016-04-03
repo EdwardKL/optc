@@ -11,6 +11,7 @@ class CaptainEditor extends Component {
     this.state = {};
     this.state.showModal = false;
     this.state.account_id = props.account_id;
+    this.state.captain_id = props.captain_id;
     this.state.edit = props.edit;
     this.state.label = this.state.edit ? "Edit" : "Add Captain";
     this.state.title = this.state.edit ? "Edit Captain" : "Add Captain";
@@ -205,6 +206,7 @@ class CaptainEditor extends Component {
                       />
                     )}
                     <input type="hidden" name="account_id" value={this.state.account_id} />
+                    <input type="hidden" name="captain_id" value={this.state.captain_id} />
                     <Button bsStyle="default" onClick={this.addSocket} disabled={this.addSocketDisabled()}>Add Socket</Button>&nbsp;
                     <Button bsStyle="default" onClick={this.removeSocket} disabled={this.removeSocketDisabled()}>Remove Socket</Button>
               </Modal.Body>
@@ -228,6 +230,7 @@ function mapStateToProps(store) {
 
 CaptainEditor.propTypes = {
   account_id: PropTypes.number.isRequired,
+  captain_id: PropTypes.string,
   edit: PropTypes.bool.isRequired,
   unit_selections: PropTypes.arrayOf(PropTypes.object).isRequired,
   socket_selections: PropTypes.arrayOf(PropTypes.object).isRequired,

@@ -15,12 +15,26 @@ exports.add = function(req, res) {
     _user: req.user._id,
     current_sockets: []
   });
-  for (var index in req.body.socket_types) {
-    var socket = {
-      _socket: req.body.socket_types[index],
-      socket_level: req.body.socket_levels[index]
+  if (req.body.captain_id) {
+    captain._id = req.body.captain_id;
+  }
+  console.log(req.body);
+  if (req.body.socket_types) {
+    if (typeof req.body.socket_types == 'object') {
+      for (var index in req.body.socket_types) {
+        var socket = {
+          _socket: req.body.socket_types[index],
+          socket_level: req.body.socket_levels[index]
+        };
+        captain.current_sockets.push(socket);
+      }
+    } else {
+      var socket = {
+        _socket: req.body.socket_types,
+        socket_level: req.body.socket_levels
+      };
+      captain.current_sockets.push(socket);
     }
-    captain.current_sockets.push(socket);
   }
   UserModel.findById(req.user._id, function(err, user) {
     // In case of any error return
@@ -46,24 +60,47 @@ exports.add = function(req, res) {
         res.redirect('/account');
         return;
       }
-      // First save the captain.
-      captain.save(function(err) {
-        if (err) {
-          console.log('Error saving captain: ' + err);
-          throw err;
-        } else {
-          console.log('Successfully saved captain: ', captain);
+      // Check if the captain already exists.
+      var edit = false;
+      for (var index in account._captains) {
+        if (captain._id.equals(account._captains[index])) {
+          edit = true;
+          break;
         }
-      });
-      // Next update the reference in user.
-      account._captains.push(captain._id);
+      }
+      if (edit) {
+        CaptainModel.findById(captain._id, function(err, captain_to_save) {
+          if (err) throw err;
+          captain_to_save.current_level = captain.current_level;
+          captain_to_save.current_special_level = captain.current_special_level;
+          captain_to_save._unit = captain._unit;
+          captain_to_save.current_sockets = captain.current_sockets;
+          captain_to_save.save(function(err) {
+            if (err) throw err;
+            console.log('Successfully saved captain: ', captain_to_save);
+          });
+        });
+      } else {
+        // Save the captain.
+        captain.save(function(err) {
+          if (err) {
+            console.log('Error saving captain: ' + err);
+            throw err;
+          } else {
+            console.log('Successfully saved captain: ', captain);
+          }
+        });
+      }
+      // Update the reference in user if its new.
+      if (!edit) account._captains.push(captain._id);
       user.save(function(err) {
         if (err) {
           console.log('Error saving user: '+err);  
           throw err;  
         } else {
-          console.log('Successfully added captain.');
-          req.flash('info_message', 'Captain added.');
+          console.log('Successfully added/edited captain.');
+          var message = edit ? 'Captain edited.' : 'Captain added.';
+          req.flash('info_message', message);
           res.redirect('/account');
           return;
         }

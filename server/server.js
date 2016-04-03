@@ -196,10 +196,6 @@ app.use((req, res) => {
     }
 
     var user = req.user;
-    console.log(user);
-    if (user) {
-      console.log(user.accounts[0]._captains);
-    }
     var initialState = {unit_selections: unit_selections, socket_selections: socket_selections};
     if (typeof user != 'undefined') {
         // Clear out sensitive data first.

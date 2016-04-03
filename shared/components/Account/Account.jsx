@@ -26,7 +26,7 @@ class Account extends Component {
           <Row><b>Friend ID:</b>{this.state.account_data.friend_id}</Row>
           <Row><b>Region:</b>{this.state.account_data.region.capitalizeFirstLetter()}</Row>
           {this.state.account_data._captains.map(function(captain) {
-            return <Captain captain_data={captain} account_id={this.state.account_data.id}/>
+            return <Captain captain_data={captain} account_id={this.state.account_data.id} key={captain._id}/>
           }.bind(this))}
           <CaptainEditor edit={false} account_id={this.state.account_data.id}/>
         </Col>
