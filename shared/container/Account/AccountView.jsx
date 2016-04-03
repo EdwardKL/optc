@@ -18,7 +18,7 @@ class AccountView extends React.Component {
 
   render() {
     return(
-      <Grid>
+      <Grid id="content">
         <Row> { this.state.user.is_local ? <PasswordEditor /> : <div/> } </Row>
         <Row> <UserDeleter /> </Row>
         <Row>

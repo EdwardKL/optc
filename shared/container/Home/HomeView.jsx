@@ -1,4 +1,5 @@
 import React from 'react';
+import {Grid} from 'react-bootstrap';
 
 class Home extends React.Component {
   constructor(props, context){
@@ -6,7 +7,7 @@ class Home extends React.Component {
   }
 
   render() {
-    return(<div />);
+    return(<Grid id="content" />);
   }
 }
 

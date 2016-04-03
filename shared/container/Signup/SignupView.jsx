@@ -46,7 +46,7 @@ class Signup extends React.Component {
   
   render() {
     return(
-      <Grid>
+      <Grid id="content">
         <Row>
           <h2>
             Sign Up

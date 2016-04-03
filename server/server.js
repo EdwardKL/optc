@@ -130,7 +130,8 @@ require('./routes/captains.routes.js')(app);
 import Header from '../shared/components/Header/Header';
 // Render Initial HTML
 const renderFullPage = (header_html, body_html, initialState) => {
-  const cssPath = process.env.NODE_ENV === 'production' ? '/css/header.min.css' : '/css/header.css';
+  const cssHeaderPath = process.env.NODE_ENV === 'production' ? '/css/header.min.css' : '/css/header.css';
+  const cssMainPath = process.env.NODE_ENV === 'production' ? '/css/main.min.css' : '/css/main.css';
   return `
     <!doctype html>
     <html>
@@ -139,14 +140,15 @@ const renderFullPage = (header_html, body_html, initialState) => {
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>OPTC Ohara</title>
-        <link rel="stylesheet" href=${cssPath} />
+        <link rel="stylesheet" href=${cssHeaderPath} />
+        <link rel="stylesheet" href=${cssMainPath} />
         <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-social/4.12.0/bootstrap-social.min.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css" />
         <link href='https://fonts.googleapis.com/css?family=Lato:400,300,700' rel='stylesheet' type='text/css'/>
         <link rel="shortcut icon" href="http://res.cloudinary.com/hashnode/image/upload/v1455629445/static_imgs/mern/mern-favicon-circle-fill.png" type="image/png" />
       </head>
-      <body>
+      <body id="body">
         ${header_html}
         <div id="root">${body_html}</div>
         <script>
@@ -202,18 +204,16 @@ app.use((req, res) => {
             <div>
                 <Header user={req.user}/> 
                 <Grid>
-                <Row>
+                  <Row>
                     {info_message.length > 0 ? <Alert bsStyle="info" id="info-alert">{info_message}</Alert> : <div />}
                     {error_message.length > 0 ? <Alert bsStyle="danger" id="error-alert">{error_message}</Alert> : <div />}
-                </Row>
+                  </Row>
                 </Grid>
             </div>
         );
         const initialView = renderToString(
           <Provider store={store}>
-            <RouterContext {...renderProps} createElement={(Component, props) => {
-                return <Component user={req.user} {...props} />;
-            }}/>
+            <RouterContext {...renderProps} />
           </Provider>
         );
         

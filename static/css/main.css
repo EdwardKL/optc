@@ -1,0 +1,14 @@
+#body {
+	background-image: url('/img/ohara.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-color: #2393BB;
+}
+
+#content {
+  margin-top: 100px;
+  padding: 10px 50px 30px;
+  border-radius: 4px;
+  background-color: white;
+  box-shadow: 0 0 5rem rgba(0, 0, 0, 0.5);
+}

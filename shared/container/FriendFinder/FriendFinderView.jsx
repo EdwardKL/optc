@@ -10,20 +10,18 @@ class FriendFinder extends React.Component {
 
   render() {
     return(
-      <Grid>
+      <Grid id="content">
         <Row>
           <h2>
             Find Friends
           </h2>
           <hr/>
           <Col md={12}>
-
-
             <form action="/friend_finder" method="POST">
               <Input
                 placeholder="Captain ID"
                 label="Captain ID"
-				name="captain_id"
+                name="captain_id"
                 type="text"/>
               <br/>
               <Button bsStyle="primary" type="submit">

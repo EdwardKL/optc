@@ -40,7 +40,7 @@ class Header extends React.Component {
     return (
       <Grid>
         <Row>
-          <Navbar onToggle={this.state.toggle}>
+          <Navbar onToggle={this.state.toggle} id="header-bar">
             <div className="nav navbar-nav" id="navbar-image"></div>
             <Navbar.Header>
               <Navbar.Brand>
