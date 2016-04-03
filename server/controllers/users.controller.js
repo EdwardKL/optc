@@ -33,6 +33,7 @@ exports.editpass = function(req, res) {
       if (err) throw err;
       req.flash('info_message', 'Password updated.');
       res.redirect('/account');
+      return;
     });
   });
 };
@@ -42,6 +43,7 @@ exports.delete = function(req, res) {
   if (typeof req.user == 'undefined') {
     req.flash('error_message', 'Please sign in.');
     res.redirect('/signup');
+    return;
   }
   // First delete any captains the user has.
   UserModel.findById(req.user._id, function(err, user) {
@@ -73,6 +75,7 @@ exports.delete = function(req, res) {
       console.log('Deleted user.');
       req.flash('info_message', "I can't believe you've done this.");
       res.redirect('/');
+      return;
     };
     UserModel.findById(req.user._id).remove().exec(callback);
   });

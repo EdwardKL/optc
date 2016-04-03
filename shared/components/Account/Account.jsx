@@ -25,13 +25,22 @@ class Account extends Component {
         <Col xs={7}>
           <Row><b>Friend ID:</b>{this.state.account_data.friend_id}</Row>
           <Row><b>Region:</b>{this.state.account_data.region.capitalizeFirstLetter()}</Row>
+          <Row><b>Pirate Level:</b>{this.state.account_data.pirate_level}</Row>
           {this.state.account_data._captains.map(function(captain) {
             return <Captain captain_data={captain} account_id={this.state.account_data.id} key={captain._id}/>
           }.bind(this))}
           <CaptainEditor edit={false} account_id={this.state.account_data.id}/>
         </Col>
         <Col xs={1}>
-          <Row><AccountEditor edit={true} crew_name={this.state.account_data.crew_name} friend_id={this.state.account_data.friend_id} region={this.state.account_data.region} account_id={this.state.account_data.id}/></Row>
+          <Row>
+            <AccountEditor
+              edit={true}
+              crew_name={this.state.account_data.crew_name}
+              friend_id={this.state.account_data.friend_id}
+              pirate_level={this.state.account_data.pirate_level}
+              region={this.state.account_data.region}
+              account_id={this.state.account_data.id}/>
+          </Row>
           <Row><a href={"/accounts/delete/id".replace("id",this.state.account_data.id)}>Delete</a></Row>
         </Col>
       </Panel>

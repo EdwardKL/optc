@@ -6,6 +6,7 @@ exports.add = function(req, res) {
   if (typeof req.user == 'undefined') {
     req.flash('error_message', 'Please sign in.');
     res.redirect('/signup');
+    return;
   }
   var account_id = req.body.account_id;
   var captain = new CaptainModel({

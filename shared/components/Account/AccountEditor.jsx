@@ -14,6 +14,7 @@ class AccountEditor extends Component {
     this.state.action_name = this.state.edit ? "Edit" : "Add";
     this.state.default_crew_name = this.state.edit ? props.crew_name : "";
     this.state.default_friend_id = this.state.edit ? props.friend_id : '';
+    this.state.default_pirate_level = this.state.edit ? props.pirate_level : 1;
     this.state.default_region = this.state.edit ? props.region : "global";
     this.close = this.close.bind(this);
     this.open = this.open.bind(this);
@@ -38,7 +39,7 @@ class AccountEditor extends Component {
             </Modal.Header>
             <Modal.Body>
                 <Row>
-                    <Col md={12}>
+                  <Col xs={12}>
                     <Input
                       placeholder="Crew Name"
                       label="Crew Name"
@@ -46,10 +47,10 @@ class AccountEditor extends Component {
                       help="Helps others make sure they added the right account"
                       defaultValue={this.state.default_crew_name}
                       type="text"/>
-                    </Col>
+                  </Col>
                 </Row>
                 <Row>
-                    <Col md={3}>
+                  <Col xs={3}>
                     <Input
                       placeholder="Friend ID"
                       label="Friend ID"
@@ -58,14 +59,23 @@ class AccountEditor extends Component {
                       defaultValue={this.state.default_friend_id}
                       min="100000000"
                       max="999999999"/>
-                    </Col>
-                    <Col md={3}>
+                  </Col>
+                  <Col xs={3}>
+                    <Input
+                      placeholder="Pirate Level"
+                      label="Pirate Level"
+                      name="pirate_level"
+                      type="number"
+                      defaultValue={this.state.default_pirate_level}
+                      min="1"/>
+                  </Col>
+                  <Col xs={3}>
                     <Input type="select" label="Region" placeholder="global" defaultValue={this.state.default_region} name="region">
                       <option value="global">Global</option>
                       <option value="japan">Japan</option>
                     </Input>
                     <input type="hidden" name="id" value={this.state.account_id} />
-                    </Col>
+                  </Col>
                 </Row>
             </Modal.Body>
             <Modal.Footer>

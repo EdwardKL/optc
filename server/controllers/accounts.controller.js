@@ -6,6 +6,7 @@ exports.add = function(req, res) {
   if (typeof req.user == 'undefined') {
     req.flash('error_message', 'Please sign in.');
     res.redirect('/signup');
+    return;
   }
   var account = req.body;
   console.log("adding account:", account);
@@ -14,10 +15,12 @@ exports.add = function(req, res) {
   if (account.friend_id < 100000000 || account.friend_id > 999999999) {
     req.flash('error_message', 'Invalid friend ID.');
     res.redirect('/account');
+    return;
   }
   if (account.region != 'japan' && account.region != 'global') {
     req.flash('error_message', 'Invalid region.');
     res.redirect('/account');
+    return;
   }
   UserModel.findById(req.user._id, function(err, user) {
     // In case of any error return
@@ -66,6 +69,7 @@ exports.delete = function(req, res) {
   if (typeof req.user == 'undefined') {
     req.flash('error_message', 'Please sign in.');
     res.redirect('/signup');
+    return;
   }
   var account_id = req.params.id;
   UserModel.findById(req.user._id, function(err, user) {
