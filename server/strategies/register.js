@@ -32,6 +32,7 @@ module.exports = function() {
                 } else {
                   var user = new User(req.body);
                   user.updateCredentials();
+                  user.is_local = true;
                   var message = null;
                   console.log(user);
                   // Then save the user

@@ -10,15 +10,16 @@ const userSchema = new Schema({
   username: { type: String },
   password: { type: String },
   salt: { type: String },
-  pirate_level: { type: Number, min: 1 },
   accounts: [{
     id: { type: Number, min: 0 },
     region: { type: String, enum: ['global', 'japan'] },
     crew_name: { type: String },
     friend_id: { type: Number, min: 100000000, max: 999999999 },
+    pirate_level: { type: Number, min: 1 },
     _captains: [{ type: Schema.Types.ObjectId, ref: 'Captain' }],
   }],
   last_login: { type: Date, default: Date.now },
+  is_local: { type: Boolean, default: false },
   // OAuth IDs
   _facebook_id: { type: String },
   _google_id: { type: String },
