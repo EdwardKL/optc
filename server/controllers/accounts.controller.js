@@ -79,8 +79,17 @@ exports.delete = function(req, res) {
     // Found user
     if (user) {
       var accounts = [];
+      var account_to_remove;
       user.accounts.map(function(account) {
         if (account.id != account_id) accounts.push(account);
+        else account_to_remove = account;
+      });
+      account_to_remove._captains.map(function(captain_id) {
+        // Delete the captain.
+        var callback = function(err, captain) {
+          if (err) throw err;
+        };
+        CaptainModel.findById(captain_id).remove().exec(callback);
       });
       user.accounts = accounts;
       user.save(function(err) {

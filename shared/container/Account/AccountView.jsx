@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import Account from '../../components/Account/Account';
 import AccountEditor from '../../components/Account/AccountEditor';
 import PasswordEditor from '../../components/Account/PasswordEditor';
+import UserDeleter from '../../components/Account/UserDeleter';
 
 class AccountView extends React.Component {
   constructor(props, context){
@@ -18,9 +19,8 @@ class AccountView extends React.Component {
   render() {
     return(
       <Grid>
-        <Row>
-          { this.state.user.is_local ? <PasswordEditor /> : <div/> }
-        </Row>
+        <Row> { this.state.user.is_local ? <PasswordEditor /> : <div/> } </Row>
+        <Row> <UserDeleter /> </Row>
         <Row>
           <h2>
           {this.state.user.username}'s Accounts

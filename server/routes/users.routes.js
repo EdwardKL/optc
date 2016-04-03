@@ -18,6 +18,7 @@ module.exports = function(app) {
   });
 
   app.route('/auth/editpass').post(users.editpass);
+  app.route('/auth/delete').post(users.delete);
   
   // Facebook signin routes
   app.route('/auth/facebook').get(passport.authenticate('facebook'));

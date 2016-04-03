@@ -36,44 +36,44 @@ exports.editpass = function(req, res) {
     });
   });
 };
-/*
+
 // Deletes a user.
 exports.delete = function(req, res) {
   if (typeof req.user == 'undefined') {
     req.flash('error_message', 'Please sign in.');
     res.redirect('/signup');
   }
-  var account_id = req.params.id;
+  // First delete any captains the user has.
   UserModel.findById(req.user._id, function(err, user) {
     // In case of any error return
     if (err){
-      console.log('Error deleting account: ' + err);
+      console.log('Error deleting user: ' + err);
+      req.flash('error_message', 'There was an error. Please contact the owner.');
+      res.redirect('/user');
+      return;
+    }
+    if (!user) {
+      console.log('Could not find user to update account for! User: ', req.user);
       req.flash('error_message', 'There was an error. Please contact the owner.');
       res.redirect('/account');
       return;
     }
-    // Found user
-    if (user) {
-      var accounts = [];
-      user.accounts.map(function(account) {
-        if (account.id != account_id) accounts.push(account);
+    user.accounts.map(function(account) {
+      account._captains.map(function(captain_id) {
+        // Delete the captain.
+        var callback = function(err, captain) {
+          if (err) throw err;
+        };
+        CaptainModel.findById(captain_id).remove().exec(callback);
       });
-      user.accounts = accounts;
-      user.save(function(err) {
-        if (err) {
-          console.log('Error saving user: '+err);  
-          throw err;  
-        } else {
-          console.log('Successfully deleted account.');    
-          req.flash('info_message', 'Account deleted.');
-          res.redirect('/account');
-          return;
-        }
-      });
-    } else {
-      console.log('Could not find user to update account for! User: ', req.user);
-      res.redirect('/account');
-      return;
-    }
+    });
+    // Delete the user.
+    var callback = function(err, user) {
+      if (err) throw err;
+      console.log('Deleted user.');
+      req.flash('info_message', "I can't believe you've done this.");
+      res.redirect('/');
+    };
+    UserModel.findById(req.user._id).remove().exec(callback);
   });
-};*/
+};

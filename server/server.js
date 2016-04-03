@@ -129,20 +129,8 @@ require('./routes/captains.routes.js')(app);
 
 import Header from '../shared/components/Header/Header';
 // Render Initial HTML
-const renderFullPage = (header_html, body_html, info_message, error_message, initialState) => {
+const renderFullPage = (header_html, body_html, initialState) => {
   const cssPath = process.env.NODE_ENV === 'production' ? '/css/header.min.css' : '/css/header.css';
-  var info_message_injector = '';
-  var error_message_injector = '';
-  if (info_message.length > 0) {
-    info_message_injector = "document.getElementById('info-alert').innerHTML = '" + info_message + "';";
-  } else {
-    info_message_injector = "document.getElementById('info-alert').style.display = 'none';";
-  }
-  if (error_message.length > 0) {
-    error_message_injector = "document.getElementById('error-alert').innerHTML = '" + error_message + "';";
-  } else {
-    error_message_injector = "document.getElementById('error-alert').style.display = 'none';";
-  }
   return `
     <!doctype html>
     <html>
@@ -151,13 +139,6 @@ const renderFullPage = (header_html, body_html, info_message, error_message, ini
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>OPTC Ohara</title>
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
-<script>
-    $(document).ready(function () {
-        $('.dropdown-toggle').dropdown();
-    });
-</script>
         <link rel="stylesheet" href=${cssPath} />
         <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-social/4.12.0/bootstrap-social.min.css">
@@ -170,8 +151,6 @@ const renderFullPage = (header_html, body_html, info_message, error_message, ini
         <div id="root">${body_html}</div>
         <script>
           window.__INITIAL_STATE__ = ${JSON.stringify(initialState)};
-          ${info_message_injector}
-          ${error_message_injector}
         </script>
         <script src="/dist/bundle.js"></script>
       </body>
@@ -214,6 +193,8 @@ app.use((req, res) => {
     }
 
     const store = configureStore(initialState);
+    const info_message = req.flash('info_message');
+    const error_message = req.flash('error_message');
 
     fetchComponentData(store.dispatch, renderProps.components, renderProps.params)
       .then(() => {
@@ -222,8 +203,8 @@ app.use((req, res) => {
                 <Header user={req.user}/> 
                 <Grid>
                 <Row>
-                    <Alert bsStyle="info" id="info-alert"></Alert>
-                    <Alert bsStyle="danger" id="error-alert"></Alert>
+                    {info_message.length > 0 ? <Alert bsStyle="info" id="info-alert">{info_message}</Alert> : <div />}
+                    {error_message.length > 0 ? <Alert bsStyle="danger" id="error-alert">{error_message}</Alert> : <div />}
                 </Row>
                 </Grid>
             </div>
@@ -238,7 +219,7 @@ app.use((req, res) => {
         
         const finalState = store.getState();
 
-        res.status(200).end(renderFullPage(headerView, initialView, req.flash('info_message'), req.flash('error_message'), finalState));
+        res.status(200).end(renderFullPage(headerView, initialView, finalState));
       })
       .catch(() => {
         res.end(renderFullPage('Error', {}));

@@ -18,7 +18,6 @@ exports.add = function(req, res) {
   if (req.body.captain_id) {
     captain._id = req.body.captain_id;
   }
-  console.log(req.body);
   if (req.body.socket_types) {
     if (typeof req.body.socket_types == 'object') {
       for (var index in req.body.socket_types) {
@@ -149,6 +148,14 @@ exports.delete = function(req, res) {
           throw err;  
         } else {
           console.log('Successfully deleted captain reference.');
+          // Delete the captain.
+          var callback = function(err, captain) {
+            if (err) throw err;
+            console.log('Deleted captain');
+            req.flash('info_message', 'Captain deleted.');
+            res.redirect('/account');
+          };
+          CaptainModel.findById(captain_id).remove().exec(callback);
           return;
         }
       });
@@ -158,12 +165,4 @@ exports.delete = function(req, res) {
       return;
     }
   });
-  // Delete the captain.
-  var callback = function(err, captain) {
-    if (err) throw err;
-    console.log('Deleted captain');
-    req.flash('info_message', 'Captain deleted.');
-    res.redirect('/account');
-  };
-  CaptainModel.findById(captain_id).remove().exec(callback);
 };
