@@ -9,6 +9,7 @@ class SocketSelector extends Component {
     this.state.onChange = props.onChange;
     this.state.getSocketSelections = props.getSocketSelections;
     this.state.getSelectedSocket = props.getSelectedSocket;
+    this.state.default_level = props.default_level ? props.default_level : 1;
   }
   
   render() {
@@ -33,7 +34,7 @@ class SocketSelector extends Component {
             label="Socket Level"
             name="socket_levels"
             type="number"
-            defaultValue="1"
+            defaultValue={this.state.default_level}
             min="1"
             max="5"/>
         </Col>
@@ -47,6 +48,7 @@ SocketSelector.propTypes = {
   getSelectedSocket: PropTypes.func.isRequired,
   getSocketSelections: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,
+  default_level: PropTypes.number,
 };
 
 export default SocketSelector;

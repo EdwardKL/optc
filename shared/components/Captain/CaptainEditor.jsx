@@ -12,6 +12,7 @@ class CaptainEditor extends Component {
     this.state.showModal = false;
     this.state.account_id = props.account_id;
     this.state.edit = props.edit;
+    this.state.label = this.state.edit ? "Edit" : "Add Captain";
     this.state.title = this.state.edit ? "Edit Captain" : "Add Captain";
     this.state.link_type = "link";
     this.state.action_name = this.state.edit ? "Edit" : "Add";
@@ -19,10 +20,15 @@ class CaptainEditor extends Component {
     this.state.socket_selections = props.socket_selections;
     this.state.level_value = this.state.edit ? props.default_level : 1;
     this.state.special_value = this.state.edit ? props.default_special : 1;
-    // TODO: support editing for sockets
     this.state.current_sockets = {};
-    this.state.num_sockets = 0;
+    this.state.num_sockets = this.state.edit ? props.default_sockets.length : 0;
+    this.state.default_socket_levels = {};
+    for (var index in props.default_sockets) {
+      this.state.current_sockets[index] = props.default_sockets[index]._socket;
+      this.state.default_socket_levels[index] = props.default_sockets[index].socket_level;
+    }
     this.state.unit = this.state.edit ? this.state.unit_selections[props.unit_id] : this.state.unit_selections[0];
+    this.state.default_unit_id = this.state.edit ? props.unit_id : 1;
     this.close = this.close.bind(this);
     this.open = this.open.bind(this);
     this.getMaxLevel = this.getMaxLevel.bind(this);
@@ -39,6 +45,7 @@ class CaptainEditor extends Component {
     this.removeSocketDisabled = this.removeSocketDisabled.bind(this);
     this.getSocketSelections = this.getSocketSelections.bind(this);
     this.getSelectedSocket = this.getSelectedSocket.bind(this);
+    this.getSocketLevel = this.getSocketLevel.bind(this);
   }
   
   close(e) {
@@ -132,15 +139,22 @@ class CaptainEditor extends Component {
     if (key in this.state.current_sockets) {
       result = this.state.current_sockets[key];
     } else {
-      result = getSocketSelections(key)[0]._id;
+      result = this.getSocketSelections(key)[0]._id;
     }
     return result;
+  }
+  
+  getSocketLevel(key) {
+    if (key in this.state.default_socket_levels) {
+      return this.state.default_socket_levels[key];
+    }
+    return 1;
   }
   
   render() {
     return (
       <div>
-        <Button bsStyle="primary" onClick={this.open} bsStyle={this.state.link_type}>{this.state.title}</Button>
+        <Button bsStyle="primary" onClick={this.open} bsStyle={this.state.link_type}>{this.state.label}</Button>
         <Modal show={this.state.showModal} onHide={this.close}>
             <form action="/captains/add" method="POST">
               <Modal.Header closeButton>
@@ -149,7 +163,10 @@ class CaptainEditor extends Component {
               <Modal.Body>
                     <Row>
                         <Col md={12}>
-                          <UnitSelector unit_selections={this.state.unit_selections} onChange={this.unitSelected} />
+                          <UnitSelector
+                            unit_selections={this.state.unit_selections}
+                            onChange={this.unitSelected}
+                            default_unit_id={this.state.default_unit_id} />
                         </Col>
                     </Row>
                     <Row>
@@ -177,7 +194,15 @@ class CaptainEditor extends Component {
                         </Col>
                     </Row>
                     {_.times(this.state.num_sockets, i =>
-                      <SocketSelector key={i} key_prop={i} getSocketSelections={this.getSocketSelections} getSelectedSocket={this.getSelectedSocket} onChange={this.socketChanged.bind(this, i)}/>
+                      // We want to pass the key to SocketSelector, but "key" is a reserved keyword, so we use "key_prop".
+                      <SocketSelector
+                        key={i}
+                        key_prop={i}
+                        getSocketSelections={this.getSocketSelections}
+                        getSelectedSocket={this.getSelectedSocket}
+                        default_level={this.getSocketLevel(i)}
+                        onChange={this.socketChanged.bind(this, i)}
+                      />
                     )}
                     <input type="hidden" name="account_id" value={this.state.account_id} />
                     <Button bsStyle="default" onClick={this.addSocket} disabled={this.addSocketDisabled()}>Add Socket</Button>&nbsp;
@@ -206,6 +231,7 @@ CaptainEditor.propTypes = {
   edit: PropTypes.bool.isRequired,
   unit_selections: PropTypes.arrayOf(PropTypes.object).isRequired,
   socket_selections: PropTypes.arrayOf(PropTypes.object).isRequired,
+  default_sockets: PropTypes.arrayOf(PropTypes.object),
 };
 
 export default connect(mapStateToProps)(CaptainEditor);

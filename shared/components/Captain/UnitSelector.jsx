@@ -6,7 +6,7 @@ class UnitSelector extends Component {
     super(props, context);
     this.state = {};
     this.state.default_unit_id = 1;
-    if (typeof props.default_unit_id != 'undefined') {
+    if (typeof props.default_unit_id) {
       this.state.default_unit_id = props.default_unit_id;
     }
     this.state.unit_selections = props.unit_selections;

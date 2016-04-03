@@ -24,8 +24,17 @@ class Captain extends Component {
           })}
         </Col>
         <Col xs={1}>
-          <Row><CaptainEditor edit={true} account_id={this.state.account_id} unit_id={this.state.captain_data._unit}/></Row>
-          <Row><a href={"/captains/delete/id".replace("id",this.state.captain_data.id)}>Delete</a></Row>
+          <Row>
+            <CaptainEditor
+              edit={true}
+              account_id={this.state.account_id}
+              unit_id={this.state.captain_data._unit}
+              default_level={this.state.captain_data.current_level}
+              default_special={this.state.captain_data.current_special_level}
+              default_sockets={this.state.captain_data.current_sockets}
+              />
+          </Row>
+          <Row><a href={"/captains/delete/id".replace("id",this.state.captain_data._id)}>Delete</a></Row>
         </Col>
       </Panel>
     )

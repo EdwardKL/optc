@@ -14,7 +14,6 @@ class Account extends Component {
     super(props, context);
     this.state = {};
     this.state.account_data = props.account_data;
-    console.log("ACCOUNTS DATA: ", this.state.account_data);
   }
   
   render() {
