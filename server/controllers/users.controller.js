@@ -7,7 +7,7 @@ exports.setUser = function(req, res) {
     res.redirect('/signup');
     return;
   }
-  if (req.user.username.length != 0) {
+  if (req.user.username && req.user.username.length > 0) {
     res.redirect('/');
     return;
   }
