@@ -32,47 +32,47 @@ class AccountEditor extends Component {
       <div>
         <Button bsStyle="primary" onClick={this.open} bsStyle={this.state.link_type}>{this.state.label}</Button>
         <Modal show={this.state.showModal} onHide={this.close}>
+          <form action="/accounts/add" method="POST">
             <Modal.Header closeButton>
                 <Modal.Title>{this.state.title}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <form action="/accounts/add" method="POST">
-                  <Row>
-                      <Col md={12}>
-                      <Input
-                        placeholder="Crew Name"
-                        label="Crew Name"
-                        name="crew_name"
-                        help="Helps others make sure they added the right account"
-                        defaultValue={this.state.default_crew_name}
-                        type="text"/>
-                      </Col>
-                  </Row>
-                  <Row>
-                      <Col md={3}>
-                      <Input
-                        placeholder="Friend ID"
-                        label="Friend ID"
-                        name="friend_id"
-                        type="number"
-                        defaultValue={this.state.default_friend_id}
-                        min="100000000"
-                        max="999999999"/>
-                      </Col>
-                      <Col md={3}>
-                      <Input type="select" label="Region" placeholder="global" defaultValue={this.state.default_region} name="region">
-                        <option value="global">Global</option>
-                        <option value="japan">Japan</option>
-                      </Input>
-                      <input type="hidden" name="id" value={this.state.account_id} />
-                      </Col>
-                  </Row>
-                  <Button bsStyle="primary" type="submit">{this.state.action_name}</Button>
-                </form>
+                <Row>
+                    <Col md={12}>
+                    <Input
+                      placeholder="Crew Name"
+                      label="Crew Name"
+                      name="crew_name"
+                      help="Helps others make sure they added the right account"
+                      defaultValue={this.state.default_crew_name}
+                      type="text"/>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col md={3}>
+                    <Input
+                      placeholder="Friend ID"
+                      label="Friend ID"
+                      name="friend_id"
+                      type="number"
+                      defaultValue={this.state.default_friend_id}
+                      min="100000000"
+                      max="999999999"/>
+                    </Col>
+                    <Col md={3}>
+                    <Input type="select" label="Region" placeholder="global" defaultValue={this.state.default_region} name="region">
+                      <option value="global">Global</option>
+                      <option value="japan">Japan</option>
+                    </Input>
+                    <input type="hidden" name="id" value={this.state.account_id} />
+                    </Col>
+                </Row>
             </Modal.Body>
             <Modal.Footer>
-                <Button onClick={this.close}>Cancel</Button>
+              <Button bsStyle="primary" type="submit">{this.state.action_name}</Button>
+              <Button onClick={this.close}>Cancel</Button>
             </Modal.Footer>
+          </form>
         </Modal>
       </div>
     )

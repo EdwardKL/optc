@@ -18,7 +18,7 @@ class SocketSelector extends Component {
           <Input
             placeholder="Socket Type"
             label="Socket Type"
-            name="sockets[{this.state.key}][type]"
+            name="socket_types"
             type="select"
             value={this.state.getSelectedSocket(this.state.key)}
             onChange={this.state.onChange}>
@@ -31,7 +31,7 @@ class SocketSelector extends Component {
           <Input
             placeholder="Level"
             label="Socket Level"
-            name="sockets[{this.state.key}][level]"
+            name="socket_levels"
             type="number"
             defaultValue="1"
             min="1"

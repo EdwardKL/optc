@@ -121,6 +121,7 @@ require('./routes/users.routes.js')(app);
 // Only used to populate unit_selections.
 // require('./routes/units.routes.js')(app);
 require('./routes/finder.routes.js')(app);
+require('./routes/captains.routes.js')(app);
 
 import Header from '../shared/components/Header/Header';
 // Render Initial HTML

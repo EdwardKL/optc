@@ -10,6 +10,7 @@ class CaptainEditor extends Component {
     super(props, context);
     this.state = {};
     this.state.showModal = false;
+    this.state.account_id = props.account_id;
     this.state.edit = props.edit;
     this.state.title = this.state.edit ? "Edit Captain" : "Add Captain";
     this.state.link_type = "link";
@@ -179,6 +180,7 @@ class CaptainEditor extends Component {
                     {_.times(this.state.num_sockets, i =>
                       <SocketSelector key={i} key_prop={i} getSocketSelections={this.getSocketSelections} getSelectedSocket={this.getSelectedSocket} onChange={this.socketChanged.bind(this, i)}/>
                     )}
+                    <input type="hidden" name="account_id" value={this.state.account_id} />
                     <Button bsStyle="default" onClick={this.addSocket} disabled={this.addSocketDisabled()}>Add Socket</Button>&nbsp;
                     <Button bsStyle="default" onClick={this.removeSocket} disabled={this.removeSocketDisabled()}>Remove Socket</Button>
               </Modal.Body>
@@ -201,6 +203,7 @@ function mapStateToProps(store) {
 }
 
 CaptainEditor.propTypes = {
+  account_id: PropTypes.number.isRequired,
   edit: PropTypes.bool.isRequired,
   unit_selections: PropTypes.arrayOf(PropTypes.object).isRequired,
   socket_selections: PropTypes.arrayOf(PropTypes.object).isRequired,
