@@ -1,6 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import {Panel, Row, Col, Button} from 'react-bootstrap';
 import CaptainEditor from '../../components/Captain/CaptainEditor';
+import { connect } from 'react-redux';
 
 class Captain extends Component {
   constructor(props, context){
@@ -8,6 +9,7 @@ class Captain extends Component {
     this.state = {};
     this.state.captain_data = props.captain_data;
     this.state.account_id = props.account_id;
+    this.state.socket_selections = props.socket_selections;
   }
   
   render() {
@@ -20,8 +22,8 @@ class Captain extends Component {
           <Row><b>Level:</b>{this.state.captain_data.current_level}</Row>
           <Row><b>Special Level:</b>{this.state.captain_data.current_special_level}</Row>
           {this.state.captain_data.current_sockets.map(function(socket) {
-            return <Row>{socket._socket}, {socket.socket_level}</Row>;
-          })}
+            return <Row>{this.state.socket_selections[socket._socket - 1].name}, Level {socket.socket_level}</Row>;
+          }.bind(this))}
         </Col>
         <Col xs={1}>
           <Row>
@@ -44,6 +46,13 @@ class Captain extends Component {
 Captain.propTypes = {
   account_id: PropTypes.number.isRequired,
   captain_data: PropTypes.object.isRequired,
+  socket_selections: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
-export default Captain;
+function mapStateToProps(store) {
+  return {
+    socket_selections: store.socket_selections,
+  };
+}
+
+export default connect(mapStateToProps)(Captain);
