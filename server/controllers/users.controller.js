@@ -15,7 +15,7 @@ exports.setUser = function(req, res) {
   if (!User.validUsername(req.user.username)) {
     res.redirect('back');
     req.flash('error_message', 'Username contained invalid characters. Only alphanumeric, dash, and underscore characters are allowed.');
-    return.
+    return;
   }
   UserModel.findByUsername(req.body.username, function(err, user) {
     if (err) throw err;
