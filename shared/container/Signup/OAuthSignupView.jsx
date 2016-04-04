@@ -16,8 +16,10 @@ class OAuthSignup extends React.Component {
   }
   validateUserName() {
     var length = this.state.username.length;
-    if (length > 1) return 'success';
-    if (length > 0) return 'error';
+    if (this.state.username.length > 0) {
+      if (length > 1 && /^[a-zA-Z\-_0-9]+$/.test(this.state.username)) return 'success';
+      return 'error';
+    }
   }
   
   render() {

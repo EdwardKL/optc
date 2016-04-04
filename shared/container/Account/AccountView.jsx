@@ -21,7 +21,7 @@ class AccountView extends React.Component {
       <Grid id="content">
         <Row>
           <h2>
-          {this.state.user.username}'s Accounts
+          {this.state.user.display_name}'s Accounts
           </h2>
           <hr/>
         </Row>

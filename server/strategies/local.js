@@ -8,7 +8,7 @@ module.exports = function() {
     },
     function (req, username, password, done) {
       // Check in mongo if a user with username exists or not
-      User.findOne({'username': username}, function (err, user) {
+      User.findByUsername(username, function (err, user) {
         // In case of any error, return using the done method
         if (err)
           return done(err);
@@ -22,7 +22,7 @@ module.exports = function() {
         }
         // User and password both match, return user from
         // done method which will be treated like success
-        return done(null, user, req.flash('info_message', 'Welcome, ' + username + '!'));
+        return done(null, user, req.flash('info_message', 'Welcome, ' + user.display_name + '!'));
       });
     }));
 }

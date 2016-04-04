@@ -12,7 +12,7 @@ module.exports = function(app) {
 								   failureRedirect: '/signup',
 								   failureFlash: true }));
   app.route('/logout').get(function(req, res) {
-    req.flash('info_message', 'Bye, '+ req.user.username + '!');
+    req.flash('info_message', 'Bye, '+ req.user.display_name + '!');
     req.logout();
     res.redirect('/');
   });

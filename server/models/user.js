@@ -7,7 +7,8 @@ var crypto = require('crypto');
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
-  username: { type: String },
+  username: { type: String, lowercase: true, trim: true},
+  display_name: { type: String, trim: true },
   password: { type: String },
   salt: { type: String },
   accounts: [{
@@ -26,6 +27,25 @@ const userSchema = new Schema({
   _reddit_id: { type: String },
   _twitter_id: { type: String }
 });
+
+// Sets username properly.
+userSchema.methods.setUsername = function(username) {
+  this.display_name = username.trim();
+  this.username = username;
+};
+
+// Returns true if the given username has valid characters.
+userSchema.statics.validUsername = function(username) {
+  return /^[a-zA-Z\-_0-9]+$/.test(username);
+};
+
+// Use to find by username, case and whitespace insensitive.
+userSchema.statics.findByUsername = function(username, callback) {
+  var formatted_username = username.trim().toLowerCase();
+  this.findOne({ username: formatted_username }, function(err, user) {
+    callback(err, user);
+  });
+};
 
 // Updates user with salt and hashed password.
 userSchema.methods.updateCredentials = function() {

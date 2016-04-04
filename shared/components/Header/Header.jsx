@@ -15,7 +15,7 @@ class Header extends React.Component {
   render() {
     var links = [];
     links.push(<NavItem href='/signup' key='1'>Sign Up</NavItem>);
-    var login_form = 
+    var right_element = 
       <Navbar.Form pullRight id="login-bar">
         <form action="/login" method="POST">
           <Input
@@ -35,7 +35,7 @@ class Header extends React.Component {
       links = [];
       links.push(<NavItem href='/account' key='2'>Accounts</NavItem>);
       links.push(<NavItem href='/logout' key='3'>Logout</NavItem>);
-      login_form = '';
+      right_element = <Nav pullRight><NavItem href='/account' key='4'>{this.state.user.display_name}</NavItem></Nav>;
     }
     return (
       <Grid>
@@ -53,7 +53,7 @@ class Header extends React.Component {
                 <NavItem href="/friend_finder" key='0'>Friend Finder</NavItem>
                 {links}
               </Nav>
-              {login_form}
+              {right_element}
             </Navbar.Collapse>
           </Navbar>
         </Row>
