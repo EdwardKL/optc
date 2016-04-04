@@ -9,11 +9,13 @@ exports.setUser = function(req, res) {
   }
   if (!req.user.username || req.user.username.length <= 1) {
     res.redirect('back');
-    return done(null, false, req.flash('error_message', 'Usernames must be at least 2 characters long.'));
+    req.flash('error_message', 'Usernames must be at least 2 characters long.');
+    return;
   }
   if (!User.validUsername(req.user.username)) {
     res.redirect('back');
-    return done(null, false, req.flash('error_message', 'Username contained invalid characters. Only alphanumeric, dash, and underscore characters are allowed.'));
+    req.flash('error_message', 'Username contained invalid characters. Only alphanumeric, dash, and underscore characters are allowed.');
+    return.
   }
   UserModel.findByUsername(req.body.username, function(err, user) {
     if (err) throw err;
