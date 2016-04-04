@@ -139,14 +139,14 @@ const renderFullPage = (header_html, body_html, initialState) => {
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>OPTC Ohara</title>
+        <title>Ohara</title>
         <link rel="stylesheet" href=${cssHeaderPath} />
         <link rel="stylesheet" href=${cssMainPath} />
         <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-social/4.12.0/bootstrap-social.min.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css" />
         <link href='https://fonts.googleapis.com/css?family=Lato:400,300,700' rel='stylesheet' type='text/css'/>
-        <link rel="shortcut icon" href="http://res.cloudinary.com/hashnode/image/upload/v1455629445/static_imgs/mern/mern-favicon-circle-fill.png" type="image/png" />
+        <link rel="shortcut icon" href="/img/robin_run.png" type="image/png" />
       </head>
       <body id="body">
         ${header_html}
@@ -179,9 +179,9 @@ app.use((req, res) => {
     if (protected_paths.indexOf(req.url) != -1) {
       console.log('Accessing protected path. Checking authentication status...');
       if (!req.isAuthenticated()) {
-          // TODO: Maybe redirect to login instead?
-          req.flash('error_message', 'Please sign in.');
-          return res.redirect('/signup');
+        // TODO: Maybe redirect to login instead?
+        req.flash('error_message', 'Please sign in.');
+        return res.redirect('/signup');
       }
     
       // This is an OAuth user with no username set yet. Redirect to get a username.
