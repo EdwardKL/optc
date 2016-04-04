@@ -175,6 +175,14 @@ app.use((req, res) => {
       return res.status(404).end('Not found!');
     }
     
+    if (req.url == '/auth/oauth-signup') {
+      // If not logged in OR has a username, redirect outta here.
+      if (!req.user || (req.user.username && req.user.username.length > 0)) {
+        res.redirect('/');
+        return;
+      }
+    }
+
     if (protected_paths.indexOf(req.url) != -1) {
       console.log('Accessing protected path. Checking authentication status...');
       if (!req.isAuthenticated()) {

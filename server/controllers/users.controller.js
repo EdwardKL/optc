@@ -12,7 +12,7 @@ exports.setUser = function(req, res) {
     req.flash('error_message', 'Usernames must be at least 2 characters long.');
     return;
   }
-  if (!User.validUsername(req.user.username)) {
+  if (!UserModel.validUsername(req.user.username)) {
     res.redirect('back');
     req.flash('error_message', 'Username contained invalid characters. Only alphanumeric, dash, and underscore characters are allowed.');
     return;
@@ -24,8 +24,8 @@ exports.setUser = function(req, res) {
       res.redirect('/auth/oauth-signup');
       return;
     }
-    user.setUsername(req.body.username);
-    user.save(function(err) {
+    req.user.setUsername(req.body.username);
+    req.user.save(function(err) {
       if (err) throw err;
       req.flash('info_message', 'Username set.');
       res.redirect('/');
