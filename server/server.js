@@ -129,7 +129,7 @@ require('./routes/captains.routes.js')(app);
 
 import Header from '../shared/components/Header/Header';
 // Render Initial HTML
-const renderFullPage = (header_html, body_html, initialState) => {
+const renderFullPage = (body_html, initialState) => {
   const cssHeaderPath = process.env.NODE_ENV === 'production' ? '/css/header.min.css' : '/css/header.css';
   const cssMainPath = process.env.NODE_ENV === 'production' ? '/css/main.min.css' : '/css/main.css';
   return `
@@ -149,7 +149,6 @@ const renderFullPage = (header_html, body_html, initialState) => {
         <link rel="shortcut icon" href="/img/robin_run.png" type="image/png" />
       </head>
       <body id="body">
-        ${header_html}
         <div id="root">${body_html}</div>
         <script>
           window.__INITIAL_STATE__ = ${JSON.stringify(initialState)};
@@ -197,29 +196,23 @@ app.use((req, res) => {
         // Clear out sensitive data first.
         user.salt = '';
         user.password = '';
-        initialState.user = user;
     }
-
+    initialState.user = user;
+    const info_message = req.flash('info_message')[0];
+    const error_message = req.flash('error_message')[0];
+    if (info_message) {
+      initialState.info_message = info_message;
+    }
+    if (error_message) {
+      initialState.error_message = error_message;
+    }
     const store = configureStore(initialState);
-    const info_message = req.flash('info_message');
-    const error_message = req.flash('error_message');
-
     fetchComponentData(store.dispatch, renderProps.components, renderProps.params)
       .then(() => {
-        const headerView = renderToString(
-            <div>
-                <Grid>
-                  <Row>
-                    {info_message.length > 0 ? <Alert bsStyle="info" id="info-alert">{info_message}</Alert> : <div />}
-                    {error_message.length > 0 ? <Alert bsStyle="danger" id="error-alert">{error_message}</Alert> : <div />}
-                  </Row>
-                </Grid>
-            </div>
-        );
         const initialView = renderToString(
           <Provider store={store}>
             <div>
-              <Header user={req.user} />
+              <Header />
               <RouterContext {...renderProps} />
             </div>
           </Provider>
@@ -227,9 +220,10 @@ app.use((req, res) => {
         
         const finalState = store.getState();
 
-        res.status(200).end(renderFullPage(headerView, initialView, finalState));
+        res.status(200).end(renderFullPage(initialView, finalState));
       })
-      .catch(() => {
+      .catch((err) => {
+        console.log("Error in server side rendering: ", err);
         res.end(renderFullPage('Error', {}));
       });
   });

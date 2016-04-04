@@ -8,9 +8,16 @@ module.exports = function(app) {
   app.route('/signup').post(passport.authenticate('register', { successRedirect: '/',
 	   						          failureRedirect: '/signup',
 								      failureFlash: true }));
-  app.route('/login').post(passport.authenticate('local', { successRedirect: '/',
-								   failureRedirect: '/signup',
-								   failureFlash: true }));
+  app.route('/login').post(function(req, res, next) {
+      if (!req.body.password || !req.body.username || req.body.password == '' || req.body.username == '') {
+        req.flash('error_message', 'Please enter both a username and password to login.');
+        res.redirect('back');
+        return;
+      }
+      next();
+    }, passport.authenticate('local', { successRedirect: '/',
+                                        failureRedirect: '/signup',
+                                        failureFlash: true }));
   app.route('/logout').get(function(req, res) {
     req.flash('info_message', 'Bye, '+ req.user.display_name + '!');
     req.logout();

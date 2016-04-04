@@ -15,7 +15,7 @@ render((
   <Provider store={store}>
     <div>
       <Header />
-      <Router history={history} routes={routes} />
+      <Router history={history} routes={routes}/>
     </div>
   </Provider>
 ), dest);

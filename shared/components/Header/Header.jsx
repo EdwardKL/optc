@@ -1,11 +1,14 @@
-import React from 'react';
-import {Grid, Row, Col, Button, Input, Nav, Navbar, NavItem, NavDropdown, MenuItem} from 'react-bootstrap';
+import React, { PropTypes } from 'react';
+import {Alert, Grid, Row, Col, Button, Input, Nav, Navbar, NavItem, NavDropdown, MenuItem} from 'react-bootstrap';
+import { connect } from 'react-redux';
 
 class Header extends React.Component {
   constructor(props, context){
     super(props, context);
     this.state = {}
     this.state.user = props.user;
+    this.state.info_message = props.info_message ? props.info_message : '';
+    this.state.error_message = props.error_message ? props.error_message : ''; 
   }
   
   toggle() {
@@ -41,7 +44,6 @@ class Header extends React.Component {
       <Grid>
         <Row>
           <Navbar onToggle={this.state.toggle} id="header-bar">
-            
             <Navbar.Header>
               <Navbar.Brand>
                 <a href="/" id="brand"><div className="nav navbar-nav" id="navbar-image"></div>Ohara</a> 
@@ -57,9 +59,29 @@ class Header extends React.Component {
             </Navbar.Collapse>
           </Navbar>
         </Row>
+        <Row>
+          {this.state.info_message.length > 0 ? <Alert bsStyle="info" id="info-alert">{this.state.info_message}</Alert> : <div />}
+          {this.state.error_message.length > 0 ? <Alert bsStyle="danger" id="error-alert">{this.state.error_message}</Alert> : <div />}
+        </Row>
       </Grid>
     );
   }
 }
 
-export default Header;
+function mapStateToProps(store) {
+  return {
+    user: store.user,
+    info_message: store.info_message,
+    error_message: store.error_message,
+  };
+}
+
+Header.propTypes = {
+  user: PropTypes.object,
+  info_message: PropTypes.string,
+  error_message: PropTypes.string,
+  // This comes by default with connect below.
+  dispatch: PropTypes.func.isRequired,
+};
+
+export default connect(mapStateToProps)(Header);
