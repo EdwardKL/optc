@@ -208,7 +208,6 @@ app.use((req, res) => {
       .then(() => {
         const headerView = renderToString(
             <div>
-                <Header user={req.user}/> 
                 <Grid>
                   <Row>
                     {info_message.length > 0 ? <Alert bsStyle="info" id="info-alert">{info_message}</Alert> : <div />}
@@ -219,7 +218,10 @@ app.use((req, res) => {
         );
         const initialView = renderToString(
           <Provider store={store}>
-            <RouterContext {...renderProps} />
+            <div>
+              <Header user={req.user} />
+              <RouterContext {...renderProps} />
+            </div>
           </Provider>
         );
         

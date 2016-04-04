@@ -5,6 +5,7 @@ import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { Router, browserHistory } from 'react-router';
 import { configureStore } from '../shared/redux/store/configureStore';
+import Header from '../shared/components/Header/Header';
 
 const store = configureStore(window.__INITIAL_STATE__);
 const history = browserHistory;
@@ -12,7 +13,10 @@ const dest = document.getElementById('root');
 
 render((
   <Provider store={store}>
-    <Router history={history} routes={routes} />
+    <div>
+      <Header />
+      <Router history={history} routes={routes} />
+    </div>
   </Provider>
 ), dest);
 

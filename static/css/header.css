@@ -9,9 +9,10 @@
 
 #navbar-image {
   padding: 20px 15px;
-  margin: 3px 10px 0px 0px;
+  margin: -12px 10px 0px 0px;
   background-size: cover;
 	background-image: url('/img/robin_run.png');
+  display: inline-block;
 }
 
 #login-bar input {

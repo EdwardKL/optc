@@ -41,10 +41,10 @@ class Header extends React.Component {
       <Grid>
         <Row>
           <Navbar onToggle={this.state.toggle} id="header-bar">
-            <div className="nav navbar-nav" id="navbar-image"></div>
+            
             <Navbar.Header>
               <Navbar.Brand>
-                <a href="/" id="brand">Ohara</a> 
+                <a href="/" id="brand"><div className="nav navbar-nav" id="navbar-image"></div>Ohara</a> 
               </Navbar.Brand>
               <Navbar.Toggle onClick={this.state.toggle}/>
             </Navbar.Header>
