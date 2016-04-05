@@ -20,3 +20,37 @@
 #signup-right {
   border-left: 0.5px solid lightgrey;
 }
+
+.captain {
+  width: 100px;
+  height: 100px;
+  background-size: cover;
+  background-repeat: none;
+  display: inline-block;
+  position: relative;
+}
+
+.captainStat {
+  position: absolute;
+  width: 30px;
+  background-color: white;
+  border: 1px solid black;
+  font-size: 10px;
+}
+
+.captainStatLabel {
+  width: 14px;
+  display: inline-block;
+  font-weight: bolder;
+}
+
+.captainLevel {
+  left: 0px;
+  bottom: 15px;
+}
+
+.specialLevel {
+  left: 0px;
+  bottom: 0px;
+  height: 16px;
+}
