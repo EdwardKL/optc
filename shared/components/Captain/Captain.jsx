@@ -23,42 +23,47 @@ class Captain extends Component {
     if (this.state.captain_data.current_rcv_ccs > 0) {
       this.state.rcv_ccs = '+' + this.state.captain_data.current_rcv_ccs;
     }
+    this.getSocketDivs = this.getSocketDivs.bind(this);
   }
-  
+
+  getSocketDivs() {
+    return this.state.captain_data.current_sockets.map(function(socket) {
+      var style = {
+        backgroundImage: 'url(/img/socket' + socket._socket + '.png)',
+      };
+      return <div className="socket" key={socket._socket}>
+               <div className="socketImage" style={style}></div>
+               <div className="socketLevel">{socket.socket_level}</div>
+             </div>;
+    }.bind(this));
+  }
+
   render() {
     return (
-      <Panel>
-        <Row>
-          <div className="captain" style={this.state.backgroundStyle}>
-            <span className="captainLevel captainStat"><span className="captainStatLabel">Lv</span>{this.state.captain_data.current_level}</span>
-            <span className="specialLevel captainStat"><span className="captainStatLabel">Sp</span>{this.state.captain_data.current_special_level}</span>
-            <span className="hpCC cc">{this.state.hp_ccs}</span>
-            <span className="atkCC cc">{this.state.atk_ccs}</span>
-            <span className="rcvCC cc">{this.state.rcv_ccs}</span>
-          </div>
-        </Row>
-        <Row>
-        <Col xs={7}>
-          {this.state.captain_data.current_sockets.map(function(socket) {
-            return <Row key={socket._socket}>{this.state.socket_selections[socket._socket - 1].name}, Level {socket.socket_level}</Row>;
-          }.bind(this))}
-        </Col>
-        <Col xs={1}>
-          <Row>
-            <CaptainEditor
-              edit={true}
-              account_id={this.state.account_id}
-              captain_id={this.state.captain_data._id}
-              unit_id={this.state.captain_data._unit}
-              default_level={this.state.captain_data.current_level}
-              default_special={this.state.captain_data.current_special_level}
-              default_sockets={this.state.captain_data.current_sockets}
-              />
-          </Row>
-          <Row><a href={"/captains/delete/" + this.state.account_id + "/" + this.state.captain_data._id}>Delete</a></Row>
-        </Col>
-        </Row>
-      </Panel>
+      <div className="captain">
+        <div className="captainImage" style={this.state.backgroundStyle}>
+          <span className="captainLevel captainStat"><span className="captainStatLabel">Lv</span>{this.state.captain_data.current_level}</span>
+          <span className="specialLevel captainStat"><span className="captainStatLabel">Sp</span>{this.state.captain_data.current_special_level}</span>
+          <span className="hpCC cc">{this.state.hp_ccs}</span>
+          <span className="atkCC cc">{this.state.atk_ccs}</span>
+          <span className="rcvCC cc">{this.state.rcv_ccs}</span>
+        </div>
+        <div className="captainSockets">
+          {this.getSocketDivs()}
+        </div>
+        <div className="captainManagement">
+          <CaptainEditor
+            edit={true}
+            account_id={this.state.account_id}
+            captain_id={this.state.captain_data._id}
+            unit_id={this.state.captain_data._unit}
+            default_level={this.state.captain_data.current_level}
+            default_special={this.state.captain_data.current_special_level}
+            default_sockets={this.state.captain_data.current_sockets}
+            />
+          <a href={"/captains/delete/" + this.state.account_id + "/" + this.state.captain_data._id}>Delete</a>
+        </div>
+      </div>
     )
   }
 }

@@ -22,12 +22,20 @@
 }
 
 .captain {
+  width: 200px;
+  height: 100px;
+  position: relative;
+}
+
+.captainImage {
   width: 100px;
   height: 100px;
   background-size: cover;
   background-repeat: none;
   display: inline-block;
-  position: relative;
+  position: absolute;
+  left: 0px;
+  box-shadow: 0 0 2rem rgba(0, 0, 0, 0.5);
 }
 
 .captainStat {
@@ -70,10 +78,47 @@
   bottom: 32px;
 }
 .atkCC {
-  color: #E46363;
+  color: #FF2929;
   bottom: 16px;
 }
 .rcvCC {
   color: #8FF0DC;
   bottom: 0px;
+}
+
+.captainSockets {
+  display: inline-block;  
+  height: 100px;
+  width: 35px;
+  vertical-align: bottom;
+  position: absolute;
+  left: 102px;
+}
+.socketImage {
+  height: 20px;
+  width: 20px;
+  background-size: cover;
+  display: inline-block;
+}
+.socketLevel{
+  font: bold 16px sans-serif;
+  display: inline-block;
+  vertical-align: top;
+  padding-left: 2px;
+  margin-top: 2px;
+  color: white;
+  text-shadow: 1px 1px 1px black,
+               1px -1px 1px black,
+               -1px 1px 1px black,
+               -1px -1px 1px black;
+}
+
+.captainManagement {
+  display: inline-block;
+  height: 100px;
+  position: absolute;
+  left: 140px;
+}
+.captainManagement button{
+  padding-left: 0px;
 }
