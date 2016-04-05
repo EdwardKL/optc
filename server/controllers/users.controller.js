@@ -3,25 +3,26 @@ import UserModel from '../models/user';
 
 exports.setUser = function(req, res) {
   console.log("setting user");
+  var username = req.body.username;
   if (typeof req.user == 'undefined') {
     req.flash('error_message', 'Please sign in.');
     res.redirect('/signup');
     return;
   }
   console.log("user defined");
-  if (!req.user.username || req.user.username.length <= 1) {
-    res.redirect('back');
+  if (!username || username.length <= 1) {
     req.flash('error_message', 'Usernames must be at least 2 characters long.');
+    res.redirect('back');
     return;
   }
   console.log("long enough user");
-  if (!UserModel.validUsername(req.user.username)) {
-    res.redirect('back');
+  if (!UserModel.validUsername(username)) {
     req.flash('error_message', 'Username contained invalid characters. Only alphanumeric, dash, and underscore characters are allowed.');
+    res.redirect('back');
     return;
   }
   console.log("valid user");
-  UserModel.findByUsername(req.body.username, function(err, user) {
+  UserModel.findByUsername(username, function(err, user) {
     if (err) throw err;
     if (user) {
       console.log("user already exists");
@@ -29,7 +30,7 @@ exports.setUser = function(req, res) {
       res.redirect('/auth/oauth-signup');
       return;
     }
-    req.user.setUsername(req.body.username);
+    req.user.setUsername(username);
     console.log("username set");
     req.user.save(function(err) {
       if (err) throw err;
