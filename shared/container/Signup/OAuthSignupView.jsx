@@ -32,7 +32,7 @@ class OAuthSignup extends React.Component {
           <hr/>
         </Row>
         <Row>
-          <Col xs={5}>
+          <Col xs={8} md={5}>
             <form action="/auth/oauth-signup" method="POST">
               <Input
                 placeholder="User Name"

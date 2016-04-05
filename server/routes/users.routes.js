@@ -19,7 +19,11 @@ module.exports = function(app) {
                                         failureRedirect: '/signup',
                                         failureFlash: true }));
   app.route('/logout').get(function(req, res) {
-    req.flash('info_message', 'Bye, '+ req.user.display_name + '!');
+    var display_name = '';
+    if (req.user.display_name) {
+      display_name = ', ' + req.user.display_name;
+    }
+    req.flash('info_message', 'Bye'+ display_name + '!');
     req.logout();
     res.redirect('/');
   });
