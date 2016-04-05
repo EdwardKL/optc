@@ -194,6 +194,38 @@ class CaptainEditor extends Component {
                             max={this.getMaxSpecial()}/>
                         </Col>
                     </Row>
+                    <Row>
+                        <Col md={3}>
+                          <Input
+                            placeholder="HP CCs"
+                            label="HP CCs"
+                            name="current_hp_ccs"
+                            type="number"
+                            defaultValue="0"
+                            min="0"
+                            max="100"/>
+                        </Col>
+                        <Col md={3}>
+                          <Input
+                            placeholder="ATK CCs"
+                            label="ATK CCs"
+                            name="current_atk_ccs"
+                            type="number"
+                            defaultValue="0"
+                            min="0"
+                            max="100"/>
+                        </Col>
+                        <Col md={3}>
+                          <Input
+                            placeholder="RCV CCs"
+                            label="RCV CCs"
+                            name="current_rcv_ccs"
+                            type="number"
+                            defaultValue="0"
+                            min="0"
+                            max="100"/>
+                        </Col>
+                    </Row>
                     {_.times(this.state.num_sockets, i =>
                       // We want to pass the key to SocketSelector, but "key" is a reserved keyword, so we use "key_prop".
                       <SocketSelector

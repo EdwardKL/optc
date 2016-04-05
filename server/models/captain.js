@@ -11,6 +11,9 @@ const captainSchema = new Schema({
 	  socket_level: { type: Number, min: 1, max: 5 }
   }],
   current_special_level: Number,
+  current_hp_ccs: { type: Number, min: 0, max: 100 },
+  current_atk_ccs: { type: Number, min: 0, max: 100 },
+  current_rcv_ccs: { type: Number, min: 0, max: 100 },
   _unit: { type: Number, min: 0, ref: 'Unit' },
   _user: { type: Schema.Types.ObjectId, ref: 'User'}
 });

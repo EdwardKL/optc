@@ -9,11 +9,30 @@ exports.add = function(req, res) {
     return;
   }
   var account_id = req.body.account_id;
+
+  var hp_ccs = req.body.current_hp_ccs;
+  var atk_ccs = req.body.current_atk_ccs;
+  var rcv_ccs = req.body.current_rcv_ccs;
+
+  if ((hp_ccs + atk_ccs + rcv_ccs) > 200) {
+    req.flash('error_message', 'You can only have at most 200 cotton candies per unit.');
+    res.redirect('/account');
+    return;
+  }
+  if (hp_ccs > 100 || atk_ccs > 100 || rcv_ccs > 100) {
+    req.flash('error_message', 'You can only have at most 100 cotton candies per stat.');
+    res.redirect('/account');
+    return;
+  }
+
   var captain = new CaptainModel({
     current_level: req.body.current_level,
     current_special_level: req.body.current_special_level,
     _unit: req.body.unit_id,
     _user: req.user._id,
+    current_hp_ccs: hp_ccs,
+    current_atk_ccs: atk_ccs,
+    current_rcv_ccs: rcv_ccs,
     current_sockets: []
   });
   if (req.body.captain_id) {
