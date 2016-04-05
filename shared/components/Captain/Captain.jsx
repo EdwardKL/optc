@@ -14,6 +14,15 @@ class Captain extends Component {
     this.state.backgroundStyle = {
       backgroundImage: 'url(' + this.state.thumb_url + ')',
     };
+    if (this.state.captain_data.current_hp_ccs > 0) {
+      this.state.hp_ccs = '+' + this.state.captain_data.current_hp_ccs;
+    }
+    if (this.state.captain_data.current_atk_ccs > 0) {
+      this.state.atk_ccs = '+' + this.state.captain_data.current_atk_ccs;
+    }
+    if (this.state.captain_data.current_rcv_ccs > 0) {
+      this.state.rcv_ccs = '+' + this.state.captain_data.current_rcv_ccs;
+    }
   }
   
   render() {
@@ -23,6 +32,9 @@ class Captain extends Component {
           <div className="captain" style={this.state.backgroundStyle}>
             <span className="captainLevel captainStat"><span className="captainStatLabel">Lv</span>{this.state.captain_data.current_level}</span>
             <span className="specialLevel captainStat"><span className="captainStatLabel">Sp</span>{this.state.captain_data.current_special_level}</span>
+            <span className="hpCC cc">{this.state.hp_ccs}</span>
+            <span className="atkCC cc">{this.state.atk_ccs}</span>
+            <span className="rcvCC cc">{this.state.rcv_ccs}</span>
           </div>
         </Row>
         <Row>

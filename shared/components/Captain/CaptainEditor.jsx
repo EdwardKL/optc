@@ -28,7 +28,7 @@ class CaptainEditor extends Component {
       this.state.current_sockets[index] = props.default_sockets[index]._socket;
       this.state.default_socket_levels[index] = props.default_sockets[index].socket_level;
     }
-    this.state.unit = this.state.edit ? this.state.unit_selections[props.unit_id] : this.state.unit_selections[0];
+    this.state.unit = this.state.edit ? this.state.unit_selections[props.unit_id - 1] : this.state.unit_selections[0];
     this.state.default_unit_id = this.state.edit ? props.unit_id : 1;
     this.close = this.close.bind(this);
     this.open = this.open.bind(this);

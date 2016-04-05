@@ -10,9 +10,9 @@ exports.add = function(req, res) {
   }
   var account_id = req.body.account_id;
 
-  var hp_ccs = req.body.current_hp_ccs;
-  var atk_ccs = req.body.current_atk_ccs;
-  var rcv_ccs = req.body.current_rcv_ccs;
+  var hp_ccs = Number(req.body.current_hp_ccs);
+  var atk_ccs = Number(req.body.current_atk_ccs);
+  var rcv_ccs = Number(req.body.current_rcv_ccs);
 
   if ((hp_ccs + atk_ccs + rcv_ccs) > 200) {
     req.flash('error_message', 'You can only have at most 200 cotton candies per unit.');
@@ -94,6 +94,9 @@ exports.add = function(req, res) {
           captain_to_save.current_special_level = captain.current_special_level;
           captain_to_save._unit = captain._unit;
           captain_to_save.current_sockets = captain.current_sockets;
+          captain_to_save.current_hp_ccs = captain.current_hp_ccs;
+          captain_to_save.current_atk_ccs = captain.current_atk_ccs;
+          captain_to_save.current_rcv_ccs = captain.current_rcv_ccs;
           captain_to_save.save(function(err) {
             if (err) throw err;
             console.log('Successfully saved captain: ', captain_to_save);
