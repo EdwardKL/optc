@@ -46,7 +46,7 @@ class Header extends React.Component {
           <Navbar onToggle={this.state.toggle} id="header-bar">
             <Navbar.Header>
               <Navbar.Brand>
-                <a href="/" id="brand"><div className="nav navbar-nav" id="navbar-image"></div>Ohara</a> 
+                <a href="/"><div className="nav navbar-nav" id="navbar-image"></div><span id="brand">Ohara</span></a> 
               </Navbar.Brand>
               <Navbar.Toggle onClick={this.state.toggle}/>
             </Navbar.Header>

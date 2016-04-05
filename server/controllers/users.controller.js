@@ -2,31 +2,38 @@ import CaptainModel from '../models/captain';
 import UserModel from '../models/user';
 
 exports.setUser = function(req, res) {
+  console.log("setting user");
   if (typeof req.user == 'undefined') {
     req.flash('error_message', 'Please sign in.');
     res.redirect('/signup');
     return;
   }
+  console.log("user defined");
   if (!req.user.username || req.user.username.length <= 1) {
     res.redirect('back');
     req.flash('error_message', 'Usernames must be at least 2 characters long.');
     return;
   }
+  console.log("long enough user");
   if (!UserModel.validUsername(req.user.username)) {
     res.redirect('back');
     req.flash('error_message', 'Username contained invalid characters. Only alphanumeric, dash, and underscore characters are allowed.');
     return;
   }
+  console.log("valid user");
   UserModel.findByUsername(req.body.username, function(err, user) {
     if (err) throw err;
     if (user) {
+      console.log("user already exists");
       req.flash('error_message', 'Username already exists.');
       res.redirect('/auth/oauth-signup');
       return;
     }
     req.user.setUsername(req.body.username);
+    console.log("username set");
     req.user.save(function(err) {
       if (err) throw err;
+      console.log("Saved user");
       req.flash('info_message', 'Username set.');
       res.redirect('/');
       return;
