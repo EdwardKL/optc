@@ -42,14 +42,16 @@ class Captain extends Component {
     return (
       <div className="captain">
         <div className="captainImage" style={this.state.backgroundStyle}>
-          <span className="captainLevel captainStat"><span className="captainStatLabel">Lv</span>{this.state.captain_data.current_level}</span>
-          <span className="specialLevel captainStat"><span className="captainStatLabel">Sp</span>{this.state.captain_data.current_special_level}</span>
+          <span className="captainLevel captainStat">Lv{this.state.captain_data.current_level}</span>
+          <span className="specialLevel captainStat">Sp{this.state.captain_data.current_special_level}</span>          
           <span className="hpCC cc">{this.state.hp_ccs}</span>
           <span className="atkCC cc">{this.state.atk_ccs}</span>
           <span className="rcvCC cc">{this.state.rcv_ccs}</span>
         </div>
-        <div className="captainSockets">
-          {this.getSocketDivs()}
+        <div className="captainSocketsContainer">
+          <div className="captainSockets">
+            {this.getSocketDivs()}
+          </div>
         </div>
         <div className="captainManagement">
           <CaptainEditor
