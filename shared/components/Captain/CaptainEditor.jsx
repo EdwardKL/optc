@@ -47,6 +47,7 @@ class CaptainEditor extends Component {
     this.getSocketSelections = this.getSocketSelections.bind(this);
     this.getSelectedSocket = this.getSelectedSocket.bind(this);
     this.getSocketLevel = this.getSocketLevel.bind(this);
+    this.state.children = props.children;
   }
   
   close(e) {
@@ -154,8 +155,8 @@ class CaptainEditor extends Component {
   
   render() {
     return (
-      <div>
-        <Button bsStyle="primary" onClick={this.open} bsStyle={this.state.link_type}>{this.state.label}</Button>
+      <div className="captainEditor">
+        {React.cloneElement(this.state.children, { onClick: this.open })}
         <Modal show={this.state.showModal} onHide={this.close}>
             <form action="/captains/add" method="POST">
               <Modal.Header closeButton>
@@ -243,6 +244,7 @@ class CaptainEditor extends Component {
                     <Button bsStyle="default" onClick={this.removeSocket} disabled={this.removeSocketDisabled()}>Remove Socket</Button>
               </Modal.Body>
               <Modal.Footer>
+                  {this.state.edit ? <Button bsStyle="danger" className="deleteCaptainButton" type="button" href={"/captains/delete/" + this.state.account_id + "/" + this.state.captain_id}>Delete</Button> : <div/>}
                   <Button bsStyle="primary" type="submit">{this.state.action_name}</Button>
                   <Button onClick={this.close}>Cancel</Button>
               </Modal.Footer>

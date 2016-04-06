@@ -40,32 +40,29 @@ class Captain extends Component {
 
   render() {
     return (
-      <div className="captain">
-        <div className="captainImage" style={this.state.backgroundStyle}>
-          <span className="captainLevel captainStat">Lv{this.state.captain_data.current_level}</span>
-          <span className="specialLevel captainStat">Sp{this.state.captain_data.current_special_level}</span>          
-          <span className="hpCC cc">{this.state.hp_ccs}</span>
-          <span className="atkCC cc">{this.state.atk_ccs}</span>
-          <span className="rcvCC cc">{this.state.rcv_ccs}</span>
-        </div>
-        <div className="captainSocketsContainer">
-          <div className="captainSockets">
-            {this.getSocketDivs()}
+      <CaptainEditor
+        edit={true}
+        account_id={this.state.account_id}
+        captain_id={this.state.captain_data._id}
+        unit_id={this.state.captain_data._unit}
+        default_level={this.state.captain_data.current_level}
+        default_special={this.state.captain_data.current_special_level}
+        default_sockets={this.state.captain_data.current_sockets}>
+        <div className="captain">
+          <div className="captainImage" style={this.state.backgroundStyle}>
+            <span className="captainLevel captainStat">Lv{this.state.captain_data.current_level}</span>
+            <span className="specialLevel captainStat">Sp{this.state.captain_data.current_special_level}</span>          
+            <span className="hpCC cc">{this.state.hp_ccs}</span>
+            <span className="atkCC cc">{this.state.atk_ccs}</span>
+            <span className="rcvCC cc">{this.state.rcv_ccs}</span>
+          </div>
+          <div className="captainSocketsContainer">
+            <div className="captainSockets">
+              {this.getSocketDivs()}
+            </div>
           </div>
         </div>
-        <div className="captainManagement">
-          <CaptainEditor
-            edit={true}
-            account_id={this.state.account_id}
-            captain_id={this.state.captain_data._id}
-            unit_id={this.state.captain_data._unit}
-            default_level={this.state.captain_data.current_level}
-            default_special={this.state.captain_data.current_special_level}
-            default_sockets={this.state.captain_data.current_sockets}
-            />
-          <a href={"/captains/delete/" + this.state.account_id + "/" + this.state.captain_data._id}>Delete</a>
-        </div>
-      </div>
+      </CaptainEditor>
     )
   }
 }

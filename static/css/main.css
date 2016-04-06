@@ -21,8 +21,13 @@
   border-left: 0.5px solid lightgrey;
 }
 
+.captainEditor {
+  display: inline-block;
+  cursor: pointer;
+}
+
 .captain {
-  width: 125px;
+  width: 140px;
   height: 98px;
   position: relative;
   display: inline-block;
@@ -118,12 +123,7 @@
                -1px -1px 1px black;
 }
 
-.captainManagement {
-  display: inline-block;
-  height: 100px;
+.deleteCaptainButton {
   position: absolute;
-  left: 140px;
-}
-.captainManagement button{
-  padding-left: 0px;
+  left: 15px;
 }

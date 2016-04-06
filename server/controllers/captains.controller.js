@@ -140,6 +140,7 @@ exports.delete = function(req, res) {
   if (typeof req.user == 'undefined') {
     req.flash('error_message', 'Please sign in.');
     res.redirect('/signup');
+    return;
   }
   var account_id = req.params.account_id;
   var captain_id = req.params.captain_id;
@@ -156,7 +157,7 @@ exports.delete = function(req, res) {
       var account;
       for (var index in user.accounts) {
         if (user.accounts[index].id == account_id) {
-          account = user.accounts[index].id;
+          account = user.accounts[index];
           break;
         }
       }

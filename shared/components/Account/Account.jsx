@@ -29,7 +29,7 @@ class Account extends Component {
           {this.state.account_data._captains.map(function(captain) {
             return <Captain captain_data={captain} account_id={this.state.account_data.id} key={captain._id}/>
           }.bind(this))}
-          <CaptainEditor edit={false} account_id={this.state.account_data.id}/>
+          <CaptainEditor edit={false} account_id={this.state.account_data.id}><span>Add Captain</span></CaptainEditor>
         </Col>
         <Col xs={1}>
           <Row>
