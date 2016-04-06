@@ -18,20 +18,22 @@ class Account extends Component {
   
   render() {
     return (
-      <Panel key={this.state.account_data.id}>
-        <Col xs={4}>
-          <h3>{this.state.account_data.crew_name}</h3>
+      <Panel key={this.state.account_data.id} className="accountPanel">
+        <Col xs={2} className="removeLeftPadding">
+          <div className="accountInfo">
+            <span className="crewName">{this.state.account_data.crew_name}</span>
+            <span className="pirateLevel">Level {this.state.account_data.pirate_level}</span>
+            <span className="friendID">{this.state.account_data.friend_id}</span>
+            <span className="region">{this.state.account_data.region.capitalizeFirstLetter()}</span>
+          </div>
         </Col>
-        <Col xs={7}>
-          <Row><b>Friend ID:</b>{this.state.account_data.friend_id}</Row>
-          <Row><b>Region:</b>{this.state.account_data.region.capitalizeFirstLetter()}</Row>
-          <Row><b>Pirate Level:</b>{this.state.account_data.pirate_level}</Row>
+        <Col xs={9}>
           {this.state.account_data._captains.map(function(captain) {
             return <Captain captain_data={captain} account_id={this.state.account_data.id} key={captain._id}/>
           }.bind(this))}
-          <CaptainEditor edit={false} account_id={this.state.account_data.id}><span>Add Captain</span></CaptainEditor>
         </Col>
         <Col xs={1}>
+          <CaptainEditor edit={false} account_id={this.state.account_data.id}><span>Add Captain</span></CaptainEditor>
           <Row>
             <AccountEditor
               edit={true}
