@@ -1,3 +1,4 @@
+[![codecov.io](https://codecov.io/github/EdwardKL/optc/coverage.svg?branch=master)](https://codecov.io/github/EdwardKL/optc?branch=master)
 
 # OPTC Ohara
 
