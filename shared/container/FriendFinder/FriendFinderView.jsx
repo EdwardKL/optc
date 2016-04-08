@@ -1,11 +1,28 @@
-import React from 'react';
-import { Link } from 'react-router';
+import React, {Component, PropTypes} from 'react';
+import * as Actions from '../../redux/actions/actions';
+import { connect } from 'react-redux';
 import {Grid, Row, Col, Panel, Pagination,Button, Well, Label, Input, ButtonInput, MenuItem} from 'react-bootstrap';
-import {LinkContainer} from 'react-router-bootstrap';
 
-class FriendFinder extends React.Component {
+class FriendFinder extends Component {
   constructor(props, context){
     super(props, context);
+    this.state = {};
+    this.state.query = '';
+    this.state.friend_search_results = [];
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSearch = this.handleSearch.bind(this);
+  }
+
+  handleChange(e) {
+    this.setState({ query: e.target.value });
+  }
+
+  // getQueryUrl() {
+  //   return '/friend_finder/' + this.state.query;
+  // }
+
+  handleSearch() {
+    this.props.dispatch({ type: 'FIND_FRIENDS', query: this.state.query });
   }
 
   render() {
@@ -17,21 +34,43 @@ class FriendFinder extends React.Component {
           </h2>
           <hr/>
           <Col md={12}>
-            <form action="/friend_finder" method="POST">
-              <Input
-                placeholder="Captain ID"
-                label="Captain ID"
-                name="captain_id"
-                type="text"/>
-              <br/>
-              <Button bsStyle="primary" type="submit">
-                Search
-              </Button>
-            </form>
+            <Input
+              placeholder="Captain ID"
+              label="Captain ID"
+              name="captain_id"
+              type="text"
+              onChange={this.handleChange}/>
+            <br/>
+            <Button bsStyle="primary" type="submit" onClick={this.handleSearch}>
+              Search
+            </Button>
           </Col>
+        </Row>
+        <Row>
+          {this.state.query ? console.log('search results:', this.state.friend_search_results) : console.log("nothing here")}
         </Row>
       </Grid>
     )
   }
 }
-export default FriendFinder;
+
+// FriendFinder.need = [(params) => {
+//   return Actions.getFriendsRequest.bind(null, params.captain_id)();
+// }];
+
+FriendFinder.propTypes = {
+  friend_search_results: PropTypes.arrayOf(PropTypes.shape({
+    current_level: PropTypes.number.isRequired,
+    current_special_level: PropTypes.number.isRequired,
+  })).isRequired,
+  dispatch: PropTypes.func.isRequired
+};
+
+
+function mapStateToProps(store) {
+  return {
+    friend_search_results: (store.friend_search_results)
+  };
+}
+
+export default connect(mapStateToProps)(FriendFinder);

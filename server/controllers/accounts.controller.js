@@ -33,8 +33,7 @@ exports.add = function(req, res) {
     // Found user
     if (user) {
       if (account.id == -1) {
-        var account_id = user.accounts.length;
-        account.id = account_id;
+        account.id = user.accounts.length
       } else {
         // This is an edit, not an add request. Delete the old account and re-add the new one.
         var accounts = [];

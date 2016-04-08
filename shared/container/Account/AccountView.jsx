@@ -47,7 +47,7 @@ function mapStateToProps(store) {
 AccountView.propTypes = {
   user: PropTypes.object.isRequired,
   // This comes by default with connect below.
-  dispatch: PropTypes.func.isRequired,
+  dispatch: PropTypes.func.isRequired
 };
 
 export default connect(mapStateToProps)(AccountView);

@@ -4,11 +4,13 @@ import UserModel from '../models/user';
 
 // Searches for captains.
 exports.search = function(req, res) {
-	var captain_id = req.body.captain_id;
+	// var captain_id = req.body.captain_id;
+  var captain_id = req.params.captain_id;
 	console.log("Searching for captain: ", captain_id);
 	var callback = function(err, captains) {
     //TODO: Clear salt/password from attached user. Maybe do this automatically when we fetch users (is there a way to add auth as an exception to this)?
-		res.json(captains);
+    if (err) throw err;
+    res.json(captains);
 	};
 	CaptainModel
 		.find({ '_unit': captain_id })

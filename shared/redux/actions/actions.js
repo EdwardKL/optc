@@ -58,6 +58,26 @@ export function getPostRequest(post) {
   };
 }
 
+export function addFriendSearchResults(friend_search_results) {
+  return {
+    type: ActionTypes.FIND_FRIENDS,
+    friend_search_results
+  };
+}
+
+export function getFriendsRequest(captain_id) {
+  return (dispatch) => {
+    return fetch(`${baseURL}/friend_finder/${captain_id}`, {
+      method: 'get',
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
+    }).
+    then((response) => response.json()).
+    then(res => dispatch(addFriendSearchResults(res)));
+  };
+}
+
 export function deletePost(post) {
   return {
     type: ActionTypes.DELETE_POST,

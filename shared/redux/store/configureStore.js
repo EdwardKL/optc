@@ -1,7 +1,7 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import { persistState } from 'redux-devtools';
 import thunk from 'redux-thunk';
-import rootReducer from '../reducers/reducer';
+import rootReducer from '../reducers/friend_finder_reducer';
 import DevTools from '../../container/DevTools/DevTools';
 
 export function configureStore(initialState = {}) {
