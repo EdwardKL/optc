@@ -40,7 +40,7 @@ class AccountView extends React.Component {
 
 function mapStateToProps(store) {
   return {
-    user: store.user,
+    user: store.user
   };
 }
 

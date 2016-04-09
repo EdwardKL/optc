@@ -8,7 +8,8 @@ class FriendFinder extends Component {
     super(props, context);
     this.state = {};
     this.state.query = '';
-    this.state.friend_search_results = [];
+    this.state.friend_search_results = props.friend_search_results;
+    this.state.socket_selections = props.socket_selections;
     this.handleChange = this.handleChange.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
   }
@@ -22,7 +23,8 @@ class FriendFinder extends Component {
   // }
 
   handleSearch() {
-    this.props.dispatch({ type: 'FIND_FRIENDS', query: this.state.query });
+    //this.props.dispatch({ type: 'FIND_FRIENDS', query: this.state.query });
+    this.props.dispatch(Actions.fetchQuery(this.state.query));
   }
 
   render() {
@@ -47,7 +49,7 @@ class FriendFinder extends Component {
           </Col>
         </Row>
         <Row>
-          {this.state.query ? console.log('search results:', this.state.friend_search_results) : console.log("nothing here")}
+          {this.state.query ? console.log('search results:', this.state) : console.log("nothing here")}
         </Row>
       </Grid>
     )
@@ -59,17 +61,20 @@ class FriendFinder extends Component {
 // }];
 
 FriendFinder.propTypes = {
-  friend_search_results: PropTypes.arrayOf(PropTypes.shape({
-    current_level: PropTypes.number.isRequired,
-    current_special_level: PropTypes.number.isRequired,
-  })).isRequired,
+  // friend_search_results: PropTypes.arrayOf(PropTypes.shape({
+  //   current_level: PropTypes.number.isRequired,
+  //   current_special_level: PropTypes.number.isRequired
+  // })).isRequired,
+  friend_search_results: PropTypes.arrayOf(PropTypes.object).isRequired,
+  socket_selections: PropTypes.arrayOf(PropTypes.object).isRequired,
   dispatch: PropTypes.func.isRequired
 };
 
 
 function mapStateToProps(store) {
   return {
-    friend_search_results: (store.friend_search_results)
+    friend_search_results: store.friend_search_results,
+    socket_selections: store.socket_selections
   };
 }
 
