@@ -3,4 +3,6 @@ node_js:
   - '5'
   - '4'
 before_install:
-- 'npm install -g npm@latest'
+  - 'npm install -g npm@latest'
+after_success:
+  - ./bin/codecov -e TRAVIS_NODE_VERSION
