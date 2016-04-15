@@ -2,17 +2,13 @@ import React, { PropTypes } from 'react';
 import {Alert, Grid, Row, Col, Button, Input, Nav, Navbar, NavItem, NavDropdown, MenuItem} from 'react-bootstrap';
 import { connect } from 'react-redux';
 
-class Header extends React.Component {
+export class Header extends React.Component {
   constructor(props, context){
     super(props, context);
     this.state = {}
     this.state.user = props.user;
     this.state.info_message = props.info_message ? props.info_message : '';
     this.state.error_message = props.error_message ? props.error_message : ''; 
-  }
-  
-  toggle() {
-    console.log("Toggle clicked.");
   }
   
   render() {
@@ -43,12 +39,12 @@ class Header extends React.Component {
     return (
       <Grid>
         <Row>
-          <Navbar onToggle={this.state.toggle} id="header-bar">
+          <Navbar id="header-bar">
             <Navbar.Header>
               <Navbar.Brand>
                 <a href="/"><div className="nav navbar-nav" id="navbar-image"></div><span id="brand">Ohara</span></a> 
               </Navbar.Brand>
-              <Navbar.Toggle onClick={this.state.toggle}/>
+              <Navbar.Toggle />
             </Navbar.Header>
             <Navbar.Collapse>
               <Nav>
