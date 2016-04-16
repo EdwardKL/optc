@@ -12,6 +12,7 @@ expect.extend(expectJSX);
 
 describe('header component test', () => {
   beforeEach('setup dom', function (done) {
+    this.timeout(10 * 1e6);
     this.jsdom = require('jsdom-global')();
     done();
   });
