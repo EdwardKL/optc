@@ -4,8 +4,8 @@
   "description": "OPTC website providing features like friend finders",
   "scripts": {
     "test": "cross-env NODE_ENV=test PORT=8080 MONGO_URL=mongodb://localhost:27017/test babel-node ./node_modules/istanbul/lib/cli cover ./node_modules/mocha/bin/_mocha -- --recursive server/tests/**/*.spec.js shared/tests/*.spec.js",
-    "test:client": "mocha shared/tests/*.spec.js --compilers js:babel-register",
-    "test:server": "cross-env NODE_ENV=test PORT=8080 MONGO_URL=mongodb://localhost:27017/test mocha --compilers js:babel-register --recursive server/tests/**/*.spec.js",
+    "test:client": "cross-env NODE_ENV=test babel-node ./node_modules/istanbul/lib/cli cover ./node_modules/mocha/bin/_mocha -- --recursive shared/tests/*.spec.js",
+    "test:server": "cross-env NODE_ENV=test PORT=8080 MONGO_URL=mongodb://localhost:27017/test babel-node ./node_modules/istanbul/lib/cli cover ./node_modules/mocha/bin/_mocha -- --recursive server/tests/**/*.spec.js",
     "start": "cross-env NODE_ENV=development node index.js",
     "start:prod": "cross-env NODE_ENV=production node index.js",
     "bs": "npm run clean && npm run build && npm run start:prod",
