@@ -28,13 +28,13 @@ import { match, RouterContext } from 'react-router';
 // Import required modules
 import routes from '../shared/routes';
 import { fetchComponentData } from './util/fetchData';
-import serverConfig from './config';
+import mongoConfig from './config';
 
 var glob = require('glob'),
   _ = require('lodash');
 
 // MongoDB Connection
-mongoose.connect(serverConfig.mongoURL, (error) => {
+mongoose.connect(mongoConfig.mongoURL, (error) => {
   if (error) {
     console.error('Please make sure Mongodb is installed and running!'); // eslint-disable-line no-console
     throw error;

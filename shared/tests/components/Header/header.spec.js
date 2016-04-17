@@ -1,6 +1,6 @@
 import expect from 'expect';
 import TestUtils from 'react-addons-test-utils';
-import { Header } from '../components/Header/Header';
+import { Header } from '../../../components/Header/Header';
 import React from 'react';
 import expectJSX from 'expect-jsx';
 import { Link } from 'react-router';

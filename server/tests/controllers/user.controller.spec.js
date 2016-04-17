@@ -1,11 +1,11 @@
 /* eslint-disable */
 
 import mocha from 'mocha';
-import app from '../server';
+import app from '../../server';
 import chai from 'chai';
 import request from 'supertest';
 import mongoose from 'mongoose';
-import User from '../models/user';
+import User from '../../models/user';
 
 const expect = chai.expect;
 
