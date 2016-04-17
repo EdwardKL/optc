@@ -6,34 +6,31 @@ import chai from 'chai';
 import request from 'supertest';
 import mongoose from 'mongoose';
 import User from '../../models/user';
+import mongoConfig from '../../config';
 
 const expect = chai.expect;
 
 function connectDB(done) {
-  if (mongoose.connection.name !== 'test') {
-    return done();
-  }
-
-  mongoose.connect((process.env.MONGO_URL || 'mongodb://localhost:27017/test'), function (err) {
+  mongoose.connect(mongoConfig.mongoURL, function (err) {
     if (err) return done(err);
     done();
   });
 }
 
 function dropDB(done) {
-  if (mongoose.connection.name !== 'test') {
+  if (mongoose.connection.name !== 'optc-test') {
     return done();
   }
 
   mongoose.connection.db.dropDatabase(function (err) {
+    if (err) throw err;
     mongoose.connection.close(done);
   });
 }
 
 describe('POST /signup', function () {
 
-  beforeEach('connect and register a user', function (done) {
-
+  beforeEach('connect to db', function (done) {
     connectDB(function () {
       done();
     });
