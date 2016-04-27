@@ -67,7 +67,7 @@ export function addFriendFinderResults(friend_search_results) {
 
 export function fetchQuery(query) {
   return (dispatch) => {
-    return fetch(`${baseURL}/friend_finder/${query}`, {
+    return fetch(`${baseURL}/friend_finder/api/${query}`, {
       method: 'get',
       headers: new Headers({
         'Content-Type': 'application/json'

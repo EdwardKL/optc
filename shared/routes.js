@@ -15,7 +15,7 @@ const routes = (
     <Route path="/account" component={AccountView} />
     <Route path="/signup" component={SignupView} />
     <Route path="/auth/oauth-signup" component={OAuthSignupView} />
-    <Route path="/friend_finder" component={FriendFinderView} />
+    <Route path="/friend_finder(/:captain_id)" component={FriendFinderView} />
   </Route>
 );
 
