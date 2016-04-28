@@ -1,6 +1,7 @@
 import CaptainModel from '../models/captain';
 import UserModel from '../models/user';
 import { getErrorMessage } from '../../errors/error_handler';
+import ERROR_CODES from '../../constants/error_codes';
 
 function getNumber(num) {
   return num ? Number(num) : 0;
@@ -65,9 +66,9 @@ exports.add = function(req, res, next) {
   }
   UserModel.findById(req.user._id, function(err, user) {
     // In case of any error return
-    if (err){
+    if (err) {
       console.log('Error adding captain, invalid id? Err: ', err, ', ID: ', req.user._id);
-      req.flash('error_message', getErrorMessage(0));
+      req.flash('error_message', getErrorMessage(ERROR_CODES.CAPTAINS_ADD_ERROR_1));
       res.redirect('/account');
       next();
       return;
@@ -90,7 +91,7 @@ exports.add = function(req, res, next) {
     }
     if (!account) {
       console.log("Could not find account for user: ", user);
-      req.flash('error_message', getErrorMessage(1));
+      req.flash('error_message', getErrorMessage(ERROR_CODES.CAPTAINS_ADD_ERROR_2));
       res.redirect('/account');
       next();
       return;
@@ -103,102 +104,119 @@ exports.add = function(req, res, next) {
         break;
       }
     }
-    if (edit) {
-      CaptainModel.findById(captain._id, function(err, captain_to_save) {
-        if (err) throw err;
-        captain_to_save.current_level = captain.current_level;
-        captain_to_save.current_special_level = captain.current_special_level;
-        captain_to_save._unit = captain._unit;
-        captain_to_save.current_sockets = captain.current_sockets;
-        captain_to_save.current_hp_ccs = captain.current_hp_ccs;
-        captain_to_save.current_atk_ccs = captain.current_atk_ccs;
-        captain_to_save.current_rcv_ccs = captain.current_rcv_ccs;
-        captain_to_save.save(function(err) {
-          if (err) throw err;
-          console.log('Successfully saved captain: ', captain_to_save);
+    var save_captain = function() {
+      if (edit) {
+        CaptainModel.findById(captain._id, function(err, captain_to_save) {
+          if (err)
+            throw err;
+          console.log("CAPTAIN TO SAVE ", captain_to_save);
+          console.log("CAPTAIN: ", captain);
+          captain_to_save.current_level = captain.current_level;
+          captain_to_save.current_special_level = captain.current_special_level;
+          captain_to_save._unit = captain._unit;
+          captain_to_save.current_sockets = captain.current_sockets;
+          captain_to_save.current_hp_ccs = captain.current_hp_ccs;
+          captain_to_save.current_atk_ccs = captain.current_atk_ccs;
+          captain_to_save.current_rcv_ccs = captain.current_rcv_ccs;
+          captain_to_save.save(function(err) {
+            if (err)
+              throw err;
+            console.log('Successfully edited captain.');
+            req.flash('info_message', 'Captain edited.');
+            res.redirect('/account');
+            next();
+            return;
+          });
         });
-      });
-    } else {
-      // Save the captain.
-      captain.save(function(err) {
-        if (err) {
-          console.log('Error saving captain: ' + err);
-          throw err;
-        } else {
-          console.log('Successfully saved captain: ', captain);
-        }
-      });
-    }
+      } else {
+        // Save the captain.
+        captain.save(function(err) {
+          if (err) {
+            console.log('Error saving captain: ' + err);
+            throw err;
+          } else {
+            console.log('Successfully added captain.');
+            req.flash('info_message', 'Captain added.');
+            res.redirect('/account');
+            next();
+            return;
+          }
+        });
+      }
+    };
     // Update the reference in user if its new.
     if (!edit) account._captains.push(captain._id);
     user.save(function(err) {
       if (err) {
-        console.log('Error saving user: '+err);  
-        throw err;  
+        console.log('Error saving user: ' + err);
+        throw err;
       } else {
-        console.log('Successfully added/edited captain.');
-        var message = edit ? 'Captain edited.' : 'Captain added.';
-        req.flash('info_message', message);
-        res.redirect('/account');
-        next();
-        return;
+        save_captain();
       }
     });
   });
 };
 
 // Deletes a captain.
-exports.delete = function(req, res) {
+exports.delete = function(req, res, next) {
   if (typeof req.user == 'undefined') {
     req.flash('error_message', 'Please sign in.');
     res.redirect('/signup');
+    next();
     return;
   }
   var account_id = req.params.account_id;
   var captain_id = req.params.captain_id;
   UserModel.findById(req.user._id, function(err, user) {
     // In case of any error return
-    if (err){
-      console.log('Error deleting account: ' + err);
-      req.flash('error_message', 'There was an error. Please contact the owner.');
+    if (err) {
+      console.log('Error deleting captain: ' + err);
+      req.flash('error_message', getErrorMessage(ERROR_CODES.CAPTAINS_DELETE_ERROR_1));
       res.redirect('/account');
+      next();
       return;
     }
-    // Found user
-    if (user) {
-      var account;
-      for (var index in user.accounts) {
-        if (user.accounts[index].id == account_id) {
-          account = user.accounts[index];
-          break;
-        }
+    if (!user) {
+      console.log('Did not find user for id: ', req.user._id);
+      req.flash('error_message', getErrorMessage(ERROR_CODES.CAPTAINS_DELETE_ERROR_2));
+      res.redirect('/account');
+      next();
+      return;
+    }
+    // Found user.
+    var account;
+    for (var index in user.accounts) {
+      if (user.accounts[index].id == account_id) {
+        account = user.accounts[index];
+        break;
       }
-      if (!account) {
-        console.log('Could not find account with id: ', account_id);
+    }
+    if (!account) {
+      console.log('Could not find account with id: ', account_id);
+      req.flash('error_message', getErrorMessage(ERROR_CODES.CAPTAINS_DELETE_ERROR_3));
+      res.redirect('/account');
+      next();
+      return;
+    }
+    account._captains.splice(account._captains.indexOf(captain_id), 1);
+    user.save(function(err) {
+      if (err) {
+        console.log('Error saving user: ' + err);
+        throw err;
+      } else {
+        console.log('Successfully deleted captain reference.');
+        // Delete the captain.
+        var callback = function(err, captain) {
+          if (err)
+            throw err;
+          console.log('Deleted captain');
+          req.flash('info_message', 'Captain deleted.');
+          res.redirect('/account');
+        };
+        CaptainModel.findById(captain_id).remove().exec(callback);
+        next();
         return;
       }
-      account._captains.splice(account._captains.indexOf(captain_id), 1);
-      user.save(function(err) {
-        if (err) {
-          console.log('Error saving user: '+err);  
-          throw err;  
-        } else {
-          console.log('Successfully deleted captain reference.');
-          // Delete the captain.
-          var callback = function(err, captain) {
-            if (err) throw err;
-            console.log('Deleted captain');
-            req.flash('info_message', 'Captain deleted.');
-            res.redirect('/account');
-          };
-          CaptainModel.findById(captain_id).remove().exec(callback);
-          return;
-        }
-      });
-    } else {
-      console.log('Could not find user to update account for! User: ', req.user);
-      res.redirect('/account');
-      return;
-    }
+    });
   });
 };
