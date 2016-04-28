@@ -1,3 +1,3 @@
-exports.getErrorMessage = function(code) {
-  return 'There was an error (code: ' + code + '). Please contact the owner.';
+exports.getErrorMessage = function(error_code) {
+  return 'There was an error (code: ' + error_code.code + '). Please contact the owner.';
 }
