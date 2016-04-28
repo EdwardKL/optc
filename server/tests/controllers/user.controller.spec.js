@@ -32,7 +32,6 @@ function dropDB(done) {
 describe('POST /signup', function() {
 
   beforeEach('connect to db', function(done) {
-    this.timeout(3 * 1e3);
     connectDB(function() {
       done();
     });

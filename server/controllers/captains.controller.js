@@ -104,56 +104,52 @@ exports.add = function(req, res, next) {
         break;
       }
     }
-    var save_captain = function() {
-      if (edit) {
-        CaptainModel.findById(captain._id, function(err, captain_to_save) {
-          if (err)
-            throw err;
-          console.log("CAPTAIN TO SAVE ", captain_to_save);
-          console.log("CAPTAIN: ", captain);
-          captain_to_save.current_level = captain.current_level;
-          captain_to_save.current_special_level = captain.current_special_level;
-          captain_to_save._unit = captain._unit;
-          captain_to_save.current_sockets = captain.current_sockets;
-          captain_to_save.current_hp_ccs = captain.current_hp_ccs;
-          captain_to_save.current_atk_ccs = captain.current_atk_ccs;
-          captain_to_save.current_rcv_ccs = captain.current_rcv_ccs;
-          captain_to_save.save(function(err) {
-            if (err)
-              throw err;
-            console.log('Successfully edited captain.');
-            req.flash('info_message', 'Captain edited.');
-            res.redirect('/account');
-            next();
-            return;
-          });
-        });
-      } else {
-        // Save the captain.
-        captain.save(function(err) {
-          if (err) {
-            console.log('Error saving captain: ' + err);
-            throw err;
-          } else {
-            console.log('Successfully added captain.');
-            req.flash('info_message', 'Captain added.');
-            res.redirect('/account');
-            next();
-            return;
-          }
-        });
-      }
-    };
     // Update the reference in user if its new.
     if (!edit) account._captains.push(captain._id);
-    user.save(function(err) {
-      if (err) {
-        console.log('Error saving user: ' + err);
-        throw err;
-      } else {
-        save_captain();
-      }
-    });
+    var update_user = function() {
+      user.save(function(err) {
+        if (err) {
+          console.log('Error saving user: ' + err);
+          throw err;
+        }
+        const action = edit ? 'edited' : 'added';
+        console.log('Successfully ' + action + ' captain.');
+        req.flash('info_message', 'Captain ' + action + '.');
+        res.redirect('/account');
+        next();
+        return;
+      });
+    };
+    if (edit) {
+      CaptainModel.findById(captain._id, function(err, captain_to_save) {
+        if (err)
+          throw err;
+        captain_to_save.current_level = captain.current_level;
+        captain_to_save.current_special_level = captain.current_special_level;
+        captain_to_save._unit = captain._unit;
+        captain_to_save.current_sockets = captain.current_sockets;
+        captain_to_save.current_hp_ccs = captain.current_hp_ccs;
+        captain_to_save.current_atk_ccs = captain.current_atk_ccs;
+        captain_to_save.current_rcv_ccs = captain.current_rcv_ccs;
+        captain_to_save.save(function(err) {
+          if (err)
+            throw err;
+          update_user();
+          return;
+        });
+      });
+    } else {
+      // Save the captain.
+      captain.save(function(err) {
+        if (err) {
+          console.log('Error saving captain: ' + err);
+          throw err;
+        } else {
+          update_user();
+          return;
+        }
+      });
+    }
   });
 };
 
