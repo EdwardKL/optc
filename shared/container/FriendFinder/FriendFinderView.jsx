@@ -1,30 +1,25 @@
 import React, {Component, PropTypes} from 'react';
 import * as Actions from '../../redux/actions/actions';
 import { connect } from 'react-redux';
-import {Grid, Row, Col, Panel, Pagination,Button, Well, Label, Input, ButtonInput, MenuItem} from 'react-bootstrap';
+import { Link } from 'react-router';
+import {Grid, Row, Col, Button, Well, Label, Input} from 'react-bootstrap';
+
+import FriendFinderResult from '../../components/FriendFinderResult/FriendFinderResult';
 
 class FriendFinder extends Component {
   constructor(props, context){
+    console.log("calling friend finder constructor");
     super(props, context);
+    console.log('props: ', props);
     this.state = {};
-    this.state.query = '';
+    this.state.query = props.params.captain_id ? props.params.captain_id : '';
     this.state.friend_search_results = props.friend_search_results;
     this.state.socket_selections = props.socket_selections;
     this.handleChange = this.handleChange.bind(this);
-    this.handleSearch = this.handleSearch.bind(this);
   }
 
   handleChange(e) {
     this.setState({ query: e.target.value });
-  }
-
-  // getQueryUrl() {
-  //   return '/friend_finder/' + this.state.query;
-  // }
-
-  handleSearch() {
-    //this.props.dispatch({ type: 'FIND_FRIENDS', query: this.state.query });
-    this.props.dispatch(Actions.fetchQuery(this.state.query));
   }
 
   render() {
@@ -43,38 +38,49 @@ class FriendFinder extends Component {
               type="text"
               onChange={this.handleChange}/>
             <br/>
-            <Button bsStyle="primary" type="submit" onClick={this.handleSearch}>
-              Search
+            <Button bsStyle="primary" type="submit" href={`/friend_finder/${this.state.query}`}>
+            Search
             </Button>
           </Col>
         </Row>
         <Row>
-          {this.state.query ? console.log('search results:', this.state) : console.log("nothing here")}
+          {console.log('search results:', this.state)}
+          {this.state.friend_search_results.map(function(result) {
+            return <FriendFinderResult data={result}/>
+          })}
         </Row>
       </Grid>
     )
   }
+
 }
 
-// FriendFinder.need = [(params) => {
-//   return Actions.getFriendsRequest.bind(null, params.captain_id)();
-// }];
+FriendFinder.need = [(params) => {
+  if (params.captain_id) {
+    console.log("params.captain_id not empty!");
+    return Actions.fetchQuery(params.captain_id);
+  } else {
+    console.log("params.captain_id is empty!");
+    return Actions.fetchQuery("-1");
+  }
+}];
 
 FriendFinder.propTypes = {
-  // friend_search_results: PropTypes.arrayOf(PropTypes.shape({
-  //   current_level: PropTypes.number.isRequired,
-  //   current_special_level: PropTypes.number.isRequired
-  // })).isRequired,
-  friend_search_results: PropTypes.arrayOf(PropTypes.object).isRequired,
-  socket_selections: PropTypes.arrayOf(PropTypes.object).isRequired,
+  friend_search_results: PropTypes.arrayOf(PropTypes.shape({
+    current_level: PropTypes.number.isRequired,
+    current_special_level: PropTypes.number.isRequired,
+    user: PropTypes.shape({
+      accounts: PropTypes.arrayOf(PropTypes.object),
+      display_name: PropTypes.string
+    })
+  })),
   dispatch: PropTypes.func.isRequired
 };
 
 
 function mapStateToProps(store) {
   return {
-    friend_search_results: store.friend_search_results,
-    socket_selections: store.socket_selections
+    friend_search_results: store.friend_search_results ? store.friend_search_results : []
   };
 }
 
