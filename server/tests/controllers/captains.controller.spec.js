@@ -287,6 +287,7 @@ describe('CaptainsController.add', function() {
         if (err)
           throw err;
         console.log("stored user: ", user._id);
+        console.log("user: ", user);
         done();
       });
     });

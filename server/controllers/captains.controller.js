@@ -109,7 +109,8 @@ exports.add = function(req, res, next) {
     var update_user = function() {
       user.save(function(err) {
         if (err) {
-          console.log('Error saving user: ' + err);
+          console.error('Error saving user: ' + err);
+          console.error('User: ', user);
           throw err;
         }
         const action = edit ? 'edited' : 'added';
