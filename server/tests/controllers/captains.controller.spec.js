@@ -16,18 +16,21 @@ const expect = chai.expect;
 function connectDB(done) {
   mongoose.connect(mongoConfig.mongoURL, function(err) {
     if (err) return done(err);
+    console.log("DB connected.");
     done();
   });
 }
 
 function dropDB(done) {
   if (mongoose.connection.name !== 'optc-test') {
+    console.error("Test connection is not optc-test!");
     return done();
   }
 
   mongoose.connection.db.dropDatabase(function(err) {
     if (err)
       throw err;
+    console.log("DB dropped.");
     mongoose.connection.close(done);
   });
 }
