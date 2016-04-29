@@ -266,21 +266,22 @@ describe('CaptainsController.add', function() {
         account1
       ]
     });
+    // Setup fake user.
+    req = new RequestMock();
+    req.login({
+      _id: user_id
+    });
+    console.log("logged in");
+    req.setBody({
+      account_id: 1
+    });
+    res = new ResponseMock();
     connectDB(function() {
       // Store the fake user into the DB.
       user.save(function(err) {
         if (err)
           throw err;
-        // Setup fake user.
-        req = new RequestMock();
-        req.login({
-          _id: user_id
-        });
-        console.log("logged in");
-        req.setBody({
-          account_id: 1
-        });
-        res = new ResponseMock();
+        console.log("stored user: ", user._id);
         done();
       });
     });
@@ -366,7 +367,6 @@ describe('CaptainsController.add', function() {
   });
 
   it('should add a captain with one socket', function(done) {
-    this.timeout(5 * 1e3);
     const socket = {
       _socket: 2,
       socket_level: 3
@@ -381,6 +381,7 @@ describe('CaptainsController.add', function() {
       current_rcv_ccs: 80,
       current_sockets: [socket]
     });
+    console.log("user id:", user_id);
     var callback = function() {
       // Req/res expectations.
       expect(req.getFlash('info_message')).to.equal('Captain added.');
