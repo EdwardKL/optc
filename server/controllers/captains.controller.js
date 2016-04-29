@@ -8,18 +8,28 @@ function getNumber(num) {
 }
 
 // Adds (or edits) a captain.
-exports.add = function(req, res, next) {
+exports.add = function add(req, res, next) {
+  const account_id = req.body.account_id;
+  const hp_ccs = getNumber(req.body.current_hp_ccs);
+  const atk_ccs = getNumber(req.body.current_atk_ccs);
+  const rcv_ccs = getNumber(req.body.current_rcv_ccs);
+  var captain = new CaptainModel({
+    current_level: req.body.current_level,
+    current_special_level: req.body.current_special_level,
+    _unit: req.body.unit_id,
+    _user: req.user._id,
+    current_hp_ccs: hp_ccs,
+    current_atk_ccs: atk_ccs,
+    current_rcv_ccs: rcv_ccs,
+    current_sockets: [],
+  });
+
   if (!req.user) {
     req.flash('error_message', 'Please sign in.');
     res.redirect('/signup');
     next();
     return;
   }
-  var account_id = req.body.account_id;
-
-  var hp_ccs = getNumber(req.body.current_hp_ccs);
-  var atk_ccs = getNumber(req.body.current_atk_ccs);
-  var rcv_ccs = getNumber(req.body.current_rcv_ccs);
   if ((hp_ccs + atk_ccs + rcv_ccs) > 200) {
     req.flash('error_message', 'You can only have at most 200 cotton candies per unit.');
     res.redirect('/account');
@@ -32,23 +42,12 @@ exports.add = function(req, res, next) {
     next();
     return;
   }
-
-  var captain = new CaptainModel({
-    current_level: req.body.current_level,
-    current_special_level: req.body.current_special_level,
-    _unit: req.body.unit_id,
-    _user: req.user._id,
-    current_hp_ccs: hp_ccs,
-    current_atk_ccs: atk_ccs,
-    current_rcv_ccs: rcv_ccs,
-    current_sockets: []
-  });
   if (req.body.captain_id) {
     captain._id = req.body.captain_id;
   }
   if (req.body.socket_types) {
-    if (typeof req.body.socket_types == 'object') {
-      for (var index in req.body.socket_types) {
+    if (typeof req.body.socket_types === 'object') {
+      for (const index in req.body.socket_types) {
         var socket = {
           _socket: req.body.socket_types[index],
           socket_level: req.body.socket_levels[index]
@@ -61,10 +60,10 @@ exports.add = function(req, res, next) {
         socket_level: req.body.socket_levels
       };
       captain.current_sockets.push(socket);
-      console.log("adding captain: ", captain);
+      console.log('adding captain: ', captain);
     }
   }
-  UserModel.findById(req.user._id, function(err, user) {
+  UserModel.findById(req.user._id, function (err, user) {
     // In case of any error return
     if (err) {
       console.log('Error adding captain, invalid id? Err: ', err, ', ID: ', req.user._id);
@@ -84,13 +83,13 @@ exports.add = function(req, res, next) {
     // Find the account.
     var account;
     for (var account_index in user.accounts) {
-      if (user.accounts[account_index].id == account_id) {
+      if (user.accounts[account_index].id === account_id) {
         account = user.accounts[account_index];
         break;
       }
     }
     if (!account) {
-      console.log("Could not find account for user: ", user);
+      console.log('Could not find account for user: ', user);
       req.flash('error_message', getErrorMessage(ERROR_CODES.CAPTAINS_ADD_ERROR_2));
       res.redirect('/account');
       next();
@@ -106,8 +105,10 @@ exports.add = function(req, res, next) {
     }
     // Update the reference in user if its new.
     if (!edit) account._captains.push(captain._id);
-    var update_user = function() {
-      user.save(function(err) {
+    var update_user = function () {
+      // Increment version because we're modifying arrays in the document.
+      user.increment();
+      user.save(function (err) {
         if (err) {
           console.error('Error saving user: ' + err);
           console.error('User: ', user);
@@ -122,7 +123,7 @@ exports.add = function(req, res, next) {
       });
     };
     if (edit) {
-      CaptainModel.findById(captain._id, function(err, captain_to_save) {
+      CaptainModel.findById(captain._id, function (err, captain_to_save) {
         if (err)
           throw err;
         captain_to_save.current_level = captain.current_level;
@@ -132,7 +133,7 @@ exports.add = function(req, res, next) {
         captain_to_save.current_hp_ccs = captain.current_hp_ccs;
         captain_to_save.current_atk_ccs = captain.current_atk_ccs;
         captain_to_save.current_rcv_ccs = captain.current_rcv_ccs;
-        captain_to_save.save(function(err) {
+        captain_to_save.save(function (err) {
           if (err)
             throw err;
           update_user();
@@ -141,7 +142,7 @@ exports.add = function(req, res, next) {
       });
     } else {
       // Save the captain.
-      captain.save(function(err) {
+      captain.save(function (err) {
         if (err) {
           console.log('Error saving captain: ' + err);
           throw err;
@@ -155,8 +156,8 @@ exports.add = function(req, res, next) {
 };
 
 // Deletes a captain.
-exports.delete = function(req, res, next) {
-  if (typeof req.user == 'undefined') {
+exports.delete = function (req, res, next) {
+  if (typeof req.user === 'undefined') {
     req.flash('error_message', 'Please sign in.');
     res.redirect('/signup');
     next();
@@ -164,7 +165,7 @@ exports.delete = function(req, res, next) {
   }
   var account_id = req.params.account_id;
   var captain_id = req.params.captain_id;
-  UserModel.findById(req.user._id, function(err, user) {
+  UserModel.findById(req.user._id, function (err, user) {
     // In case of any error return
     if (err) {
       console.log('Error deleting captain: ' + err);
@@ -183,7 +184,7 @@ exports.delete = function(req, res, next) {
     // Found user.
     var account;
     for (var index in user.accounts) {
-      if (user.accounts[index].id == account_id) {
+      if (user.accounts[index].id === account_id) {
         account = user.accounts[index];
         break;
       }
@@ -196,14 +197,16 @@ exports.delete = function(req, res, next) {
       return;
     }
     account._captains.splice(account._captains.indexOf(captain_id), 1);
-    user.save(function(err) {
+    // Increment version because we're modifying arrays in the document.
+    user.increment();
+    user.save(function (err) {
       if (err) {
         console.log('Error saving user: ' + err);
         throw err;
       } else {
         console.log('Successfully deleted captain reference.');
         // Delete the captain.
-        var callback = function(err, captain) {
+        var callback = function (err, captain) {
           if (err)
             throw err;
           console.log('Deleted captain');
