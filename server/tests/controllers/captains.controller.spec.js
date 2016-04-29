@@ -39,9 +39,9 @@ var empty_next = function () {};
 
 describe('captains.add logged out failure', function () {
   it('should reject logged out users and redirect to /signup', function (done) {
-    // Req has no user to simulate user being logged out.
-    var req = new RequestMock();
-    var res = new ResponseMock();
+    // Req has no user. This is to simulate the user being logged out.
+    let req = new RequestMock();
+    const res = new ResponseMock();
     CaptainsController.add(req, res, empty_next);
     expect(req.getFlash('error_message')).to.equal('Please sign in.');
     expect(res.getRedirectPath()).to.equal('/signup');
@@ -188,9 +188,10 @@ function getSimpleSockets(captain) {
 
 function expectCaptainStored(expected_captain, callback) {
   // Look for captain.
-  CaptainModel.findById(expected_captain._id, function (err, captain) {
+  CaptainModel.findById(expected_captain._id, (err, captain) => {
     if (err)
       throw err;
+    console.log('Looking for captain with id: ', expected_captain._id);
     expect(captain.current_level).to.equal(expected_captain.current_level);
     expect(captain.current_special_level).to.equal(expected_captain.current_special_level);
     expect(captain._unit).to.equal(expected_captain._unit);
@@ -521,17 +522,19 @@ describe('CaptainsController.delete', function () {
 
     connectDB(function () {
       // Store the fake user into the DB.
-      user.save(function (err) {
-        if (err)
+      user.save((err) => {
+        if (err) {
           throw err;
+        }
+        console.log('User saved: ', user);
 
         // Setup fake user.
         req = new RequestMock();
         req.login({
-          _id: user_id
+          _id: user_id,
         });
         req.setBody({
-          account_id: 1
+          account_id: 1,
         });
         res = new ResponseMock();
         addCaptain(account1_id, captain, req, res, done);

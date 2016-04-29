@@ -9,6 +9,13 @@ function getNumber(num) {
 
 // Adds (or edits) a captain.
 exports.add = function add(req, res, next) {
+  if (!req.user) {
+    req.flash('error_message', 'Please sign in.');
+    res.redirect('/signup');
+    next();
+    return;
+  }
+
   const account_id = req.body.account_id;
   const hp_ccs = getNumber(req.body.current_hp_ccs);
   const atk_ccs = getNumber(req.body.current_atk_ccs);
@@ -23,13 +30,6 @@ exports.add = function add(req, res, next) {
     current_rcv_ccs: rcv_ccs,
     current_sockets: [],
   });
-
-  if (!req.user) {
-    req.flash('error_message', 'Please sign in.');
-    res.redirect('/signup');
-    next();
-    return;
-  }
   if ((hp_ccs + atk_ccs + rcv_ccs) > 200) {
     req.flash('error_message', 'You can only have at most 200 cotton candies per unit.');
     res.redirect('/account');
@@ -48,14 +48,15 @@ exports.add = function add(req, res, next) {
   if (req.body.socket_types) {
     if (typeof req.body.socket_types === 'object') {
       for (const index in req.body.socket_types) {
-        var socket = {
+        if (!{}.hasOwnProperty.call(req.body.socket_types, index)) continue;
+        const socket = {
           _socket: req.body.socket_types[index],
-          socket_level: req.body.socket_levels[index]
+          socket_level: req.body.socket_levels[index],
         };
         captain.current_sockets.push(socket);
       }
     } else {
-      var socket = {
+      const socket = {
         _socket: req.body.socket_types,
         socket_level: req.body.socket_levels
       };
@@ -63,7 +64,7 @@ exports.add = function add(req, res, next) {
       console.log('adding captain: ', captain);
     }
   }
-  UserModel.findById(req.user._id, function (err, user) {
+  UserModel.findById(req.user._id, (err, user) => {
     // In case of any error return
     if (err) {
       console.log('Error adding captain, invalid id? Err: ', err, ', ID: ', req.user._id);
@@ -123,7 +124,7 @@ exports.add = function add(req, res, next) {
       });
     };
     if (edit) {
-      CaptainModel.findById(captain._id, function (err, captain_to_save) {
+      CaptainModel.findById(captain._id, (err, captain_to_save) => {
         if (err)
           throw err;
         captain_to_save.current_level = captain.current_level;
