@@ -212,6 +212,8 @@ function expectCaptainAdded(account_id, expected_captain, callback) {
   UserModel.findById(expected_captain._user, function(err, user) {
     if (err)
       throw err;
+    console.log("Looked for user with id: ", expected_captain._user);
+    expect(user).to.exist;
     // User expectations
     // Num accounts should not have changed.
     expect(user.accounts).to.have.lengthOf(2);
