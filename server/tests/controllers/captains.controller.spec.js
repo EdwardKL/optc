@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 import mocha from 'mocha';
 import chai from 'chai';
 import request from 'supertest';
@@ -246,7 +244,7 @@ function expectCaptainDeleted(account_id, deleted_captain, delete_captain_callba
   });
 }
 
-describe('captains controller add db tests', function() {
+describe('CaptainsController.add', function() {
   const user_id = mongoose.Types.ObjectId();
   const account0_id = 12;
   const account1_id = 56;
@@ -254,7 +252,7 @@ describe('captains controller add db tests', function() {
     res;
 
   beforeEach('Store a user', function(done) {
-    this.timeout(10 * 1e3);
+    this.timeout(20 * 1e3);
     const account0 = {
       id: account0_id
     };
@@ -269,27 +267,27 @@ describe('captains controller add db tests', function() {
       ]
     });
     connectDB(function() {
-      // Setup fake user.
-      req = new RequestMock();
-      req.login({
-        _id: user_id
-      });
-      req.setBody({
-        account_id: 1
-      });
-      res = new ResponseMock();
-
       // Store the fake user into the DB.
       user.save(function(err) {
         if (err)
           throw err;
+        // Setup fake user.
+        req = new RequestMock();
+        req.login({
+          _id: user_id
+        });
+        console.log("logged in");
+        req.setBody({
+          account_id: 1
+        });
+        res = new ResponseMock();
         done();
       });
     });
   });
 
   afterEach(function(done) {
-    this.timeout(10 * 1e3);
+    this.timeout(20 * 1e3);
     dropDB(done);
   });
 
@@ -479,7 +477,7 @@ describe('captains controller add db tests', function() {
   });
 });
 
-describe('captains controller delete db tests', function() {
+describe('CaptainsController.delete', function() {
   const user_id = mongoose.Types.ObjectId();
   const account0_id = 12;
   const account1_id = 56;
@@ -515,26 +513,23 @@ describe('captains controller delete db tests', function() {
         account1
       ]
     });
-    connectDB(function() {
-      // Setup fake user.
-      req = new RequestMock();
-      req.login({
-        _id: user_id
-      });
-      req.setBody({
-        account_id: 1
-      });
-      res = new ResponseMock();
 
+    connectDB(function() {
       // Store the fake user into the DB.
       user.save(function(err) {
         if (err)
           throw err;
 
-        var add_captain_callback = function() {
-          done();
-        };
-        addCaptain(account1_id, captain, req, res, add_captain_callback);
+        // Setup fake user.
+        req = new RequestMock();
+        req.login({
+          _id: user_id
+        });
+        req.setBody({
+          account_id: 1
+        });
+        res = new ResponseMock();
+        addCaptain(account1_id, captain, req, res, done);
       });
     });
   });
