@@ -42,8 +42,6 @@ describe('POST /signup', function() {
   });
 
   it('Should correctly register a user', function(done) {
-    // 5s timeout. Eventually we'll want to keep the default of 2s, but our site is slow :(
-    this.timeout(5 * 1e3);
     request(app)
       .post('/signup')
       .send({

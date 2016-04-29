@@ -346,7 +346,6 @@ describe('CaptainsController.add', function() {
   });
 
   it('should add a captain with no sockets', function(done) {
-    this.timeout(5 * 1e3);
     const expected_captain = new CaptainModel({
       current_level: 10,
       current_special_level: 9,
@@ -396,7 +395,6 @@ describe('CaptainsController.add', function() {
   });
 
   it('should add a captain with many sockets', function(done) {
-    this.timeout(5 * 1e3);
     const socket0 = {
       _socket: 2,
       socket_level: 3
@@ -538,7 +536,6 @@ describe('CaptainsController.delete', function() {
   });
 
   afterEach(function(done) {
-    this.timeout(10 * 1e3);
     dropDB(done);
   });
 
