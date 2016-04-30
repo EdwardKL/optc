@@ -273,10 +273,7 @@ describe('CaptainsController.add', () => {
         account0.save((err0) => {
           if (err0) throw err0;
           const account1 = new AccountModel({ _id: account1_id });
-          account1.save((err1) => {
-            if (err1) throw err1;
-            done();
-          });
+          account1.save(done);
         });
       });
     });
@@ -298,7 +295,7 @@ describe('CaptainsController.add', () => {
       account_id: 1
     });
 
-    CaptainsController.add(req, res, function () {
+    CaptainsController.add(req, res, () => {
       expect(req.getFlash('error_message')).to.equal(
         getErrorMessage(ERROR_CODES.CAPTAINS_ADD_ERROR_1));
       expect(res.getRedirectPath()).to.equal('/account');
@@ -342,7 +339,7 @@ describe('CaptainsController.add', () => {
     });
   });
 
-  it('should add a captain with one socket', function (done) {
+  it('should add a captain with one socket', (done) => {
     const socket = {
       _socket: 2,
       socket_level: 3
@@ -355,20 +352,20 @@ describe('CaptainsController.add', () => {
       current_hp_ccs: 90,
       current_atk_ccs: 10,
       current_rcv_ccs: 80,
-      current_sockets: [socket]
+      current_sockets: [socket],
     });
-    var callback = function () {
+    const callback = () => {
       // Req/res expectations.
       expect(req.getFlash('info_message')).to.equal('Captain added.');
       expect(res.getRedirectPath()).to.equal('/account');
       done();
     };
-    addCaptain(account0_id, expected_captain, req, res, function () {
+    addCaptain(account0_id, expected_captain, req, res, () => {
       expectCaptainAdded(account0_id, expected_captain, callback);
     });
   });
 
-  it('should add a captain with many sockets', function (done) {
+  it('should add a captain with many sockets', (done) => {
     const socket0 = {
       _socket: 2,
       socket_level: 3
@@ -484,7 +481,7 @@ describe('CaptainsController.delete', function () {
     res = new ResponseMock();
 
     connectDB(() => {
-        // Store the fake user into the DB.
+      // Store the fake user into the DB.
       user.save((err) => {
         if (err) throw err;
         console.log('Saved user: ', user);
@@ -511,7 +508,7 @@ describe('CaptainsController.delete', function () {
     // Make a fake user login, with a different id from the one that was stored in the DB.
     req.login({
       _id: new mongoose.Types.ObjectId(),
-      _accounts: [],
+      _accounts: [new mongoose.Types.ObjectId(), new mongoose.Types.ObjectId()],
     });
 
     const delete_captain_callback = () => {
