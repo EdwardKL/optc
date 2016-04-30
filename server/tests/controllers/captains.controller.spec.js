@@ -277,6 +277,19 @@ describe('CaptainsController.add', () => {
         .exec((err4, returned_user) => {
           if (err4) throw err4;
           console.log('DID USER GET SAVED? ', returned_user);});
+        UserModel.findById(user_id)
+          .populate('_accounts')
+          .exec((err4, returned_user) => {
+            if (err4) throw err4;
+            console.log('DID USER GET SAVED? 2 ', returned_user);});
+        const c = new CaptainModel({
+          _user: user_id,
+        });
+        UserModel.findById(c._user)
+            .populate('_accounts')
+            .exec((err4, returned_user) => {
+              if (err4) throw err4;
+              console.log('DID USER GET SAVED? 3 ', returned_user);});
         console.log('user saved: ', saved_user);
         const account0 = new AccountModel({ _id: account0_id });
         account0.save((err0) => {
@@ -494,6 +507,19 @@ describe('CaptainsController.delete', function () {
         .exec((err4, returned_user) => {
           if (err4) throw err4;
           console.log('DID USER GET SAVED? ', returned_user);});
+        UserModel.findById(user_id)
+          .populate('_accounts')
+          .exec((err4, returned_user) => {
+            if (err4) throw err4;
+            console.log('DID USER GET SAVED? 2 ', returned_user);});
+        const c = new CaptainModel({
+          _user: user_id,
+        });
+        UserModel.findById(c._user)
+            .populate('_accounts')
+            .exec((err4, returned_user) => {
+              if (err4) throw err4;
+              console.log('DID USER GET SAVED? 3 ', returned_user);});
         console.log('Saved user: ', user);
         const account0 = new AccountModel({ _id: account0_id });
         account0.save((err0) => {

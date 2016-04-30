@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import AccountModel from '../models/account';
 import UserModel from '../models/user';
 import { redirectIfLoggedOut, hasId } from './utils';
@@ -41,7 +42,7 @@ exports.get = function get(req, res) {
 exports.add = function add(req, res) {
   if (redirectIfLoggedOut(req, res, () => {})) return;
   const account = new AccountModel(req.body);
-  if (req.body.account_id) account._id = req.body.account_id;
+  if (req.body.account_id) account._id = new mongoose.Types.ObjectId(req.body.account_id);
   validateAccount(account);
   UserModel.findById(req.user._id, (user_err, user) => {
     // In case of any error return
