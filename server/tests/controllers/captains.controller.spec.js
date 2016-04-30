@@ -211,12 +211,13 @@ function getAccount(account_id, user) {
 }
 
 function expectCaptainAdded(account_id, expected_captain, callback) {
+  console.log('expectCaptainAdded');
   UserModel.findById(expected_captain._user)
   .populate('_accounts')
   .exec((err, user) => {
     if (err) throw err;
     console.log('Looked for user with id: ', expected_captain._user);
-    expect(user).to.exist;
+    expect(user).to.exist();
     // User expectations
     // Num accounts should not have changed.
     expect(user._accounts).to.have.lengthOf(2);
@@ -228,10 +229,13 @@ function expectCaptainAdded(account_id, expected_captain, callback) {
 }
 
 function expectCaptainDeleted(account_id, deleted_captain, delete_captain_callback) {
+  console.log('expectCaptainDeleted');
   UserModel.findById(deleted_captain._user)
   .populate('_accounts')
   .exec((err, user) => {
     if (err) throw err;
+    console.log('Looked for user with id: ', expected_captain._user);
+    expect(user).to.exist();
     // User expectations
     // Num accounts should not have changed.
     expect(user._accounts).to.have.lengthOf(2);
@@ -267,8 +271,9 @@ describe('CaptainsController.add', () => {
 
     connectDB(() => {
       // Store the fake user into the DB.
-      user.save((err) => {
+      user.save((err, saved_user) => {
         if (err) throw err;
+        console.log('user saved: ', saved_user);
         const account0 = new AccountModel({ _id: account0_id });
         account0.save((err0) => {
           if (err0) throw err0;
@@ -279,21 +284,17 @@ describe('CaptainsController.add', () => {
     });
   });
 
-  afterEach(function (done) {
+  afterEach((done) => {
     this.timeout(20 * 1e3);
     dropDB(done);
   });
 
-  it('should send an error message and redirect to /account if user id was invalid', function (done) {
+  it('should send an error message and redirect to /account if user id was invalid', (done) => {
     // Reset request.
     req = new RequestMock();
     // Make a fake user login, with an invalid id.
-    req.login({
-      _id: 'invalid_id'
-    });
-    req.setBody({
-      account_id: 1
-    });
+    req.login({ _id: 'invalid_id' });
+    req.setBody({ account_id: 1 });
 
     CaptainsController.add(req, res, () => {
       expect(req.getFlash('error_message')).to.equal(
@@ -342,7 +343,7 @@ describe('CaptainsController.add', () => {
   it('should add a captain with one socket', (done) => {
     const socket = {
       _socket: 2,
-      socket_level: 3
+      socket_level: 3,
     };
     const expected_captain = new CaptainModel({
       current_level: 10,

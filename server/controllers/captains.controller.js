@@ -99,7 +99,7 @@ exports.add = function add(req, res, next) {
       CaptainModel.findByIdAndUpdate(captain._id, captain, options, (captain_err) => {
         if (captain_err) throw captain_err;
         const action = edit ? 'edited' : 'added';
-        console.log('Successfully ' + action + ' captain.');
+        console.log('Successfully ' + action + ' captain: ', captain);
         req.flash('info_message', `Captain ${action}.`);
         res.redirect('/account');
         next();
