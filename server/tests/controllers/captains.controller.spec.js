@@ -16,6 +16,14 @@ function connectDB(done) {
   mongoose.connect(mongoConfig.mongoURL, function (err) {
     if (err) return done(err);
     console.log('DB connected.');
+    mongoose.connection.on('error', function (e) {
+      if (e) throw e;
+      console.log('Error with DB connection');
+    });
+    mongoose.connection.on('disconnected', function (e) {
+      if (e) throw e;
+      console.log('DB disconnected');
+    });
     done();
   });
 }
