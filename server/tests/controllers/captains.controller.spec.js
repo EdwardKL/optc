@@ -1,8 +1,7 @@
-import mocha from 'mocha';
 import chai from 'chai';
-import request from 'supertest';
 import mongoose from 'mongoose';
 import CaptainsController from '../../controllers/captains.controller';
+import AccountModel from '../../models/account';
 import CaptainModel from '../../models/captain';
 import UserModel from '../../models/user';
 import RequestMock from '../mocks/request.mock';
@@ -169,7 +168,7 @@ function editCaptain(account_id, captain, request, result, callback) {
 function deleteCaptain(account_id, captain_id, request, result, callback) {
   request.setParams({
     account_id: account_id,
-    captain_id: captain_id
+    captain_id: captain_id,
   });
   CaptainsController.delete(request, result, callback);
 }
@@ -189,8 +188,7 @@ function getSimpleSockets(captain) {
 function expectCaptainStored(expected_captain, callback) {
   // Look for captain.
   CaptainModel.findById(expected_captain._id, (err, captain) => {
-    if (err)
-      throw err;
+    if (err) throw err;
     console.log('Looking for captain with id: ', expected_captain._id);
     expect(captain.current_level).to.equal(expected_captain.current_level);
     expect(captain.current_special_level).to.equal(expected_captain.current_special_level);
@@ -204,23 +202,24 @@ function expectCaptainStored(expected_captain, callback) {
 }
 
 function getAccount(account_id, user) {
-  var result;
-  user.accounts.map((account) => {
-    if (account_id === account.id)
-      result = account;
-  });
-  return result;
+  for (const account of user._accounts) {
+    if (account._id.toString().valueOf() === account_id.toString().valueOf()) {
+      return account;
+    }
+  }
+  return null;
 }
 
 function expectCaptainAdded(account_id, expected_captain, callback) {
-  UserModel.findById(expected_captain._user, function (err, user) {
-    if (err)
-      throw err;
+  UserModel.findById(expected_captain._user)
+  .populate('_accounts')
+  .exec((err, user) => {
+    if (err) throw err;
     console.log('Looked for user with id: ', expected_captain._user);
     expect(user).to.exist;
     // User expectations
     // Num accounts should not have changed.
-    expect(user.accounts).to.have.lengthOf(2);
+    expect(user._accounts).to.have.lengthOf(2);
     // Captain reference should be updated in account.
     const account = getAccount(account_id, user);
     expect(account._captains).to.contain(expected_captain._id);
@@ -229,67 +228,56 @@ function expectCaptainAdded(account_id, expected_captain, callback) {
 }
 
 function expectCaptainDeleted(account_id, deleted_captain, delete_captain_callback) {
-  UserModel.findById(deleted_captain._user, function (err, user) {
-    if (err)
-      throw err;
+  UserModel.findById(deleted_captain._user)
+  .populate('_accounts')
+  .exec((err, user) => {
+    if (err) throw err;
     // User expectations
     // Num accounts should not have changed.
-    expect(user.accounts).to.have.lengthOf(2);
+    expect(user._accounts).to.have.lengthOf(2);
     // Captain reference should not be in the account anymore.
     const account = getAccount(account_id, user);
     expect(account._captains).to.not.contain(deleted_captain._id);
     // Look for the deleted captain.
-    CaptainModel.findById(deleted_captain._id, function (err, captain) {
-      if (err)
-        throw err;
+    CaptainModel.findById(deleted_captain._id, (err1, captain) => {
+      if (err1) throw err1;
       // We shouldn't find the deleted captain.
       expect(captain).to.not.exist;
-      console.log('find by id');
       delete_captain_callback();
     });
   });
 }
 
-describe('CaptainsController.add', function () {
-  const user_id = mongoose.Types.ObjectId();
-  const account0_id = 12;
-  const account1_id = 56;
-  var req,
-    res;
+describe('CaptainsController.add', () => {
+  const user_id = new mongoose.Types.ObjectId();
+  const account0_id = new mongoose.Types.ObjectId();
+  const account1_id = new mongoose.Types.ObjectId();
+  var req, res;
 
-  beforeEach('Store a user', function (done) {
+  beforeEach('Store a user', function beforeEach(done) {
     this.timeout(20 * 1e3);
-    const account0 = {
-      id: account0_id
-    };
-    const account1 = {
-      id: account1_id
-    };
     const user = new UserModel({
       _id: user_id,
-      accounts: [
-        account0,
-        account1
-      ]
+      _accounts: [account0_id, account1_id],
     });
     // Setup fake user.
     req = new RequestMock();
-    req.login({
-      _id: user_id
-    });
-    console.log('logged in');
-    req.setBody({
-      account_id: 1
-    });
+    req.login({ _id: user_id });
     res = new ResponseMock();
-    connectDB(function () {
+
+    connectDB(() => {
       // Store the fake user into the DB.
-      user.save(function (err) {
-        if (err)
-          throw err;
-        console.log('stored user: ', user._id);
-        console.log('user: ', user);
-        done();
+      user.save((err) => {
+        if (err) throw err;
+        const account0 = new AccountModel({ _id: account0_id });
+        account0.save((err0) => {
+          if (err0) throw err0;
+          const account1 = new AccountModel({ _id: account1_id });
+          account1.save((err1) => {
+            if (err1) throw err1;
+            done();
+          });
+        });
       });
     });
   });
@@ -318,39 +306,21 @@ describe('CaptainsController.add', function () {
     });
   });
 
-  it('should send an error message and redirect to /signup if user was not found', function (done) {
-    // Reset request.
-    req = new RequestMock();
-    // Make a fake user login, with a different id from the one that was stored in the DB.
-    req.login({
-      _id: mongoose.Types.ObjectId()
-    });
-    req.setBody({
-      account_id: 1
-    });
-
-    CaptainsController.add(req, res, function () {
-      expect(req.getFlash('error_message')).to.equal('Please sign in.');
-      expect(res.getRedirectPath()).to.equal('/signup');
-      done();
-    });
-  });
-
-  it('should send an error message and redirect to /account if requested account was not found', function (done) {
+  it('should send an error message and redirect to /account if requested account was not found', (done) => {
     // Account id 1 doesn't exist.
     req.setBody({
-      account_id: 1
+      account_id: 'invalidobjectid',
     });
 
-    CaptainsController.add(req, res, function () {
+    CaptainsController.add(req, res, () => {
       expect(req.getFlash('error_message')).to.equal(
-        getErrorMessage(ERROR_CODES.CAPTAINS_ADD_ERROR_2));
+        getErrorMessage(ERROR_CODES.CAPTAINS_ADD_ERROR_1));
       expect(res.getRedirectPath()).to.equal('/account');
       done();
     });
   });
 
-  it('should add a captain with no sockets', function (done) {
+  it('should add a captain with no sockets', (done) => {
     const expected_captain = new CaptainModel({
       current_level: 10,
       current_special_level: 9,
@@ -359,15 +329,15 @@ describe('CaptainsController.add', function () {
       current_hp_ccs: 90,
       current_atk_ccs: 10,
       current_rcv_ccs: 80,
-      current_sockets: []
+      current_sockets: [],
     });
-    var callback = function () {
+    const callback = () => {
       // Req/res expectations.
       expect(req.getFlash('info_message')).to.equal('Captain added.');
       expect(res.getRedirectPath()).to.equal('/account');
       done();
     };
-    addCaptain(account1_id, expected_captain, req, res, function () {
+    addCaptain(account1_id, expected_captain, req, res, () => {
       expectCaptainAdded(account1_id, expected_captain, callback);
     });
   });
@@ -387,7 +357,6 @@ describe('CaptainsController.add', function () {
       current_rcv_ccs: 80,
       current_sockets: [socket]
     });
-    console.log('user id:', user_id);
     var callback = function () {
       // Req/res expectations.
       expect(req.getFlash('info_message')).to.equal('Captain added.');
@@ -484,11 +453,10 @@ describe('CaptainsController.add', function () {
 });
 
 describe('CaptainsController.delete', function () {
-  const user_id = mongoose.Types.ObjectId();
-  const account0_id = 12;
-  const account1_id = 56;
-  var req,
-    res;
+  const user_id = new mongoose.Types.ObjectId();
+  const account0_id = new mongoose.Types.ObjectId();
+  const account1_id = new mongoose.Types.ObjectId();
+  var req, res;
   const socket = {
     _socket: 2,
     socket_level: 3
@@ -504,127 +472,96 @@ describe('CaptainsController.delete', function () {
     current_sockets: [socket]
   });
 
-  beforeEach('Store a user and a captain', function (done) {
+  beforeEach('Store a user and a captain', (done) => {
     this.timeout(20 * 1e3);
-    const account0 = {
-      id: account0_id
-    };
-    const account1 = {
-      id: account1_id
-    };
     const user = new UserModel({
       _id: user_id,
-      accounts: [
-        account0,
-        account1
-      ]
+      _accounts: [account0_id, account1_id],
     });
+      // Setup fake user.
+    req = new RequestMock();
+    req.login(user);
+    res = new ResponseMock();
 
-    connectDB(function () {
-      // Store the fake user into the DB.
+    connectDB(() => {
+        // Store the fake user into the DB.
       user.save((err) => {
-        if (err) {
-          throw err;
-        }
-        console.log('User saved: ', user);
-
-        // Setup fake user.
-        req = new RequestMock();
-        req.login({
-          _id: user_id,
+        if (err) throw err;
+        const account0 = new AccountModel({ _id: account0_id });
+        account0.save((err0) => {
+          if (err0) throw err0;
+          const account1 = new AccountModel({ _id: account1_id });
+          account1.save((err1) => {
+            if (err1) throw err1;
+            addCaptain(account1_id, captain, req, res, done);
+          });
         });
-        req.setBody({
-          account_id: 1,
-        });
-        res = new ResponseMock();
-        addCaptain(account1_id, captain, req, res, done);
       });
     });
   });
 
-  afterEach(function (done) {
+  afterEach((done) => {
     dropDB(done);
   });
 
-  it('should fail if we have an error finding the user when deleting a captain', function (done) {
+  it('should fail if the wrong user was deleting a captain', (done) => {
     // Reset request.
     req = new RequestMock();
     // Make a fake user login, with a different id from the one that was stored in the DB.
     req.login({
-      _id: 'some_invalid_id'
+      _id: new mongoose.Types.ObjectId(),
+      _accounts: [],
     });
 
-    var delete_captain_callback = function () {
+    const delete_captain_callback = () => {
       // Should fail and redirect to account.
-      expect(req.getFlash('error_message')).to.equal(getErrorMessage(ERROR_CODES.CAPTAINS_DELETE_ERROR_1));
+      expect(req.getFlash('error_message')).to.equal(getErrorMessage(ERROR_CODES.CAPTAINS_DELETE_ERROR_4));
       expect(res.getRedirectPath()).to.equal('/account');
       done();
     };
-    deleteCaptain(account1_id, captain._id, req, res, function () {
+    deleteCaptain(account1_id, captain._id, req, res, () => {
       // The captain should still be there, because the deletion should've failed.
       expectCaptainAdded(account1_id, captain, delete_captain_callback);
     });
   });
 
-  it('should fail if user was not found when deleting a captain', function (done) {
-    // Reset request.
-    req = new RequestMock();
-    // Make a fake user login, with a different id from the one that was stored in the DB.
-    req.login({
-      _id: mongoose.Types.ObjectId()
-    });
-    req.setBody({
-      account_id: 1
-    });
-
-    var delete_captain_callback = function () {
+  it('should fail if account was not found when deleting a captain', (done) => {
+    const delete_captain_callback = () => {
       // Should fail and redirect to account.
-      expect(req.getFlash('error_message')).to.equal(getErrorMessage(ERROR_CODES.CAPTAINS_DELETE_ERROR_2));
+      // This is the same error as above, because a wrong account would not be associated with the current user.
+      expect(req.getFlash('error_message')).to.equal(getErrorMessage(ERROR_CODES.CAPTAINS_DELETE_ERROR_4));
       expect(res.getRedirectPath()).to.equal('/account');
       done();
     };
-    deleteCaptain(account1_id, captain._id, req, res, function () {
+    const wrong_account = new mongoose.Types.ObjectId();
+    deleteCaptain(wrong_account, captain._id, req, res, () => {
       // The captain should still be there, because the deletion should've failed.
       expectCaptainAdded(account1_id, captain, delete_captain_callback);
     });
   });
 
-  it('should fail if account was not found when deleting a captain', function (done) {
-    var delete_captain_callback = function () {
-      // Should fail and redirect to account.
-      expect(req.getFlash('error_message')).to.equal(getErrorMessage(ERROR_CODES.CAPTAINS_DELETE_ERROR_3));
-      expect(res.getRedirectPath()).to.equal('/account');
-      done();
-    };
-    const wrong_account = account1_id + 10;
-    deleteCaptain(wrong_account, captain._id, req, res, function () {
-      // The captain should still be there, because the deletion should've failed.
-      expectCaptainAdded(account1_id, captain, delete_captain_callback);
-    });
-  });
-
-  it('should not delete a captain if the user is logged out', function (done) {
+  it('should not delete a captain if the user is logged out', (done) => {
     req.logout();
-    var delete_captain_callback = function () {
+    const delete_captain_callback = () => {
       // Should fail and redirect to signup.
       expect(req.getFlash('error_message')).to.equal('Please sign in.');
       expect(res.getRedirectPath()).to.equal('/signup');
       done();
     };
-    deleteCaptain(account1_id, captain._id, req, res, function () {
+    deleteCaptain(account1_id, captain._id, req, res, () => {
       // The captain should still be there, because the deletion should've failed.
       expectCaptainAdded(account1_id, captain, delete_captain_callback);
     });
   });
 
-  it('should delete a captain', function (done) {
-    var delete_captain_callback = function () {
+  it('should delete a captain', (done) => {
+    const delete_captain_callback = () => {
       // Req/res expectations.
       expect(req.getFlash('info_message')).to.equal('Captain deleted.');
       expect(res.getRedirectPath()).to.equal('/account');
       done();
     };
-    deleteCaptain(account1_id, captain._id, req, res, function () {
+    deleteCaptain(account1_id, captain._id, req, res, () => {
       expectCaptainDeleted(account1_id, captain, delete_captain_callback);
     });
   });

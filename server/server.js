@@ -59,12 +59,12 @@ var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var passport = require('passport');
 
-passport.serializeUser(function(user, done) {
+passport.serializeUser(function (user, done) {
   done(null, user._id);
 });
 
-passport.deserializeUser(function(id, done) {
-  var callback = function(err, user) {
+passport.deserializeUser(function (id, done) {
+  var callback = function (err, user) {
     done(err, user);
   };
   User
@@ -82,8 +82,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 
   // Initialize strategies
-getGlobbedFiles('./server/strategies/*.js').forEach(function(strategy) {
-	require(path.resolve(strategy))();
+getGlobbedFiles('./server/strategies/*.js').forEach(function (strategy) {
+  require(path.resolve(strategy))();
 });
 
 function getGlobbedFiles(globPatterns, removeRoot) {
@@ -98,16 +98,16 @@ function getGlobbedFiles(globPatterns, removeRoot) {
 
   // If glob pattern is array so we use each pattern in a recursive way, otherwise we use glob
   if (_.isArray(globPatterns)) {
-    globPatterns.forEach(function(globPattern) {
+    globPatterns.forEach(function (globPattern) {
       output = _.union(output, _this.getGlobbedFiles(globPattern, removeRoot));
     });
   } else if (_.isString(globPatterns)) {
     if (urlRegex.test(globPatterns)) {
       output.push(globPatterns);
     } else {
-      var files = glob(globPatterns, {sync: true});
+      var files = glob(globPatterns, { sync: true });
       if (removeRoot) {
-        files = files.map(function(file) {
+        files = files.map(function (file) {
           return file.replace(removeRoot, '');
         });
       }
@@ -117,7 +117,7 @@ function getGlobbedFiles(globPatterns, removeRoot) {
   }
 
   return output;
-};
+}
 
 // NOTE: This has to be done after model require statements.
 require('./routes/accounts.routes.js')(app);
@@ -161,7 +161,6 @@ const renderFullPage = (body_html, initialState) => {
 
 const protected_paths = ['/account'];
 
-import { Alert, Row, Grid } from 'react-bootstrap';
 import unit_selections from '../data/unit_selections.json';
 import socket_selections from '../data/socket_selections.json';
 // Server Side Rendering based on routes matched by React-router.
@@ -174,45 +173,44 @@ app.use((req, res) => {
     if (!renderProps) {
       return res.status(404).end('Not found!');
     }
-    
-    if (req.url == '/auth/oauth-signup') {
+
+    if (req.url === '/auth/oauth-signup') {
       // If not logged in OR has a username, redirect outta here.
       if (!req.user || (req.user.username && req.user.username.length > 0)) {
-        res.redirect('/');
-        return;
+        return res.redirect('/');
       }
     }
 
-    if (protected_paths.indexOf(req.url) != -1) {
+    if (protected_paths.indexOf(req.url) !== -1) {
       console.log('Accessing protected path. Checking authentication status...');
       if (!req.isAuthenticated()) {
         // TODO: Maybe redirect to login instead?
         req.flash('error_message', 'Please sign in.');
         return res.redirect('/signup');
       }
-    
+
       // This is an OAuth user with no username set yet. Redirect to get a username.
-      if (req.user && (!req.user.username || req.user.username.length == 0)) {
+      if (req.user && (!req.user.username || req.user.username.length === 0)) {
         req.flash('info_message', 'You need a username to proceed.');
         return res.redirect('/auth/oauth-signup');
       }
     }
 
     var user = req.user;
-    var initialState = {unit_selections: unit_selections, socket_selections: socket_selections};
-    if (typeof user != 'undefined') {
+    var initialState = { identity: { unit_selections: unit_selections, socket_selections: socket_selections } };
+    if (typeof user !== 'undefined') {
         // Clear out sensitive data first.
-        user.salt = '';
-        user.password = '';
+      user.salt = '';
+      user.password = '';
     }
-    initialState.user = user;
+    initialState.identity.user = user;
     const info_message = req.flash('info_message')[0];
     const error_message = req.flash('error_message')[0];
     if (info_message) {
-      initialState.info_message = info_message;
+      initialState.identity.info_message = info_message;
     }
     if (error_message) {
-      initialState.error_message = error_message;
+      initialState.identity.error_message = error_message;
     }
     const store = configureStore(initialState);
     fetchComponentData(store.dispatch, renderProps.components, renderProps.params)
@@ -225,13 +223,13 @@ app.use((req, res) => {
             </div>
           </Provider>
         );
-        
+
         const finalState = store.getState();
 
         res.status(200).end(renderFullPage(initialView, finalState));
       })
       .catch((err) => {
-        console.log("Error in server side rendering: ", err);
+        console.log('Error in server side rendering: ', err);
         res.end(renderFullPage('Error', {}));
       });
   });

@@ -1,25 +1,25 @@
-import React, {Component, PropTypes} from 'react';
-import {Modal, Input, Row, Col, Button} from 'react-bootstrap';
+import React, { Component, PropTypes } from 'react';
+import { Modal, Input, Row, Col, Button } from 'react-bootstrap';
 
 class AccountEditor extends Component {
-  constructor(props, context){
+  constructor(props, context) {
     super(props, context);
     this.state = {};
     this.state.showModal = false;
     this.state.edit = props.edit;
     this.state.account_id = this.state.edit ? props.account_id : -1;
-    this.state.label = this.state.edit ? "Edit" : "Add Account";
-    this.state.title = this.state.edit ? "Edit Account" : "Add Account";
-    this.state.link_type = this.state.edit ? "link" : "primary";
-    this.state.action_name = this.state.edit ? "Edit" : "Add";
-    this.state.default_crew_name = this.state.edit ? props.crew_name : "";
+    this.state.label = this.state.edit ? 'Edit' : 'Add Account';
+    this.state.title = this.state.edit ? 'Edit Account' : 'Add Account';
+    this.state.link_type = this.state.edit ? 'link' : 'primary';
+    this.state.action_name = this.state.edit ? 'Edit' : 'Add';
+    this.state.default_crew_name = this.state.edit ? props.crew_name : '';
     this.state.default_friend_id = this.state.edit ? props.friend_id : '';
     this.state.default_pirate_level = this.state.edit ? props.pirate_level : 1;
-    this.state.default_region = this.state.edit ? props.region : "global";
+    this.state.default_region = this.state.edit ? props.region : 'global';
     this.close = this.close.bind(this);
     this.open = this.open.bind(this);
   }
-  
+
   close(e) {
     this.setState({ showModal: false });
   }
@@ -27,7 +27,7 @@ class AccountEditor extends Component {
   open(e) {
     this.setState({ showModal: true });
   }
-  
+
   render() {
     return (
       <div>
@@ -74,7 +74,7 @@ class AccountEditor extends Component {
                       <option value="global">Global</option>
                       <option value="japan">Japan</option>
                     </Input>
-                    <input type="hidden" name="id" value={this.state.account_id} />
+                    <input type="hidden" name="account_id" value={this.state.account_id} />
                   </Col>
                 </Row>
             </Modal.Body>
@@ -85,7 +85,7 @@ class AccountEditor extends Component {
           </form>
         </Modal>
       </div>
-    )
+    );
   }
 }
 
@@ -94,7 +94,7 @@ AccountEditor.propTypes = {
   crew_name: PropTypes.string,
   friend_id: PropTypes.number,
   region: PropTypes.string,
-  account_id: PropTypes.number,
+  account_id: PropTypes.string,
 };
 
 export default AccountEditor;

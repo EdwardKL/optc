@@ -1,14 +1,14 @@
-import React, {Component, PropTypes} from 'react';
+import React, { Component, PropTypes } from 'react';
 import * as Actions from '../../redux/actions/actions';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import {Grid, Row, Col, Button, Well, Label, Input} from 'react-bootstrap';
+import { Grid, Row, Col, Button, Well, Label, Input } from 'react-bootstrap';
 
 import FriendFinderResult from '../../components/FriendFinderResult/FriendFinderResult';
 
 class FriendFinder extends Component {
-  constructor(props, context){
-    console.log("calling friend finder constructor");
+  constructor(props, context) {
+    console.log('calling friend finder constructor');
     super(props, context);
     console.log('props: ', props);
     this.state = {};
@@ -23,7 +23,7 @@ class FriendFinder extends Component {
   }
 
   render() {
-    return(
+    return (
       <Grid id="content">
         <Row>
           <h2>
@@ -45,23 +45,23 @@ class FriendFinder extends Component {
         </Row>
         <Row>
           {console.log('search results:', this.state)}
-          {this.state.friend_search_results.map(function(result) {
-            return <FriendFinderResult data={result}/>
+          {this.state.friend_search_results.map(function (result) {
+            return <FriendFinderResult data={result}/>;
           })}
         </Row>
       </Grid>
-    )
+    );
   }
 
 }
 
 FriendFinder.need = [(params) => {
   if (params.captain_id) {
-    console.log("params.captain_id not empty!");
+    console.log('params.captain_id not empty!');
     return Actions.fetchQuery(params.captain_id);
   } else {
-    console.log("params.captain_id is empty!");
-    return Actions.fetchQuery("-1");
+    console.log('params.captain_id is empty!');
+    return Actions.fetchQuery('-1');
   }
 }];
 
@@ -80,7 +80,7 @@ FriendFinder.propTypes = {
 
 function mapStateToProps(store) {
   return {
-    friend_search_results: store.friend_search_results ? store.friend_search_results : []
+    friend_search_results: store.friendFinder.friend_search_results ? store.friendFinder.friend_search_results : []
   };
 }
 

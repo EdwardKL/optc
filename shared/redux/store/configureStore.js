@@ -1,10 +1,10 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import { persistState } from 'redux-devtools';
 import thunk from 'redux-thunk';
-import rootReducer from '../reducers/friend_finder_reducer';
+import rootReducer from '../reducers/reducers';
 import DevTools from '../../container/DevTools/DevTools';
 
-export function configureStore(initialState = {}) {
+export function configureStore(initialState = { friendFinder: {}, accounts: {} }) {
   let finalCreateStore;
 
   if (process.env.CLIENT) {
@@ -21,8 +21,8 @@ export function configureStore(initialState = {}) {
 
   if (module.hot) {
     // Enable Webpack hot module replacement for reducers
-    module.hot.accept('../reducers/reducer', () => {
-      const nextReducer = require('../reducers/reducer');
+    module.hot.accept('../reducers/reducers', () => {
+      const nextReducer = require('../reducers/reducers');
       store.replaceReducer(nextReducer);
     });
   }

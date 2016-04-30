@@ -12,7 +12,7 @@ import AccountView from './container/Account/AccountView';
 const routes = (
   <Route path="/" component={App} >
     <IndexRoute component={HomeView} />
-    <Route path="/account" component={AccountView} />
+    <Route path="/account/:username" component={AccountView} />
     <Route path="/signup" component={SignupView} />
     <Route path="/auth/oauth-signup" component={OAuthSignupView} />
     <Route path="/friend_finder(/:captain_id)" component={FriendFinderView} />

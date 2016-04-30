@@ -1,35 +1,60 @@
+import mongoose from 'mongoose';
+import AccountModel from '../models/account';
 import CaptainModel from '../models/captain';
-import UserModel from '../models/user';
 import { getErrorMessage } from '../../errors/error_handler';
 import ERROR_CODES from '../../constants/error_codes';
+import { redirectIfLoggedOut, hasId } from './utils';
 
+// Converts to a number. If input is undefined, this will return 0.
 function getNumber(num) {
   return num ? Number(num) : 0;
 }
 
-// Adds (or edits) a captain.
-exports.add = function add(req, res, next) {
-  if (!req.user) {
-    req.flash('error_message', 'Please sign in.');
-    res.redirect('/signup');
-    next();
-    return;
+// Returns sockets defined in the given request.
+function getSocketsFromRequest(req) {
+  var sockets = [];
+  if (!req.body.socket_types) return sockets;
+  if (typeof req.body.socket_types === 'object') {
+    for (const index in req.body.socket_types) {
+      if (!{}.hasOwnProperty.call(req.body.socket_types, index)) continue;
+      const socket = {
+        _socket: req.body.socket_types[index],
+        socket_level: req.body.socket_levels[index],
+      };
+      sockets.push(socket);
+    }
+  } else {
+    const socket = {
+      _socket: req.body.socket_types,
+      socket_level: req.body.socket_levels,
+    };
+    sockets.push(socket);
   }
+  return sockets;
+}
 
-  const account_id = req.body.account_id;
-  const hp_ccs = getNumber(req.body.current_hp_ccs);
-  const atk_ccs = getNumber(req.body.current_atk_ccs);
-  const rcv_ccs = getNumber(req.body.current_rcv_ccs);
-  var captain = new CaptainModel({
+// Returns a captain model constructed from data in the given request.
+function getCaptainFromRequest(req) {
+  const id = req.body.captain_id ? req.body.captain_id : new mongoose.Types.ObjectId();
+  const captain = new CaptainModel({
+    _id: id,
     current_level: req.body.current_level,
     current_special_level: req.body.current_special_level,
     _unit: req.body.unit_id,
     _user: req.user._id,
-    current_hp_ccs: hp_ccs,
-    current_atk_ccs: atk_ccs,
-    current_rcv_ccs: rcv_ccs,
-    current_sockets: [],
+    current_hp_ccs: getNumber(req.body.current_hp_ccs),
+    current_atk_ccs: getNumber(req.body.current_atk_ccs),
+    current_rcv_ccs: getNumber(req.body.current_rcv_ccs),
+    current_sockets: getSocketsFromRequest(req),
   });
+  return captain;
+}
+
+// Validates that the input cotton candies are expected values, otherwise redirects user with an error message.
+function validateCCs(captain, req, res, next) {
+  const hp_ccs = captain.current_hp_ccs;
+  const atk_ccs = captain.current_atk_ccs;
+  const rcv_ccs = captain.current_rcv_ccs;
   if ((hp_ccs + atk_ccs + rcv_ccs) > 200) {
     req.flash('error_message', 'You can only have at most 200 cotton candies per unit.');
     res.redirect('/account');
@@ -42,182 +67,105 @@ exports.add = function add(req, res, next) {
     next();
     return;
   }
-  if (req.body.captain_id) {
-    captain._id = req.body.captain_id;
-  }
-  if (req.body.socket_types) {
-    if (typeof req.body.socket_types === 'object') {
-      for (const index in req.body.socket_types) {
-        if (!{}.hasOwnProperty.call(req.body.socket_types, index)) continue;
-        const socket = {
-          _socket: req.body.socket_types[index],
-          socket_level: req.body.socket_levels[index],
-        };
-        captain.current_sockets.push(socket);
-      }
-    } else {
-      const socket = {
-        _socket: req.body.socket_types,
-        socket_level: req.body.socket_levels
-      };
-      captain.current_sockets.push(socket);
-      console.log('adding captain: ', captain);
-    }
-  }
-  UserModel.findById(req.user._id, (err, user) => {
+}
+
+// Adds (or edits) a captain.
+exports.add = function add(req, res, next) {
+  if (redirectIfLoggedOut(req, res, next)) return;
+  const captain = getCaptainFromRequest(req);
+  validateCCs(captain, req, res, next);
+  AccountModel.findById(req.body.account_id, (account_err, account) => {
     // In case of any error return
-    if (err) {
-      console.log('Error adding captain, invalid id? Err: ', err, ', ID: ', req.user._id);
+    if (account_err) {
+      console.error('Error adding captain, invalid id? Err: ', account_err, ', ID: ', req.body.account_id);
       req.flash('error_message', getErrorMessage(ERROR_CODES.CAPTAINS_ADD_ERROR_1));
       res.redirect('/account');
       next();
       return;
     }
-    // Did not find user, so ask to sign in.
-    if (!user) {
-      req.flash('error_message', 'Please sign in.');
-      res.redirect('/signup');
-      next();
-      return;
-    }
-    // Found user.
-    // Find the account.
-    var account;
-    for (var account_index in user.accounts) {
-      if (user.accounts[account_index].id === account_id) {
-        account = user.accounts[account_index];
-        break;
-      }
-    }
+    // Did not find account. No idea how that could happen... Bad request?
     if (!account) {
-      console.log('Could not find account for user: ', user);
       req.flash('error_message', getErrorMessage(ERROR_CODES.CAPTAINS_ADD_ERROR_2));
       res.redirect('/account');
       next();
       return;
     }
     // Check if the captain already exists.
-    var edit = false;
-    for (var index in account._captains) {
-      if (captain._id.equals(account._captains[index])) {
-        edit = true;
-        break;
-      }
-    }
-    // Update the reference in user if its new.
-    if (!edit) account._captains.push(captain._id);
-    var update_user = function () {
-      // Increment version because we're modifying arrays in the document.
-      user.increment();
-      user.save(function (err) {
-        if (err) {
-          console.error('Error saving user: ' + err);
-          console.error('User: ', user);
-          throw err;
-        }
+    const edit = hasId(account._captains, captain._id);
+    const callback = (err) => {
+      if (err) throw err;
+      // We should only allow upsert (create object if it doesn't exist) if we are not editing.
+      const options = { upsert: !edit };
+      CaptainModel.findByIdAndUpdate(captain._id, captain, options, (captain_err) => {
+        if (captain_err) throw captain_err;
         const action = edit ? 'edited' : 'added';
         console.log('Successfully ' + action + ' captain.');
-        req.flash('info_message', 'Captain ' + action + '.');
+        req.flash('info_message', `Captain ${action}.`);
         res.redirect('/account');
         next();
         return;
       });
     };
+    // Add the captain's id to the account if not present.
     if (edit) {
-      CaptainModel.findById(captain._id, (err, captain_to_save) => {
-        if (err)
-          throw err;
-        captain_to_save.current_level = captain.current_level;
-        captain_to_save.current_special_level = captain.current_special_level;
-        captain_to_save._unit = captain._unit;
-        captain_to_save.current_sockets = captain.current_sockets;
-        captain_to_save.current_hp_ccs = captain.current_hp_ccs;
-        captain_to_save.current_atk_ccs = captain.current_atk_ccs;
-        captain_to_save.current_rcv_ccs = captain.current_rcv_ccs;
-        captain_to_save.save(function (err) {
-          if (err)
-            throw err;
-          update_user();
-          return;
-        });
-      });
+      callback();
     } else {
-      // Save the captain.
-      captain.save(function (err) {
-        if (err) {
-          console.log('Error saving captain: ' + err);
-          throw err;
-        } else {
-          update_user();
-          return;
-        }
+      account.update({ $push: { _captains: captain._id } }, (push_err) => {
+        if (push_err) throw push_err;
+        callback();
       });
     }
   });
 };
 
+// You can't delete someone else's account.
+function redirectIfWrongUser(account_id, req, res, next) {
+  if (hasId(req.user._accounts, account_id)) return false;
+  req.flash('error_message', getErrorMessage(ERROR_CODES.CAPTAINS_DELETE_ERROR_4));
+  res.redirect('/account');
+  next();
+  return true;
+}
+
 // Deletes a captain.
-exports.delete = function (req, res, next) {
-  if (typeof req.user === 'undefined') {
-    req.flash('error_message', 'Please sign in.');
-    res.redirect('/signup');
-    next();
-    return;
-  }
-  var account_id = req.params.account_id;
-  var captain_id = req.params.captain_id;
-  UserModel.findById(req.user._id, function (err, user) {
+exports.delete = function delete_captain(req, res, next) {
+  if (redirectIfLoggedOut(req, res, next)) return;
+  const account_id = req.params.account_id;
+  if (redirectIfWrongUser(account_id, req, res, next)) return;
+  const captain_id = req.params.captain_id;
+  AccountModel.findById(account_id, (account_err, account) => {
     // In case of any error return
-    if (err) {
-      console.log('Error deleting captain: ' + err);
+    if (account_err) {
+      console.error(`Error deleting captain: ${err}`);
       req.flash('error_message', getErrorMessage(ERROR_CODES.CAPTAINS_DELETE_ERROR_1));
       res.redirect('/account');
       next();
       return;
     }
-    if (!user) {
-      console.log('Did not find user for id: ', req.user._id);
+    if (!account) {
+      console.log('Did not find account for id: ', account_id);
       req.flash('error_message', getErrorMessage(ERROR_CODES.CAPTAINS_DELETE_ERROR_2));
       res.redirect('/account');
       next();
       return;
     }
-    // Found user.
-    var account;
-    for (var index in user.accounts) {
-      if (user.accounts[index].id === account_id) {
-        account = user.accounts[index];
-        break;
-      }
-    }
-    if (!account) {
-      console.log('Could not find account with id: ', account_id);
+    if (!hasId(account._captains, captain_id)) {
+      console.log(`Did not find captain for account. Captain id: ${captain_id}, account_id: ${account_id}`);
       req.flash('error_message', getErrorMessage(ERROR_CODES.CAPTAINS_DELETE_ERROR_3));
       res.redirect('/account');
       next();
       return;
     }
-    account._captains.splice(account._captains.indexOf(captain_id), 1);
-    // Increment version because we're modifying arrays in the document.
-    user.increment();
-    user.save(function (err) {
-      if (err) {
-        console.log('Error saving user: ' + err);
-        throw err;
-      } else {
-        console.log('Successfully deleted captain reference.');
-        // Delete the captain.
-        var callback = function (err, captain) {
-          if (err)
-            throw err;
-          console.log('Deleted captain');
-          req.flash('info_message', 'Captain deleted.');
-          res.redirect('/account');
-        };
-        CaptainModel.findById(captain_id).remove().exec(callback);
+    account.update({ $pull: { _captains: captain_id } }, (pull_err) => {
+      if (pull_err) throw pull_err;
+      CaptainModel.findByIdAndRemove(captain_id, (captain_err) => {
+        if (captain_err) throw captain_err;
+        console.log('Successfully deleted captain.');
+        req.flash('info_message', 'Captain deleted.');
+        res.redirect('/account');
         next();
         return;
-      }
+      });
     });
   });
 };

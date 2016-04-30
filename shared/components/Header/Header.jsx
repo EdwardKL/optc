@@ -1,21 +1,21 @@
 import React, { PropTypes } from 'react';
-import {Alert, Grid, Row, Col, Button, Input, Nav, Navbar, NavItem, NavDropdown, MenuItem} from 'react-bootstrap';
+import { Alert, Grid, Row, Nav, Navbar, NavItem, Input, Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 
 export class Header extends React.Component {
-  constructor(props, context){
+  constructor(props, context) {
     super(props, context);
-    this.state = {}
+    this.state = {};
     this.state.user = props.user;
     this.state.info_message = props.info_message ? props.info_message : '';
-    this.state.error_message = props.error_message ? props.error_message : ''; 
+    this.state.error_message = props.error_message ? props.error_message : '';
   }
-  
+
   render() {
     var links = [];
     links.push(<NavItem href='/signup' key='1'>Sign Up</NavItem>);
-    var right_element = 
-      <Navbar.Form pullRight id="login-bar">
+    var right_element =
+      (<Navbar.Form pullRight id="login-bar">
         <form action="/login" method="POST">
           <Input
             placeholder="User Name"
@@ -29,8 +29,8 @@ export class Header extends React.Component {
             type="password" />
           <Button bsStyle="primary" bsSize="small" type="submit">Login</Button>
         </form>
-      </Navbar.Form>;
-    if (typeof this.state.user != 'undefined') {
+      </Navbar.Form>);
+    if (typeof this.state.user !== 'undefined') {
       links = [];
       links.push(<NavItem href='/account' key='2'>Accounts</NavItem>);
       links.push(<NavItem href='/logout' key='3'>Logout</NavItem>);
@@ -42,7 +42,7 @@ export class Header extends React.Component {
           <Navbar id="header-bar">
             <Navbar.Header>
               <Navbar.Brand>
-                <a href="/"><div className="nav navbar-nav" id="navbar-image"></div><span id="brand">Ohara</span></a> 
+                <a href="/"><div className="nav navbar-nav" id="navbar-image"></div><span id="brand">Ohara</span></a>
               </Navbar.Brand>
               <Navbar.Toggle />
             </Navbar.Header>
@@ -66,9 +66,9 @@ export class Header extends React.Component {
 
 function mapStateToProps(store) {
   return {
-    user: store.user,
-    info_message: store.info_message,
-    error_message: store.error_message,
+    user: store.identity.user,
+    info_message: store.identity.info_message,
+    error_message: store.identity.error_message,
   };
 }
 
