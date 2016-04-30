@@ -222,8 +222,14 @@ function hasUser(id, key) {
   UserModel.findById(id)
   .exec((err, user) => {
     console.log('HAS USER? WITH ID: ', id, 'KEY: ', key);
+    if (err) throw err;
     expect(user).to.exist;
     console.log('KEY HAS PASSED: ', key);
+  });
+  UserModel.all()
+  .exec((err, users) => {
+    if (err) throw err;
+    console.log('ALL USERS FOR KEY: ', key, 'USERS: ', users);
   });
 }
 
