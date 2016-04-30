@@ -52,7 +52,7 @@ describe('captains.add cotton candy validation tests', function () {
   var req,
     res;
 
-  beforeEach('fake a response and a request with a logged in user', function (done) {
+  beforeEach('fake a response and a request with a logged in user', function beforeEach(done) {
     req = new RequestMock();
     // Make a fake user login.
     req.login({});
@@ -284,7 +284,7 @@ describe('CaptainsController.add', () => {
     });
   });
 
-  afterEach((done) => {
+  afterEach(function afterEach(done) {
     this.timeout(20 * 1e3);
     dropDB(done);
   });
@@ -470,7 +470,7 @@ describe('CaptainsController.delete', function () {
     current_sockets: [socket]
   });
 
-  beforeEach('Store a user and a captain', (done) => {
+  beforeEach('Store a user and a captain', function beforeEach(done) {
     this.timeout(20 * 1e3);
     const user = new UserModel({
       _id: user_id,
@@ -499,7 +499,7 @@ describe('CaptainsController.delete', function () {
     });
   });
 
-  afterEach((done) => {
+  afterEach(function afterEach(done) {
     dropDB(done);
   });
 
