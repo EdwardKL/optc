@@ -217,7 +217,7 @@ function expectCaptainAdded(account_id, expected_captain, callback) {
   .exec((err, user) => {
     if (err) throw err;
     console.log('Looked for user with id: ', expected_captain._user);
-    expect(user).to.exist();
+    expect(user).to.exist;
     // User expectations
     // Num accounts should not have changed.
     expect(user._accounts).to.have.lengthOf(2);
@@ -234,8 +234,8 @@ function expectCaptainDeleted(account_id, deleted_captain, delete_captain_callba
   .populate('_accounts')
   .exec((err, user) => {
     if (err) throw err;
-    console.log('Looked for user with id: ', expected_captain._user);
-    expect(user).to.exist();
+    console.log('Looked for user with id: ', deleted_captain._user);
+    expect(user).to.exist;
     // User expectations
     // Num accounts should not have changed.
     expect(user._accounts).to.have.lengthOf(2);
