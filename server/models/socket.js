@@ -9,7 +9,7 @@ var socketSchema = new Schema({
 });
 
 // Create the model.
-var Socket = mongoose.model('Socket', socketSchema);
+var Socket = mongoose.model('Socket', socketSchema, 'Socket');
 
 // Make the model available to Node users.
 module.exports = Socket;

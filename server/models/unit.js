@@ -7,7 +7,7 @@ var unitSchema = new Schema({
   _id: Number,
   name: String,
   type: { type: String, enum: ['STR', 'DEX', 'QCK', 'INT', 'PSY'] },
-  classes: [ { type: String, enum: ['Fighter', 'Freedom', 'Slasher', 'Ambition', 'Striker', 'Knowledge', 'Shooter', 'Tough', 'Evolver', 'Booster'] } ],
+  classes: [{ type: String, enum: ['Fighter', 'Freedom', 'Slasher', 'Ambition', 'Striker', 'Knowledge', 'Shooter', 'Tough', 'Evolver', 'Booster'] }],
   stars: { type: Number, min: 1, max: 6 },
   cost: { type: Number, min: 1, max: 55 },
   combo: { type: Number, min: 4, max: 10 },
@@ -27,7 +27,7 @@ var unitSchema = new Schema({
 });
 
 // Create the model.
-var Unit = mongoose.model('Unit', unitSchema);
+var Unit = mongoose.model('Unit', unitSchema, 'Unit');
 
 // Make the model available to Node users.
 module.exports = Unit;

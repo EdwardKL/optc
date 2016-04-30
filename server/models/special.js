@@ -18,6 +18,5 @@ const specialSchema = new Schema({
   }],
 });
 
-var Special = mongoose.model('Special', specialSchema);
+var Special = mongoose.model('Special', specialSchema, 'Special');
 module.exports = Special;
-
