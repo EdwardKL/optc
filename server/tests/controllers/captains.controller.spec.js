@@ -226,8 +226,7 @@ function hasUser(id, key) {
     expect(user).to.exist;
     console.log('KEY HAS PASSED: ', key);
   });
-  UserModel.all()
-  .exec((err, users) => {
+  UserModel.find({}, (err, users) => {
     if (err) throw err;
     console.log('ALL USERS FOR KEY: ', key, 'USERS: ', users);
   });
