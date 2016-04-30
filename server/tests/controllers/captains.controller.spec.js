@@ -487,6 +487,7 @@ describe('CaptainsController.delete', function () {
         // Store the fake user into the DB.
       user.save((err) => {
         if (err) throw err;
+        console.log('Saved user: ', user);
         const account0 = new AccountModel({ _id: account0_id });
         account0.save((err0) => {
           if (err0) throw err0;
