@@ -1,6 +1,6 @@
 // Utils used for tests.
 import mongoose from 'mongoose';
-import mongoConfig from '../../config';
+import mongoConfig from '../config';
 
 export function connectToTestDB(done) {
   mongoose.connect(mongoConfig.mongoURL, (err) => {

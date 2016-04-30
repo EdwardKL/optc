@@ -60,21 +60,22 @@ function validateCCs(captain, req, res, next) {
     req.flash('error_message', 'You can only have at most 200 cotton candies per unit.');
     res.redirect('/account');
     next();
-    return;
+    return false;
   }
   if (hp_ccs > 100 || atk_ccs > 100 || rcv_ccs > 100) {
     req.flash('error_message', 'You can only have at most 100 cotton candies per stat.');
     res.redirect('/account');
     next();
-    return;
+    return false;
   }
+  return true;
 }
 
 // Adds (or edits) a captain.
 exports.add = function add(req, res, next) {
   if (redirectIfLoggedOut(req, res, next)) return;
   const captain = getCaptainFromRequest(req);
-  validateCCs(captain, req, res, next);
+  if (!validateCCs(captain, req, res, next)) return;
   AccountModel.findById(req.body.account_id, (account_err, account) => {
     // In case of any error return
     if (account_err) {
