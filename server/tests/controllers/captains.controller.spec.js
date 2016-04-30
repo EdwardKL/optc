@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-expressions */
+
 import chai from 'chai';
 import mongoose from 'mongoose';
 import CaptainsController from '../../controllers/captains.controller';
@@ -8,59 +10,28 @@ import RequestMock from '../mocks/request.mock';
 import ResponseMock from '../mocks/response.mock';
 import { getErrorMessage } from '../../../errors/error_handler';
 import ERROR_CODES from '../../../constants/error_codes';
-import mongoConfig from '../../config';
+import { connectToTestDB, dropTestDB } from '../test_utils';
 
 const expect = chai.expect;
 
-function connectDB(done) {
-  mongoose.connect(mongoConfig.mongoURL, function (err) {
-    if (err) return done(err);
-    console.log('DB connected.');
-    mongoose.connection.on('error', function (e) {
-      if (e) throw e;
-      console.log('Error with DB connection');
-    });
-    mongoose.connection.on('disconnected', function (e) {
-      if (e) throw e;
-      console.log('DB disconnected');
-    });
-    done();
-  });
-}
-
-function dropDB(done) {
-  if (mongoose.connection.name !== 'optc-test') {
-    console.error('Test connection is not optc-test!');
-    return done();
-  }
-
-  mongoose.connection.db.dropDatabase(function (err) {
-    if (err)
-      throw err;
-    console.log('DB dropped.');
-    mongoose.connection.close(done);
-  });
-}
-
-var empty_next = function () {};
-
-describe('captains.add logged out failure', function () {
-  it('should reject logged out users and redirect to /signup', function (done) {
+describe('captains.add logged out failure', () => {
+  it('should reject logged out users and redirect to /signup', (done) => {
     // Req has no user. This is to simulate the user being logged out.
-    let req = new RequestMock();
+    const req = new RequestMock();
     const res = new ResponseMock();
-    CaptainsController.add(req, res, empty_next);
-    expect(req.getFlash('error_message')).to.equal('Please sign in.');
-    expect(res.getRedirectPath()).to.equal('/signup');
-    done();
+    CaptainsController.add(req, res, () => {
+      expect(req.getFlash('error_message')).to.equal('Please sign in.');
+      expect(res.getRedirectPath()).to.equal('/signup');
+      done();
+    });
   });
 });
 
-describe('captains.add cotton candy validation tests', function () {
-  var req,
-    res;
+describe('captains.add cotton candy validation tests', () => {
+  var req;  // eslint-disable-line no-var
+  var res;  // eslint-disable-line no-var
 
-  beforeEach('fake a response and a request with a logged in user', function beforeEach(done) {
+  beforeEach('fake a response and a request with a logged in user', function beforeEach(done) {  // eslint-disable-line prefer-arrow-callback
     req = new RequestMock();
     // Make a fake user login.
     req.login({});
@@ -68,77 +39,74 @@ describe('captains.add cotton candy validation tests', function () {
     done();
   });
 
-  it('should reject > 100 hp CCs and redirect to /account', function (done) {
-    req.setBody({
-      current_hp_ccs: 101
+  it('should reject > 100 hp CCs and redirect to /account', (done) => {
+    req.setBody({ current_hp_ccs: 101 });
+    CaptainsController.add(req, res, () => {
+      expect(req.getFlash('error_message')).to.equal('You can only have at most 100 cotton candies per stat.');
+      expect(res.getRedirectPath()).to.equal('/account');
+      done();
     });
-    CaptainsController.add(req, res, empty_next);
-    expect(req.getFlash('error_message')).to.equal('You can only have at most 100 cotton candies per stat.');
-    expect(res.getRedirectPath()).to.equal('/account');
-    done();
   });
 
-  it('should reject > 100 atk CCs and redirect to /account', function (done) {
-    req.setBody({
-      current_atk_ccs: 101
+  it('should reject > 100 atk CCs and redirect to /account', (done) => {
+    req.setBody({ current_atk_ccs: 101 });
+    CaptainsController.add(req, res, () => {
+      expect(req.getFlash('error_message')).to.equal('You can only have at most 100 cotton candies per stat.');
+      expect(res.getRedirectPath()).to.equal('/account');
+      done();
     });
-    CaptainsController.add(req, res, empty_next);
-    expect(req.getFlash('error_message')).to.equal('You can only have at most 100 cotton candies per stat.');
-    expect(res.getRedirectPath()).to.equal('/account');
-    done();
   });
 
-  it('should reject > 100 rcv CCs and redirect to /account', function (done) {
-    req.setBody({
-      current_rcv_ccs: 101
+  it('should reject > 100 rcv CCs and redirect to /account', (done) => {
+    req.setBody({ current_rcv_ccs: 101 });
+    CaptainsController.add(req, res, () => {
+      expect(req.getFlash('error_message')).to.equal('You can only have at most 100 cotton candies per stat.');
+      expect(res.getRedirectPath()).to.equal('/account');
+      done();
     });
-    CaptainsController.add(req, res, empty_next);
-    expect(req.getFlash('error_message')).to.equal('You can only have at most 100 cotton candies per stat.');
-    expect(res.getRedirectPath()).to.equal('/account');
-    done();
   });
 
-  it('should reject > 200 CCs (in one stat) and redirect to /account', function (done) {
-    req.setBody({
-      current_rcv_ccs: 201
+  it('should reject > 200 CCs (in one stat) and redirect to /account', (done) => {
+    req.setBody({ current_rcv_ccs: 201 });
+    CaptainsController.add(req, res, () => {
+      expect(req.getFlash('error_message')).to.equal('You can only have at most 200 cotton candies per unit.');
+      expect(res.getRedirectPath()).to.equal('/account');
+      done();
     });
-    CaptainsController.add(req, res, empty_next);
-    expect(req.getFlash('error_message')).to.equal('You can only have at most 200 cotton candies per unit.');
-    expect(res.getRedirectPath()).to.equal('/account');
-    done();
   });
 
-  it('should reject > 200 CCs (across stats) and redirect to /account', function (done) {
+  it('should reject > 200 CCs (across stats) and redirect to /account', (done) => {
     req.setBody({
       current_hp_ccs: 100,
       current_atk_ccs: 100,
-      current_rcv_ccs: 1
+      current_rcv_ccs: 1,
     });
-    CaptainsController.add(req, res, empty_next);
-    expect(req.getFlash('error_message')).to.equal('You can only have at most 200 cotton candies per unit.');
-    expect(res.getRedirectPath()).to.equal('/account');
-    done();
+    CaptainsController.add(req, res, () => {
+      expect(req.getFlash('error_message')).to.equal('You can only have at most 200 cotton candies per unit.');
+      expect(res.getRedirectPath()).to.equal('/account');
+      done();
+    });
   });
 });
 
 // Returns a map of socket types and levels for the given captain.
 function getSocketData(captain) {
+  var socket_types = [];  // eslint-disable-line no-var
+  var socket_levels = [];  // eslint-disable-line no-var
   if (captain.current_sockets.length === 1) {
-    var socket = captain.current_sockets[0];
+    const socket = captain.current_sockets[0];
     return {
       socket_types: socket._socket,
-      socket_levels: socket.socket_level
+      socket_levels: socket.socket_level,
     };
   }
-  var socket_types = [];
-  var socket_levels = [];
   captain.current_sockets.map((socket) => {
     socket_types.push(socket._socket);
     socket_levels.push(socket.socket_level);
   });
   return {
-    socket_types: socket_types,
-    socket_levels: socket_levels
+    socket_types,
+    socket_levels,
   };
 }
 
@@ -166,7 +134,7 @@ function addCaptain(account_id, captain, request, result, callback) {
 
 // Pretty much the same as addCaptain, but with captain_id as part of the request body.
 function editCaptain(account_id, captain, request, result, callback) {
-  var request_body = getRequestBodyForCaptain(account_id, captain);
+  let request_body = getRequestBodyForCaptain(account_id, captain);  // eslint-disable-line prefer-const
   request_body.captain_id = captain._id;
   request.setBody(getRequestBodyForCaptain(account_id, captain));
   CaptainsController.add(request, result, callback);
@@ -183,11 +151,11 @@ function deleteCaptain(account_id, captain_id, request, result, callback) {
 
 // Returns a list of sockets (without the random mongodb document fields).
 function getSimpleSockets(captain) {
-  var sockets = [];
+  var sockets = [];  // eslint-disable-line no-var
   captain.current_sockets.map((socket) => {
     sockets.push({
       _socket: socket._socket,
-      socket_level: socket.socket_level
+      socket_level: socket.socket_level,
     });
   });
   return sockets;
@@ -197,7 +165,6 @@ function expectCaptainStored(expected_captain, callback) {
   // Look for captain.
   CaptainModel.findById(expected_captain._id, (err, captain) => {
     if (err) throw err;
-    console.log('Looking for captain with id: ', expected_captain._id);
     expect(captain.current_level).to.equal(expected_captain.current_level);
     expect(captain.current_special_level).to.equal(expected_captain.current_special_level);
     expect(captain._unit).to.equal(expected_captain._unit);
@@ -218,28 +185,11 @@ function getAccount(account_id, user) {
   return null;
 }
 
-function hasUser(id, key) {
-  UserModel.findById(id)
-  .exec((err, user) => {
-    console.log('HAS USER? WITH ID: ', id, 'KEY: ', key);
-    if (err) throw err;
-    expect(user).to.exist;
-    console.log('KEY HAS PASSED: ', key);
-  });
-  UserModel.find({}, (err, users) => {
-    if (err) throw err;
-    console.log('ALL USERS FOR KEY: ', key, 'USERS: ', users);
-  });
-}
-
 function expectCaptainAdded(account_id, expected_captain, callback) {
-  console.log('expect captain added');
-  hasUser(expected_captain._user, 'd');
   UserModel.findById(expected_captain._user)
   .populate('_accounts')
   .exec((err, user) => {
     if (err) throw err;
-    console.log('Looked for user with id: ', expected_captain._user);
     expect(user).to.exist;
     // User expectations
     // Num accounts should not have changed.
@@ -252,13 +202,10 @@ function expectCaptainAdded(account_id, expected_captain, callback) {
 }
 
 function expectCaptainDeleted(account_id, deleted_captain, delete_captain_callback) {
-  console.log('expectCaptainDeleted');
-  hasUser(deleted_captain._user);
   UserModel.findById(deleted_captain._user)
   .populate('_accounts')
   .exec((err, user) => {
     if (err) throw err;
-    console.log('Looked for user with id: ', deleted_captain._user);
     expect(user).to.exist;
     // User expectations
     // Num accounts should not have changed.
@@ -280,7 +227,8 @@ describe('CaptainsController.add', () => {
   const user_id = new mongoose.Types.ObjectId();
   const account0_id = new mongoose.Types.ObjectId();
   const account1_id = new mongoose.Types.ObjectId();
-  var req, res;
+  var req;  // eslint-disable-line no-var
+  var res;  // eslint-disable-line no-var
 
   beforeEach('Store a user', function beforeEach(done) {
     this.timeout(20 * 1e3);
@@ -293,11 +241,10 @@ describe('CaptainsController.add', () => {
     req.login({ _id: user_id });
     res = new ResponseMock();
 
-    connectDB(() => {
+    connectToTestDB(() => {
       // Store the fake user into the DB.
-      user.save((err, saved_user) => {
+      user.save((err) => {
         if (err) throw err;
-        console.log('user saved: ', saved_user);
         const account0 = new AccountModel({ _id: account0_id });
         account0.save((err0) => {
           if (err0) throw err0;
@@ -310,7 +257,7 @@ describe('CaptainsController.add', () => {
 
   afterEach(function afterEach(done) {
     this.timeout(20 * 1e3);
-    dropDB(done);
+    dropTestDB(done);
   });
 
   it('should send an error message and redirect to /account if user id was invalid', (done) => {
@@ -343,7 +290,6 @@ describe('CaptainsController.add', () => {
   });
 
   it('should add a captain with no sockets', (done) => {
-    hasUser(user_id, 'a');
     const expected_captain = new CaptainModel({
       current_level: 10,
       current_special_level: 9,
@@ -354,7 +300,6 @@ describe('CaptainsController.add', () => {
       current_rcv_ccs: 80,
       current_sockets: [],
     });
-    hasUser(expected_captain._user, 'b');
     const callback = () => {
       // Req/res expectations.
       expect(req.getFlash('info_message')).to.equal('Captain added.');
@@ -362,13 +307,11 @@ describe('CaptainsController.add', () => {
       done();
     };
     addCaptain(account1_id, expected_captain, req, res, () => {
-      hasUser(expected_captain._user, 'c');
       expectCaptainAdded(account1_id, expected_captain, callback);
     });
   });
 
   it('should add a captain with one socket', (done) => {
-    hasUser(user_id, 'a');
     const socket = {
       _socket: 2,
       socket_level: 3,
@@ -383,7 +326,6 @@ describe('CaptainsController.add', () => {
       current_rcv_ccs: 80,
       current_sockets: [socket],
     });
-    hasUser(expected_captain._user, 'b');
     const callback = () => {
       // Req/res expectations.
       expect(req.getFlash('info_message')).to.equal('Captain added.');
@@ -391,24 +333,22 @@ describe('CaptainsController.add', () => {
       done();
     };
     addCaptain(account0_id, expected_captain, req, res, () => {
-      hasUser(expected_captain._user, 'c');
       expectCaptainAdded(account0_id, expected_captain, callback);
     });
   });
 
   it('should add a captain with many sockets', (done) => {
-    hasUser(user_id, 'a');
     const socket0 = {
       _socket: 2,
-      socket_level: 3
+      socket_level: 3,
     };
     const socket1 = {
       _socket: 3,
-      socket_level: 2
+      socket_level: 2,
     };
     const socket2 = {
       _socket: 6,
-      socket_level: 5
+      socket_level: 5,
     };
     const expected_captain = new CaptainModel({
       current_level: 10,
@@ -418,22 +358,20 @@ describe('CaptainsController.add', () => {
       current_hp_ccs: 90,
       current_atk_ccs: 10,
       current_rcv_ccs: 80,
-      current_sockets: [socket0, socket1, socket2]
+      current_sockets: [socket0, socket1, socket2],
     });
-    hasUser(expected_captain._user, 'b');
-    var callback = function () {
+    const callback = () => {
       // Req/res expectations.
       expect(req.getFlash('info_message')).to.equal('Captain added.');
       expect(res.getRedirectPath()).to.equal('/account');
       done();
     };
-    addCaptain(account0_id, expected_captain, req, res, function () {
-      hasUser(expected_captain._user, 'c');
+    addCaptain(account0_id, expected_captain, req, res, () => {
       expectCaptainAdded(account0_id, expected_captain, callback);
     });
   });
 
-  it('should edit a captain', function (done) {
+  it('should edit a captain', (done) => {
     const expected_captain_before = new CaptainModel({
       current_level: 10,
       current_special_level: 9,
@@ -442,19 +380,19 @@ describe('CaptainsController.add', () => {
       current_hp_ccs: 90,
       current_atk_ccs: 10,
       current_rcv_ccs: 80,
-      current_sockets: []
+      current_sockets: [],
     });
     const socket0 = {
       _socket: 2,
-      socket_level: 3
+      socket_level: 3,
     };
     const socket1 = {
       _socket: 3,
-      socket_level: 2
+      socket_level: 2,
     };
     const socket2 = {
       _socket: 6,
-      socket_level: 5
+      socket_level: 5,
     };
     const expected_captain_after = new CaptainModel({
       // Add existing id to show that we're editing.
@@ -466,16 +404,16 @@ describe('CaptainsController.add', () => {
       current_hp_ccs: 32,
       current_atk_ccs: 40,
       current_rcv_ccs: 0,
-      current_sockets: [socket0, socket1, socket2]
+      current_sockets: [socket0, socket1, socket2],
     });
-    var add_captain_callback = function () {
-      var edit_captain_callback = function () {
+    const add_captain_callback = () => {
+      const edit_captain_callback = () => {
         // Req/res expectations.
         expect(req.getFlash('info_message')).to.equal('Captain edited.');
         expect(res.getRedirectPath()).to.equal('/account');
         done();
       };
-      editCaptain(account1_id, expected_captain_after, req, res, function () {
+      editCaptain(account1_id, expected_captain_after, req, res, () => {
         expectCaptainAdded(account1_id, expected_captain_after, edit_captain_callback);
       });
     };
@@ -483,14 +421,15 @@ describe('CaptainsController.add', () => {
   });
 });
 
-describe('CaptainsController.delete', function () {
+describe('CaptainsController.delete', () => {
   const user_id = new mongoose.Types.ObjectId();
   const account0_id = new mongoose.Types.ObjectId();
   const account1_id = new mongoose.Types.ObjectId();
-  var req, res;
+  var req;  // eslint-disable-line no-var
+  var res;  // eslint-disable-line no-var
   const socket = {
     _socket: 2,
-    socket_level: 3
+    socket_level: 3,
   };
   const captain = new CaptainModel({
     current_level: 10,
@@ -500,7 +439,7 @@ describe('CaptainsController.delete', function () {
     current_hp_ccs: 90,
     current_atk_ccs: 10,
     current_rcv_ccs: 80,
-    current_sockets: [socket]
+    current_sockets: [socket],
   });
 
   beforeEach('Store a user and a captain', function beforeEach(done) {
@@ -514,11 +453,10 @@ describe('CaptainsController.delete', function () {
     req.login(user);
     res = new ResponseMock();
 
-    connectDB(() => {
+    connectToTestDB(() => {
       // Store the fake user into the DB.
       user.save((err) => {
         if (err) throw err;
-        console.log('Saved user: ', user);
         const account0 = new AccountModel({ _id: account0_id });
         account0.save((err0) => {
           if (err0) throw err0;
@@ -532,8 +470,8 @@ describe('CaptainsController.delete', function () {
     });
   });
 
-  afterEach(function afterEach(done) {
-    dropDB(done);
+  afterEach(function afterEach(done) {  // eslint-disable-line prefer-arrow-callback
+    dropTestDB(done);
   });
 
   it('should fail if the wrong user was deleting a captain', (done) => {
