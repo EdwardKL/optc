@@ -210,7 +210,17 @@ function getAccount(account_id, user) {
   return null;
 }
 
+function hasUser(id) {
+  UserModel.findById(id)
+  .exec((err, user) => {
+    console.log('HAS USER? WITH ID: ', id);
+    expect(user).to.exist;
+  });
+}
+
 function expectCaptainAdded(account_id, expected_captain, callback) {
+  console.log('expect captain added');
+  hasUser(expected_captain._user);
   UserModel.findById(expected_captain._user)
   .populate('_accounts')
   .exec((err, user) => {
@@ -229,6 +239,7 @@ function expectCaptainAdded(account_id, expected_captain, callback) {
 
 function expectCaptainDeleted(account_id, deleted_captain, delete_captain_callback) {
   console.log('expectCaptainDeleted');
+  hasUser(deleted_captain._user);
   UserModel.findById(deleted_captain._user)
   .populate('_accounts')
   .exec((err, user) => {
@@ -318,6 +329,8 @@ describe('CaptainsController.add', () => {
   });
 
   it('should add a captain with no sockets', (done) => {
+    console.log('a');
+    hasUser(user_id);
     const expected_captain = new CaptainModel({
       current_level: 10,
       current_special_level: 9,
@@ -328,6 +341,8 @@ describe('CaptainsController.add', () => {
       current_rcv_ccs: 80,
       current_sockets: [],
     });
+    console.log('b');
+    hasUser(expected_captain._user);
     const callback = () => {
       // Req/res expectations.
       expect(req.getFlash('info_message')).to.equal('Captain added.');
@@ -335,11 +350,15 @@ describe('CaptainsController.add', () => {
       done();
     };
     addCaptain(account1_id, expected_captain, req, res, () => {
+      console.log('c');
+      hasUser(expected_captain._user);
       expectCaptainAdded(account1_id, expected_captain, callback);
     });
   });
 
   it('should add a captain with one socket', (done) => {
+    console.log('a');
+    hasUser(user_id);
     const socket = {
       _socket: 2,
       socket_level: 3,
@@ -354,6 +373,8 @@ describe('CaptainsController.add', () => {
       current_rcv_ccs: 80,
       current_sockets: [socket],
     });
+    console.log('b');
+    hasUser(expected_captain._user);
     const callback = () => {
       // Req/res expectations.
       expect(req.getFlash('info_message')).to.equal('Captain added.');
@@ -361,11 +382,15 @@ describe('CaptainsController.add', () => {
       done();
     };
     addCaptain(account0_id, expected_captain, req, res, () => {
+      console.log('c');
+      hasUser(expected_captain._user);
       expectCaptainAdded(account0_id, expected_captain, callback);
     });
   });
 
   it('should add a captain with many sockets', (done) => {
+    console.log('a');
+    hasUser(user_id);
     const socket0 = {
       _socket: 2,
       socket_level: 3
@@ -388,6 +413,8 @@ describe('CaptainsController.add', () => {
       current_rcv_ccs: 80,
       current_sockets: [socket0, socket1, socket2]
     });
+    console.log('b');
+    hasUser(expected_captain._user);
     var callback = function () {
       // Req/res expectations.
       expect(req.getFlash('info_message')).to.equal('Captain added.');
@@ -395,6 +422,8 @@ describe('CaptainsController.add', () => {
       done();
     };
     addCaptain(account0_id, expected_captain, req, res, function () {
+      console.log('c');
+      hasUser(expected_captain._user);
       expectCaptainAdded(account0_id, expected_captain, callback);
     });
   });
