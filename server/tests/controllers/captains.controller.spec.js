@@ -138,7 +138,7 @@ function getSocketData(captain) {
 function getRequestBodyForCaptain(account_id, captain) {
   const socket_data = getSocketData(captain);
   return {
-    account_id: account_id,
+    account_id: account_id.toString(),
     current_level: captain.current_level,
     current_special_level: captain.current_special_level,
     unit_id: captain._unit,
@@ -147,7 +147,7 @@ function getRequestBodyForCaptain(account_id, captain) {
     current_rcv_ccs: captain.current_rcv_ccs,
     socket_types: socket_data.socket_types,
     socket_levels: socket_data.socket_levels,
-    captain_id: captain._id
+    captain_id: captain._id.toString(),
   };
 }
 
@@ -167,8 +167,8 @@ function editCaptain(account_id, captain, request, result, callback) {
 // Deletes the captain specified by account_id and captain_id.
 function deleteCaptain(account_id, captain_id, request, result, callback) {
   request.setParams({
-    account_id: account_id,
-    captain_id: captain_id,
+    account_id: account_id.toString(),
+    captain_id: captain_id.toString(),
   });
   CaptainsController.delete(request, result, callback);
 }
@@ -211,7 +211,6 @@ function getAccount(account_id, user) {
 }
 
 function expectCaptainAdded(account_id, expected_captain, callback) {
-  console.log('expectCaptainAdded');
   UserModel.findById(expected_captain._user)
   .populate('_accounts')
   .exec((err, user) => {
@@ -294,7 +293,7 @@ describe('CaptainsController.add', () => {
     req = new RequestMock();
     // Make a fake user login, with an invalid id.
     req.login({ _id: 'invalid_id' });
-    req.setBody({ account_id: 1 });
+    req.setBody({ account_id: 'invalid_id' });
 
     CaptainsController.add(req, res, () => {
       expect(req.getFlash('error_message')).to.equal(
