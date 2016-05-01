@@ -1,4 +1,5 @@
-[![Build Status](https://travis-ci.org/EdwardKL/optc.svg?branch=master)](https://travis-ci.org/EdwardKL/optc) [![codecov.io](https://codecov.io/github/EdwardKL/optc/coverage.svg?branch=master)](https://codecov.io/github/EdwardKL/optc?branch=master)
+[![Build Status](https://travis-ci.org/EdwardKL/optc.svg?branch=master)](https://travis-ci.org/EdwardKL/optc)
+[![codecov](https://codecov.io/gh/EdwardKL/optc/branch/master/graph/badge.svg)](https://codecov.io/gh/EdwardKL/optc)
 
 # OPTC Ohara
 
