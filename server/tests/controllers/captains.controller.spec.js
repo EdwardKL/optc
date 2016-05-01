@@ -238,10 +238,20 @@ describe('CaptainsController.add', () => {
       // Store the fake user into the DB.
       user.save((err) => {
         if (err) throw err;
-        const account0 = new AccountModel({ _id: account0_id });
+        const account0 = new AccountModel({
+          _id: account0_id,
+          region: 'global',
+          pirate_level: 1,
+          friend_id: 1e8,
+        });
         account0.save((err0) => {
           if (err0) throw err0;
-          const account1 = new AccountModel({ _id: account1_id });
+          const account1 = new AccountModel({
+            _id: account1_id,
+            region: 'japan',
+            pirate_level: 2,
+            friend_id: 2e8,
+          });
           account1.save(done);
         });
       });
@@ -450,10 +460,20 @@ describe('CaptainsController.delete', () => {
       // Store the fake user into the DB.
       user.save((err) => {
         if (err) throw err;
-        const account0 = new AccountModel({ _id: account0_id });
+        const account0 = new AccountModel({
+          _id: account0_id,
+          region: 'global',
+          pirate_level: 1,
+          friend_id: 1e8,
+        });
         account0.save((err0) => {
           if (err0) throw err0;
-          const account1 = new AccountModel({ _id: account1_id });
+          const account1 = new AccountModel({
+            _id: account1_id,
+            region: 'japan',
+            pirate_level: 2,
+            friend_id: 2e8,
+          });
           account1.save((err1) => {
             if (err1) throw err1;
             addCaptain(account1_id, captain, req, res, done);
