@@ -1,5 +1,4 @@
 import AccountModel from '../models/account';
-import CaptainModel from '../models/captain';
 import UserModel from '../models/user';
 import { redirectIfLoggedOut, removeCaptains } from './utils';
 import { getErrorMessage } from '../../errors/error_handler';

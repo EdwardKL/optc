@@ -11,14 +11,8 @@ import ResponseMock from '../mocks/response.mock';
 import { getErrorMessage } from '../../../errors/error_handler';
 import ERROR_CODES from '../../../constants/error_codes';
 import { connectToTestDB, dropTestDB } from '../test_utils';
-require('../../models/captain');
 
 const expect = chai.expect;
-
-const valid_friend_id = 2.34 * 1e8;
-const valid_pirate_level = 12;
-const valid_region = 'global';
-const valid_account_add_request = { friend_id: valid_friend_id, pirate_level: valid_pirate_level, region: valid_region };
 
 describe('UsersController when logged out', () => {
   // Req has no user. This is to simulate the user being logged out.

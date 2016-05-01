@@ -3,6 +3,7 @@ import CaptainModel from '../models/captain';
 // Redirects to /signup if the user is not logged in.
 // Returns true if redirected.
 export function redirectIfLoggedOut(req, res, next) {
+  // Don't call next, because we shouldn't redirect.
   if (req.user) return false;
   req.flash('error_message', 'Please sign in.');
   res.redirect('/signup');
@@ -10,6 +11,14 @@ export function redirectIfLoggedOut(req, res, next) {
   return true;
 }
 
+// Converts to a number. If input is undefined, this will return 0.
+export function getNumber(num) {
+  return num ? Number(num) : 0;
+}
+
+// Array should be an array of object ids, and id should be either an object id
+// or its string representation.
+// Returns true if array has id.
 export function hasId(array, id) {
   for (const item of array) {
     if (item.toString().valueOf() === id.toString().valueOf()) {

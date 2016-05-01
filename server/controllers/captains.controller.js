@@ -3,12 +3,7 @@ import AccountModel from '../models/account';
 import CaptainModel from '../models/captain';
 import { getErrorMessage } from '../../errors/error_handler';
 import ERROR_CODES from '../../constants/error_codes';
-import { redirectIfLoggedOut, hasId } from './utils';
-
-// Converts to a number. If input is undefined, this will return 0.
-function getNumber(num) {
-  return num ? Number(num) : 0;
-}
+import { redirectIfLoggedOut, hasId, getNumber } from './utils';
 
 // Returns sockets defined in the given request.
 function getSocketsFromRequest(req) {
@@ -86,6 +81,7 @@ exports.add = function add(req, res, next) {
       return;
     }
     // Did not find account. No idea how that could happen... Bad request?
+    /* istanbul ignore if */
     if (!account) {
       req.flash('error_message', getErrorMessage(ERROR_CODES.CAPTAINS_ADD_ERROR_2));
       res.redirect('/account');
@@ -136,7 +132,10 @@ exports.delete = function delete_captain(req, res, next) {
   if (redirectIfWrongUser(account_id, req, res, next)) return;
   const captain_id = req.params.captain_id;
   AccountModel.findById(account_id, (account_err, account) => {
-    // In case of any error return
+    // In case of any error return.
+    // These errors should never happen (I can't even think of a way to test this),
+    // so ignore it in coverage.
+    /* istanbul ignore if */
     if (account_err) {
       console.error(`Error deleting captain: ${account_err}`);
       req.flash('error_message', getErrorMessage(ERROR_CODES.CAPTAINS_DELETE_ERROR_1));
@@ -144,6 +143,7 @@ exports.delete = function delete_captain(req, res, next) {
       next();
       return;
     }
+    /* istanbul ignore if */
     if (!account) {
       console.log('Did not find account for id: ', account_id);
       req.flash('error_message', getErrorMessage(ERROR_CODES.CAPTAINS_DELETE_ERROR_2));

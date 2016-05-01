@@ -1,8 +1,4 @@
 export default class ResponseMock {
-  constructor() {
-    this.redirect_path = '';
-  }
-
   redirect(path) {
     this.redirect_path = path;
   }
