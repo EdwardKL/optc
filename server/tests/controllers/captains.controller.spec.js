@@ -28,16 +28,9 @@ describe('captains.add logged out failure', () => {
 });
 
 describe('captains.add cotton candy validation tests', () => {
-  var req;  // eslint-disable-line no-var
-  var res;  // eslint-disable-line no-var
-
-  beforeEach('fake a response and a request with a logged in user', function beforeEach(done) {  // eslint-disable-line prefer-arrow-callback
-    req = new RequestMock();
-    // Make a fake user login.
-    req.login({});
-    res = new ResponseMock();
-    done();
-  });
+  const req = new RequestMock();
+  req.login({});
+  const res = new ResponseMock();
 
   it('should reject > 100 hp CCs and redirect to /account', (done) => {
     req.setBody({ current_hp_ccs: 101 });
@@ -134,7 +127,7 @@ function addCaptain(account_id, captain, request, result, callback) {
 
 // Pretty much the same as addCaptain, but with captain_id as part of the request body.
 function editCaptain(account_id, captain, request, result, callback) {
-  let request_body = getRequestBodyForCaptain(account_id, captain);  // eslint-disable-line prefer-const
+  const request_body = getRequestBodyForCaptain(account_id, captain);
   request_body.captain_id = captain._id;
   request.setBody(getRequestBodyForCaptain(account_id, captain));
   CaptainsController.add(request, result, callback);

@@ -26,6 +26,12 @@ userSchema.methods.setUsername = function setUsername(username) {
   this.username = username;
 };
 
+// Clears all sensitive data from the user.
+userSchema.methods.clearSensitiveData = function clearSensitiveData() {
+  this.password = '';
+  this.salt = '';
+};
+
 // Returns true if the given username has valid characters.
 userSchema.statics.validUsername = function validUsername(username) {
   return /^[a-zA-Z\-_0-9]+$/.test(username);
