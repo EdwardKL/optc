@@ -20,12 +20,6 @@ const userSchema = new Schema({
   _twitter_id: { type: String },
 });
 
-// Sets username properly.
-userSchema.methods.setUsername = function setUsername(username) {
-  this.display_name = username.trim();
-  this.username = username;
-};
-
 // Clears all sensitive data from the user.
 userSchema.methods.clearSensitiveData = function clearSensitiveData() {
   this.password = '';

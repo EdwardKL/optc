@@ -12,7 +12,7 @@ function getNumber(num) {
 
 // Returns sockets defined in the given request.
 function getSocketsFromRequest(req) {
-  var sockets = [];
+  const sockets = [];
   if (!req.body.socket_types) return sockets;
   if (typeof req.body.socket_types === 'object') {
     for (const index in req.body.socket_types) {
@@ -138,7 +138,7 @@ exports.delete = function delete_captain(req, res, next) {
   AccountModel.findById(account_id, (account_err, account) => {
     // In case of any error return
     if (account_err) {
-      console.error(`Error deleting captain: ${err}`);
+      console.error(`Error deleting captain: ${account_err}`);
       req.flash('error_message', getErrorMessage(ERROR_CODES.CAPTAINS_DELETE_ERROR_1));
       res.redirect('/account');
       next();

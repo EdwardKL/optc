@@ -523,6 +523,21 @@ describe('CaptainsController.delete', () => {
     });
   });
 
+  it('should fail if the captain to delete was not found', (done) => {
+    const delete_captain_callback = () => {
+      // Should fail and redirect to account.
+      // This is the same error as above, because a wrong account would not be associated with the current user.
+      expect(req.getFlash('error_message')).to.equal(getErrorMessage(ERROR_CODES.CAPTAINS_DELETE_ERROR_3));
+      expect(res.getRedirectPath()).to.equal('/account');
+      done();
+    };
+    const wrong_captain_id = new mongoose.Types.ObjectId();
+    deleteCaptain(account1_id, wrong_captain_id, req, res, () => {
+      // The captain should still be there, because the deletion should've failed.
+      expectCaptainAdded(account1_id, captain, delete_captain_callback);
+    });
+  });
+
   it('should not delete a captain if the user is logged out', (done) => {
     req.logout();
     const delete_captain_callback = () => {

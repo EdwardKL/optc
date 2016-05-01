@@ -1,10 +1,10 @@
 import mongoose from 'mongoose';
 import AccountModel from '../models/account';
-import CaptainModel from '../models/captain';
 import UserModel from '../models/user';
-import { redirectIfLoggedOut, hasId } from './utils';
+import { redirectIfLoggedOut, hasId, removeCaptains } from './utils';
 import { getErrorMessage } from '../../errors/error_handler';
 import ERROR_CODES from '../../constants/error_codes';
+require('../models/captain');
 
 // Makes sure that the request's body represents a valid account.
 function validateRequest(req, res, next) {
@@ -114,20 +114,6 @@ exports.add = function add(req, res, next) {
     }
   });
 };
-
-// Recursively removes the captains referred to by id by the given captains array.
-// Calls cb when finished.
-function removeCaptains(captains, cb) {
-  if (captains.length === 0) {
-    cb();
-    return;
-  }
-  const captain_id = captains.pop();
-  CaptainModel.findByIdAndRemove(captain_id, (err) => {
-    if (err) throw err;
-    removeCaptains(captains, cb);
-  });
-}
 
 // Deletes an account.
 exports.delete = function delete_account(req, res, next) {

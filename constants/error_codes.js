@@ -29,6 +29,12 @@ const ERROR_CODES = {
   ACCOUNTS_DELETE_ERROR_2: {
     code: 9,
   },
+  USERS_DELETE_ERROR_1: {
+    code: 10,
+  },
+  USERS_DELETE_ERROR_2: {
+    code: 11,
+  },
 };
 
 export default ERROR_CODES;
