@@ -28,7 +28,6 @@ describe('user.save', () => {
 
   it('should save a user', (done) => {
     UserModel.findById(user_id)
-    .populate('_accounts')
     .exec((err, user) => {
       if (err) throw err;
       expect(user).to.exist;

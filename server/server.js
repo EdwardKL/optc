@@ -200,8 +200,7 @@ app.use((req, res) => {
     var initialState = { identity: { unit_selections: unit_selections, socket_selections: socket_selections } };
     if (typeof user !== 'undefined') {
         // Clear out sensitive data first.
-      user.salt = '';
-      user.password = '';
+      user.clearSensitiveData();
     }
     initialState.identity.user = user;
     const info_message = req.flash('info_message')[0];
