@@ -1,23 +1,23 @@
-var passport = require('passport'),
-  GoogleStrategy = require('passport-google-oauth20').Strategy,
-  User = require('mongoose').model('User');
+/* istanbul ignore next non-local strategies are hard to test */
+const passport = require('passport');
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const User = require('mongoose').model('User');
 
-module.exports = function() {
+module.exports = function () {
   passport.use(new GoogleStrategy({
-      clientID: process.env.GOOGLE_ID,
-      clientSecret: process.env.GOOGLE_SECRET,
-      callbackURL: "https://optc.herokuapp.com/auth/google/callback"
-    },
-    function(accessToken, refreshToken, profile, done) {
-	  console.log("Starting google auth...");
-      User.findOne({'_google_id': profile.id},
+    clientID: process.env.GOOGLE_ID,
+    clientSecret: process.env.GOOGLE_SECRET,
+    callbackURL: 'https://optc.herokuapp.com/auth/google/callback',
+  },
+    (accessToken, refreshToken, profile, done) => {
+      User.findOne({ _google_id: profile.id },
         function (err, user) {
           if (err) {
             return done(err);
           }
           if (!user) {
-            user = new User({_google_id: profile.id});
-            user.save(function(err) {
+            user = new User({ _google_id: profile.id });
+            user.save(function (err) {
               if (err) console.log(err);
               return done(err, user);
             });
@@ -27,4 +27,4 @@ module.exports = function() {
         }
       );
     }));
-}
+};
