@@ -8,12 +8,11 @@ import { connectToTestDB, dropTestDB } from '../../test_utils';
 
 const expect = chai.expect;
 
-function expectFailure(done, err, res) {
+function expectSignupFailure(done, err, res) {
   if (err) throw err;
   expect(res.header.location).to.equal('/signup');
   UserModel.find().exec((e1, users) => {
     if (e1) throw e1;
-    console.log(users);
     expect(users).to.have.lengthOf(0);
     done();
   });
@@ -36,7 +35,7 @@ describe('/signup', () => {
         password,
         password_confirmation: password,
       })
-      .end(expectFailure.bind(this, done));
+      .end(expectSignupFailure.bind(this, done));
   });
 
   it('should fail if username has invalid chars', (done) => {
@@ -47,7 +46,7 @@ describe('/signup', () => {
         password,
         password_confirmation: password,
       })
-      .end(expectFailure.bind(this, done));
+      .end(expectSignupFailure.bind(this, done));
   });
 
   it('should fail if password has <= 3 chars', (done) => {
@@ -58,7 +57,7 @@ describe('/signup', () => {
         password: 'asd',
         password_confirmation: 'asd',
       })
-      .end(expectFailure.bind(this, done));
+      .end(expectSignupFailure.bind(this, done));
   });
 
   it("should fail if password doesn't match confirmation", (done) => {
@@ -69,7 +68,7 @@ describe('/signup', () => {
         password,
         password_confirmation: 'some other pass',
       })
-      .end(expectFailure.bind(this, done));
+      .end(expectSignupFailure.bind(this, done));
   });
 
   it('should succeed', (done) => {
@@ -135,6 +134,101 @@ describe('/signup with existing user', () => {
           expect(user.password).to.not.exist;
           done();
         });
+      });
+  });
+
+  after(function after(done) {  // eslint-disable-line prefer-arrow-callback
+    dropTestDB(done);
+  });
+});
+
+describe('/login', () => {
+  const username = 'test-user-login';
+  const password = 'test-password';
+
+  before(function before(done) {  // eslint-disable-line prefer-arrow-callback
+    connectToTestDB(() => {
+      const user = new UserModel({ username, password });
+      user.updateCredentials();
+      user.save((err) => {
+        if (err) throw err;
+        done();
+      });
+    });
+  });
+
+  function expectLoginFailure(done, err, res) {
+    if (err) throw err;
+    expect(res.header.location).to.equal('/signup');
+    done();
+  }
+
+  it('should fail if no username', (done) => {
+    request(app)
+      .post('/login')
+      .send({
+        password: 'asdf',
+      })
+      .end(expectLoginFailure.bind(this, done));
+  });
+
+  it('should fail if empty username', (done) => {
+    request(app)
+      .post('/login')
+      .send({
+        username: '',
+      })
+      .end(expectLoginFailure.bind(this, done));
+  });
+
+  it('should fail if no password', (done) => {
+    request(app)
+      .post('/login')
+      .send({
+        username: 'user',
+      })
+      .end(expectLoginFailure.bind(this, done));
+  });
+
+  it('should fail if empty password', (done) => {
+    request(app)
+      .post('/login')
+      .send({
+        password: '',
+      })
+      .end(expectLoginFailure.bind(this, done));
+  });
+
+  it('should fail if username is wrong', (done) => {
+    request(app)
+      .post('/login')
+      .send({
+        username: 'wrong-user',
+        password,
+      })
+      .end(expectLoginFailure.bind(this, done));
+  });
+
+  it('should fail if password is wrong', (done) => {
+    request(app)
+      .post('/login')
+      .send({
+        username,
+        password: 'wrong-password',
+      })
+      .end(expectLoginFailure.bind(this, done));
+  });
+
+  it('should succeed', (done) => {
+    request(app)
+      .post('/login')
+      .send({
+        username,
+        password,
+      })
+      .end((err, res) => {
+        expect(res.header.location).to.equal('/');
+        done();
       });
   });
 

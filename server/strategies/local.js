@@ -1,14 +1,12 @@
-var passport = require('passport'),
-  LocalStrategy = require('passport-local').Strategy,
-  User = require('mongoose').model('User');
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
+const User = require('mongoose').model('User');
 
-module.exports = function () {
-  passport.use(new LocalStrategy({
-    passReqToCallback: true
-  },
-    function (req, username, password, done) {
+module.exports = function local_login() {
+  passport.use(new LocalStrategy({ passReqToCallback: true },
+    (req, username, password, done) => {
       // Check in mongo if a user with username exists or not
-      User.findByUsername(username, function (err, user) {
+      User.findByUsername(username, (err, user) => {
         /* istanbul ignore if */
         if (err) return done(err);
         // Username does not exist, log error & redirect back
@@ -21,7 +19,7 @@ module.exports = function () {
         }
         // User and password both match, return user from
         // done method which will be treated like success
-        return done(null, user, req.flash('info_message', 'Welcome, ' + user.display_name + '!'));
+        return done(null, user, req.flash('info_message', `Welcome, ${user.display_name}!`));
       });
     }));
 };
