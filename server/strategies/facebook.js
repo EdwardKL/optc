@@ -1,4 +1,3 @@
-/* istanbul ignore next non-local strategies are hard to test */
 const passport = require('passport');
 const FacebookStrategy = require('passport-facebook').Strategy;
 const User = require('mongoose').model('User');
@@ -10,6 +9,7 @@ module.exports = function () {
     callbackURL: 'https://optc.herokuapp.com/auth/facebook/callback',
   },
     (accessToken, refreshToken, profile, done) => {
+      /* istanbul ignore next non-local strategies are hard to test */
       User.findOne({ _facebook_id: profile.id },
         (err, user) => {
           if (err) {

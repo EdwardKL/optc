@@ -1,4 +1,3 @@
-/* istanbul ignore next non-local strategies are hard to test */
 var passport = require('passport'),
   TwitterStrategy = require('passport-twitter').Strategy,
   User = require('mongoose').model('User');
@@ -10,6 +9,7 @@ module.exports = function () {
     callbackURL: 'https://optc.herokuapp.com/auth/twitter/callback'
   },
     function (token, tokenSecret, profile, done) {
+      /* istanbul ignore next non-local strategies are hard to test */
       User.findOne({ '_twitter_id': profile.id },
         function (err, user) {
           if (err) {
