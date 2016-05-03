@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "OPTC website providing features like friend finders",
   "scripts": {
-    "test": "cross-env NODE_ENV=test PORT=8080 babel-node ./node_modules/istanbul/lib/cli cover ./node_modules/mocha/bin/_mocha -- --recursive server/tests/**/*.spec.js shared/tests/**/*.spec.js",
+    "test": "cross-env NODE_ENV=test PORT=8080 babel-node ./node_modules/istanbul/lib/cli cover ./node_modules/mocha/bin/_mocha -- --recursive server/tests/**/**/*.spec.js shared/tests/**/*.spec.js",
     "test:client": "cross-env NODE_ENV=test babel-node ./node_modules/istanbul/lib/cli cover ./node_modules/mocha/bin/_mocha -- --recursive shared/tests/**/*.spec.js",
     "test:server": "cross-env NODE_ENV=test PORT=8080 babel-node ./node_modules/istanbul/lib/cli cover ./node_modules/mocha/bin/_mocha -- --recursive server/tests/**/*.spec.js",
     "t": "cross-env NODE_ENV=test PORT=8080 babel-node ./node_modules/mocha/bin/_mocha",
