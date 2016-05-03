@@ -4,15 +4,75 @@ import app from '../../../server';
 import chai from 'chai';
 import request from 'supertest';
 import UserModel from '../../../models/user';
+import { connectToTestDB, dropTestDB } from '../../test_utils';
 
 const expect = chai.expect;
+
+function expectFailure(done, err, res) {
+  if (err) throw err;
+  expect(res.header.location).to.equal('/signup');
+  UserModel.find().exec((e1, users) => {
+    if (e1) throw e1;
+    console.log(users);
+    expect(users).to.have.lengthOf(0);
+    done();
+  });
+}
 
 describe('/signup', () => {
   const display_name = 'TestUser';
   const username = 'testuser';
   const password = 'password';
 
-  it('should redirect if logged out when accessing /account', (done) => {
+  before(function before(done) {  // eslint-disable-line prefer-arrow-callback
+    connectToTestDB(done);
+  });
+
+  it('should fail if username <= 1 char', (done) => {
+    request(app)
+      .post('/signup')
+      .send({
+        username: 'a',
+        password,
+        password_confirmation: password,
+      })
+      .end(expectFailure.bind(this, done));
+  });
+
+  it('should fail if username has invalid chars', (done) => {
+    request(app)
+      .post('/signup')
+      .send({
+        username: 'invalid user',
+        password,
+        password_confirmation: password,
+      })
+      .end(expectFailure.bind(this, done));
+  });
+
+  it('should fail if password has <= 3 chars', (done) => {
+    request(app)
+      .post('/signup')
+      .send({
+        username: 'user',
+        password: 'asd',
+        password_confirmation: 'asd',
+      })
+      .end(expectFailure.bind(this, done));
+  });
+
+  it("should fail if password doesn't match confirmation", (done) => {
+    request(app)
+      .post('/signup')
+      .send({
+        username: 'user',
+        password,
+        password_confirmation: 'some other pass',
+      })
+      .end(expectFailure.bind(this, done));
+  });
+
+  it('should succeed', (done) => {
     request(app)
       .post('/signup')
       .send({
@@ -36,5 +96,49 @@ describe('/signup', () => {
           done();
         });
       });
+  });
+
+  after(function after(done) {  // eslint-disable-line prefer-arrow-callback
+    dropTestDB(done);
+  });
+});
+
+describe('/signup with existing user', () => {
+  before(function before(done) {  // eslint-disable-line prefer-arrow-callback
+    connectToTestDB(() => {
+      const user = new UserModel({ username: 'user' });
+      user.save((err) => {
+        if (err) throw err;
+        done();
+      });
+    });
+  });
+
+  it('should fail if username exists', (done) => {
+    request(app)
+      .post('/signup')
+      .send({
+        username: 'user',
+        password: 'asdf',
+        password_confirmation: 'asdf',
+      })
+      .end((err, res) => {
+        if (err) throw err;
+        expect(res.header.location).to.equal('/signup');
+        UserModel.find().exec((e1, users) => {
+          if (e1) throw e1;
+          expect(users).to.have.lengthOf(1);
+          const user = users[0];
+          expect(user.username).to.equal('user');
+          // These are unset, as we didn't set them in the before clause above.
+          expect(user.display_name).to.not.exist;
+          expect(user.password).to.not.exist;
+          done();
+        });
+      });
+  });
+
+  after(function after(done) {  // eslint-disable-line prefer-arrow-callback
+    dropTestDB(done);
   });
 });

@@ -25,6 +25,7 @@ module.exports = function () {
         // find a user in Mongo with provided username
         User.findByUsername(username, function (err, user) {
           // In case of any error return
+          /* istanbul ignore if */
           if (err) {
             console.log('Registration error: ' + err);
             return done(err);
@@ -43,6 +44,7 @@ module.exports = function () {
             console.log(user);
             // Then save the user
             user.save(function (err) {
+              /* istanbul ignore if */
               if (err) {
                 console.log('Error saving user: ' + err);
                 throw err;
