@@ -27,15 +27,13 @@ import { match, RouterContext } from 'react-router';
 
 // Import required modules
 import routes from '../shared/routes';
-import { fetchComponentData } from './util/fetchData';
+import { fetchComponentData, getGlobbedFiles } from './util/server_utils';
 import serverConfig from './config';
-
-var glob = require('glob'),
-  _ = require('lodash');
 
 // MongoDB Connection
 mongoose.connect(serverConfig.mongoURL, (error) => {
   if (error) {
+    /* istanbul ignore next */
     console.error('Please make sure Mongodb is installed and running!'); // eslint-disable-line no-console
     throw error;
   }
@@ -64,60 +62,23 @@ passport.serializeUser(function (user, done) {
 });
 
 passport.deserializeUser(function (id, done) {
-  var callback = function (err, user) {
-    done(err, user);
-  };
-  User
-    .findById(id)
-    .populate('accounts._captains')
-    .exec(callback);
+  /* istanbul ignore next */
+  User.findById(id).exec(done);
 });
+
 app.use(cookieParser());
 app.use(session({
   secret: 'secret',
   resave: true,
-  saveUninitialized: true
+  saveUninitialized: true,
 }));
 app.use(passport.initialize());
 app.use(passport.session());
 
-  // Initialize strategies
-getGlobbedFiles('./server/strategies/*.js').forEach(function (strategy) {
+// Initialize strategies
+getGlobbedFiles('./server/strategies/*.js').forEach((strategy) => {
   require(path.resolve(strategy))();
 });
-
-function getGlobbedFiles(globPatterns, removeRoot) {
-  // For context switching
-  var _this = this;
-
-  // URL paths regex
-  var urlRegex = new RegExp('^(?:[a-z]+:)?\/\/', 'i');
-
-  // The output array
-  var output = [];
-
-  // If glob pattern is array so we use each pattern in a recursive way, otherwise we use glob
-  if (_.isArray(globPatterns)) {
-    globPatterns.forEach(function (globPattern) {
-      output = _.union(output, _this.getGlobbedFiles(globPattern, removeRoot));
-    });
-  } else if (_.isString(globPatterns)) {
-    if (urlRegex.test(globPatterns)) {
-      output.push(globPatterns);
-    } else {
-      var files = glob(globPatterns, { sync: true });
-      if (removeRoot) {
-        files = files.map(function (file) {
-          return file.replace(removeRoot, '');
-        });
-      }
-      output = _.union(output, files);
-
-    }
-  }
-
-  return output;
-}
 
 // NOTE: This has to be done after model require statements.
 require('./routes/accounts.routes.js')(app);
@@ -129,6 +90,7 @@ require('./routes/captains.routes.js')(app);
 
 import Header from '../shared/components/Header/Header';
 // Render Initial HTML
+/* istanbul ignore next */
 const renderFullPage = (body_html, initialState) => {
   const cssHeaderPath = process.env.NODE_ENV === 'production' ? '/css/header.min.css' : '/css/header.css';
   const cssMainPath = process.env.NODE_ENV === 'production' ? '/css/main.min.css' : '/css/main.css';
@@ -164,6 +126,7 @@ const protected_paths = ['/account'];
 import unit_selections from '../data/unit_selections.json';
 import socket_selections from '../data/socket_selections.json';
 // Server Side Rendering based on routes matched by React-router.
+/* istanbul ignore next server is hard to test */
 app.use((req, res) => {
   match({ routes, location: req.url }, (err, redirectLocation, renderProps) => {
     if (err) {
