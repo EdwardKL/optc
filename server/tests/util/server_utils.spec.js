@@ -17,4 +17,13 @@ describe('getGlobbedFiles', () => {
        './server/strategies/twitter.js']);
     done();
   });
+
+  it('should properly accept an array of globs', (done) => {
+    const strategies = getGlobbedFiles(['./server/strategies/r*.js', './server/strategies/l*.js']);
+    expect(strategies).to.have.members(
+      ['./server/strategies/local.js',
+       './server/strategies/reddit.js',
+       './server/strategies/register.js']);
+    done();
+  });
 });
