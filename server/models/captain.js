@@ -18,4 +18,4 @@ const captainSchema = new Schema({
   _user: { type: Schema.Types.ObjectId, ref: 'User' },
 });
 
-export default mongoose.model('Captain', captainSchema, 'Captain');
+export default mongoose.model('Captain', captainSchema);

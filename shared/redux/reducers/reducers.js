@@ -1,5 +1,4 @@
 import * as ActionTypes from '../constants/constants';
-import fetch from 'isomorphic-fetch';
 import { combineReducers } from 'redux';
 
 const baseURL = typeof window === 'undefined' ? process.env.BASE_URL || (`http://localhost:${(process.env.PORT || 8000)}`) : '';
@@ -29,7 +28,7 @@ const account = (state = {}, action) => {
     case ActionTypes.FIND_ACCOUNTS:
       return {
         ...state,
-        user: action.results,
+        user: action.results
       };
     default:
       return state;
