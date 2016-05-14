@@ -74,7 +74,7 @@ exports.add = function add(req, res, next) {
   if (redirectIfLoggedOut(req, res, next)) return;
   if (!validateRequest(req, res, next)) return;
   const account = new AccountModel(req.body);
-  if (req.body.account_id) account._id = new mongoose.Types.ObjectId(req.body.account_id);
+  if (req.body.account_id !== '-1') account._id = new mongoose.Types.ObjectId(req.body.account_id);
   UserModel.findById(req.user._id, (user_err, user) => {
     // In case of any error return
     if (user_err) {
