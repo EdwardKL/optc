@@ -10,5 +10,5 @@ const accountSchema = new Schema({
   _captains: [{ type: Schema.Types.ObjectId, ref: 'Captain' }],
 });
 
-const Account = mongoose.model('Account', accountSchema, 'Account');
+const Account = mongoose.model('Account', accountSchema);
 module.exports = Account;

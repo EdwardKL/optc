@@ -8,11 +8,13 @@ import SignupView from './container/Signup/SignupView';
 import FriendFinderView from './container/FriendFinder/FriendFinderView';
 import HomeView from './container/Home/HomeView.jsx';
 import AccountView from './container/Account/AccountView';
+import UnitView from './container/Unit/UnitView';
 
 const routes = (
   <Route path="/" component={App} >
     <IndexRoute component={HomeView} />
     <Route path="/account/:username" component={AccountView} />
+    <Route path="/unit/:id" component={UnitView} />
     <Route path="/signup" component={SignupView} />
     <Route path="/auth/oauth-signup" component={OAuthSignupView} />
     <Route path="/friend_finder(/:captain_id)" component={FriendFinderView} />

@@ -12,7 +12,6 @@ class AccountView extends React.Component {
     super(props, context);
     this.state = {};
     this.state.user = props.user;
-    console.log('user: ', this.state.user);
   }
 
   render() {
@@ -38,7 +37,6 @@ class AccountView extends React.Component {
 }
 
 function mapStateToProps(store) {
-  console.log('mapping state to props: ', store.account);
   return {
     user: store.account.user,
   };

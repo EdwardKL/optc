@@ -35,9 +35,21 @@ const account = (state = {}, action) => {
   }
 };
 
+const unit = (state = {}, action) => {
+  switch (action.type) {
+    case ActionTypes.FIND_UNIT:
+      return {
+        ...state,
+        data: action.results,
+      };
+    default:
+      return state;
+  }
+};
+
 const identity = (state = {}, action) => {
   return state;
 };
 
-const reducers = combineReducers({ friendFinder, account, identity });
+const reducers = combineReducers({ friendFinder, account, unit, identity });
 export default reducers;

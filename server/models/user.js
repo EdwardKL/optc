@@ -66,5 +66,5 @@ userSchema.methods.authenticate = function authenticate(password) {
   return this.password === this.hashPassword(password);
 };
 
-const User = mongoose.model('User', userSchema, 'User');
+const User = mongoose.model('User', userSchema);
 module.exports = User;

@@ -27,7 +27,7 @@ var unitSchema = new Schema({
 });
 
 // Create the model.
-var Unit = mongoose.model('Unit', unitSchema, 'Unit');
+var Unit = mongoose.model('Unit', unitSchema);
 
 // Make the model available to Node users.
 module.exports = Unit;

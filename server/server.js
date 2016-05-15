@@ -80,13 +80,11 @@ getGlobbedFiles('./server/strategies/*.js').forEach((strategy) => {
   require(path.resolve(strategy))();
 });
 
+// Initialize routes
 // NOTE: This has to be done after model require statements.
-require('./routes/accounts.routes.js')(app);
-require('./routes/users.routes.js')(app);
-// Only used to populate unit_selections.
-// require('./routes/units.routes.js')(app);
-require('./routes/finder.routes.js')(app);
-require('./routes/captains.routes.js')(app);
+getGlobbedFiles('./server/routes/*.routes.js').forEach((route) => {
+  require(path.resolve(route))(app);
+});
 
 import Header from '../shared/components/Header/Header';
 // Render Initial HTML
