@@ -28,7 +28,7 @@ export class UnitView extends React.Component {
     };
     const unit_stars = [];
     const other_stars = [];
-    var stars_left = 7;
+    var stars_left = 6;
     var unit_stars_left = this.state.unit.stars;
     while (stars_left > 0) {
       if (unit_stars_left > 0) {

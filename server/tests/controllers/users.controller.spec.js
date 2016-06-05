@@ -177,20 +177,6 @@ describe('UsersController.setPass', () => {
     });
   });
 
-  it("should fail if new password doesn't match with confirmation", (done) => {
-    const new_password = '1234';
-    req.setBody({
-      current_password: password,
-      password: new_password,
-      password_confirmation: 'asdf',
-    });
-    UsersController.editPass(req, res, () => {
-      expect(req.getFlash('error_message')).to.equal("New password doesn't match with confirmation.");
-      expect(res.getRedirectPath()).to.equal('/account');
-      done();
-    });
-  });
-
   before(function before(done) {  // eslint-disable-line prefer-arrow-callback
     connectToTestDB(() => {
       const db_user = new UserModel({ _id: user_id, password });
