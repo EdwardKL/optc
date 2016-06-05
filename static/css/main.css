@@ -14,8 +14,9 @@
 }
 
 #newsbox {
-	padding: 10px 40px;
-	background-color: #F5D9A6;
+	padding: 10px 30px;
+	padding-bottom: 30px;
+	background-color: rgba(249, 225, 181, 1);
 	box-shadow: 0 0 1rem rgba(0, 0, 0, 0.3);
 }
 
