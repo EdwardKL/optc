@@ -1,7 +1,8 @@
 import React, { PropTypes } from 'react';
 import * as Actions from '../../redux/actions/actions';
-import { Grid, Row } from 'react-bootstrap';
+import { Grid, Row, Col, Table } from 'react-bootstrap';
 import { connect } from 'react-redux';
+import { formatNumber } from '../../utils';
 
 export class UnitView extends React.Component {
   constructor(props, context) {
@@ -22,11 +23,75 @@ export class UnitView extends React.Component {
         </Grid>
       );
     }
+    const style = {
+      backgroundImage: 'url(http://onepiece-treasurecruise.com/wp-content/uploads/c' + String('0000' + this.state.unit._id).slice(-4) + '.png)',
+    };
+    const unit_stars = [];
+    const other_stars = [];
+    var stars_left = 7;
+    var unit_stars_left = this.state.unit.stars;
+    while (stars_left > 0) {
+      if (unit_stars_left > 0) {
+        unit_stars.push(<i className="fa fa-star" aria-hidden="true"></i>);
+        unit_stars_left -= 1;
+      } else {
+        other_stars.push(<i className="fa fa-star-o" aria-hidden="true"></i>);
+      }
+      stars_left -= 1;
+    }
     return (
       <Grid id="content">
           <Row>
-            <h2>{this.state.unit.name}</h2>
+            <h2>
+              {this.state.unit.name}
+              <span className="unitStars">
+                <span className={`stars-${this.state.unit.stars}`}>{unit_stars}</span>
+                <span className={'stars'}>{other_stars}</span>
+              </span>
+            </h2>
             <hr/>
+          </Row>
+          <Row>
+            <Col xs={7} sm={6} md={5} lg={4}>
+              <div className="unitImage" style={style}></div>
+            </Col>
+            <Col xs={5} sm={6} className="unitDescription">
+              <Row><Col xs={4} md={3}><b>Class</b></Col> <Col>{this.state.unit.classes.join(', ')}</Col></Row>
+              <Row><Col xs={4} md={3}><b>Type</b></Col> <Col>{this.state.unit.type}</Col></Row>
+              <Row><Col xs={4} md={3}><b>Cost</b></Col> <Col>{this.state.unit.cost}</Col></Row>
+              <Row><Col xs={4} md={3}><b>Combo</b></Col> <Col>{this.state.unit.combo}</Col></Row>
+              <Row><Col xs={4} md={3}><b>Slots</b></Col> <Col>{this.state.unit.slots}</Col></Row>
+              <Row><Col xs={4} md={3}><b>Max Level</b></Col> <Col>{this.state.unit.max_level}</Col></Row>
+              <Row><Col xs={4} md={3}><b>Exp to Max</b></Col> <Col>{formatNumber(this.state.unit.max_exp)}</Col></Row>
+            </Col>
+          </Row>
+          <Row>
+            <Col xs={12}>
+              <Table striped bordered hover responsive className="unitStats">
+                <thead>
+                  <tr>
+                    <th>Level</th>
+                    <th>HP</th>
+                    <th>ATK</th>
+                    <th>RCV</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>1</td>
+                    <td>{this.state.unit.base_hp}</td>
+                    <td>{this.state.unit.base_atk}</td>
+                    <td>{this.state.unit.base_rcv}</td>
+                  </tr>
+                    <tr>
+                      <td>{this.state.unit.max_level} (max)</td>
+                      <td>{this.state.unit.max_hp}</td>
+                      <td>{this.state.unit.max_atk}</td>
+                      <td>{this.state.unit.max_rcv}</td>
+                    </tr>
+                </tbody>
+              </Table>
+            </Col>
           </Row>
       </Grid>
     );
