@@ -14,9 +14,24 @@ class Account extends Component {
     super(props, context);
     this.state = {};
     this.state.account = props.account_data;
+    this.state.edit = props.edit;
   }
 
   render() {
+    const editor = (<Col xs={1}>
+      <CaptainEditor edit={false} account_id={this.state.account._id}><span>Add Captain</span></CaptainEditor>
+      <Row>
+        <AccountEditor
+          edit
+          crew_name={this.state.account.crew_name}
+          friend_id={this.state.account.friend_id}
+          pirate_level={this.state.account.pirate_level}
+          region={this.state.account.region}
+          account_id={this.state.account._id}
+        />
+      </Row>
+      <Row><a href={'/accounts/delete/id'.replace('id', this.state.account._id)}>Delete</a></Row>
+    </Col>);
     return (
       <Panel className="accountPanel">
         <Col xs={2} className="removeLeftPadding">
@@ -27,25 +42,12 @@ class Account extends Component {
             <span className="region">{this.state.account.region.capitalizeFirstLetter()}</span>
           </div>
         </Col>
-        <Col xs={9}>
+        <Col xs={this.state.edit ? 9 : 10}>
           {this.state.account._captains.map((captain) => {
-            return <Captain captain_data={captain} account_id={this.state.account._id} key={captain._id}/>;
+            return <Captain edit={this.state.edit} captain_data={captain} account_id={this.state.account._id} key={captain._id}/>;
           })}
         </Col>
-        <Col xs={1}>
-          <CaptainEditor edit={false} account_id={this.state.account._id}><span>Add Captain</span></CaptainEditor>
-          <Row>
-            <AccountEditor
-              edit
-              crew_name={this.state.account.crew_name}
-              friend_id={this.state.account.friend_id}
-              pirate_level={this.state.account.pirate_level}
-              region={this.state.account.region}
-              account_id={this.state.account._id}
-            />
-          </Row>
-          <Row><a href={'/accounts/delete/id'.replace('id', this.state.account._id)}>Delete</a></Row>
-        </Col>
+        {this.state.edit ? editor : <div/>}
       </Panel>
     );
   }
@@ -53,6 +55,7 @@ class Account extends Component {
 
 Account.propTypes = {
   account_data: PropTypes.object.isRequired,
+  edit: PropTypes.bool.isRequired,
 };
 
 export default Account;

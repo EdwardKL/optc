@@ -12,9 +12,14 @@ class AccountView extends React.Component {
     super(props, context);
     this.state = {};
     this.state.user = props.user;
+    this.state.edit = props.logged_in_user && props.logged_in_user._id === this.state.user._id;
   }
 
   render() {
+    const editor = (<div>
+      <Row>{ this.state.user.is_local ? <PasswordEditor /> : <div/> }</Row>
+      <Row> <UserDeleter /> </Row>
+    </div>);
     return (
       <Grid id="content">
           <Row>
@@ -23,13 +28,12 @@ class AccountView extends React.Component {
             </h2>
             <hr/>
           </Row>
-          <Row> { this.state.user.is_local ? <PasswordEditor /> : <div/> } </Row>
-          <Row> <UserDeleter /> </Row>
+          {this.state.edit ? editor : <div/>}
           <Row>
             {this.state.user._accounts.map((account) => {
-              return <Account account_data={account} key={account._id}/>;
+              return <Account edit={this.state.edit} account_data={account} key={account._id}/>;
             })}
-            <AccountEditor edit={false} />
+            {this.state.edit ? <AccountEditor edit={false} /> : <div/>}
           </Row>
       </Grid>
     );
@@ -38,6 +42,7 @@ class AccountView extends React.Component {
 
 function mapStateToProps(store) {
   return {
+    logged_in_user: store.identity.user,
     user: store.account.user,
   };
 }
@@ -48,6 +53,7 @@ AccountView.need = [(params) => {
 
 AccountView.propTypes = {
   user: PropTypes.object.isRequired,
+  logged_in_user: PropTypes.object,
   // This comes by default with connect below.
   dispatch: PropTypes.func.isRequired,
 };

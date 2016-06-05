@@ -7,6 +7,7 @@ class Captain extends Component {
   constructor(props, context) {
     super(props, context);
     this.state = {};
+    this.state.edit = props.edit;
     this.state.captain_data = props.captain_data;
     this.state.account_id = props.account_id;
     this.state.socket_selections = props.socket_selections;
@@ -27,9 +28,8 @@ class Captain extends Component {
   }
 
   getSocketDivs() {
-    console.log('getsocketdivs ', this.state.captain_data.current_sockets);
     return this.state.captain_data.current_sockets.map(function (socket) {
-      var style = {
+      const style = {
         backgroundImage: 'url(/img/socket' + socket._socket + '.png)',
       };
       return (<div className="socket" key={socket._socket}>
@@ -40,35 +40,45 @@ class Captain extends Component {
   }
 
   render() {
-    return (
-      <CaptainEditor
-        edit
-        account_id={this.state.account_id}
-        captain_id={this.state.captain_data._id}
-        unit_id={this.state.captain_data._unit}
-        default_level={this.state.captain_data.current_level}
-        default_special={this.state.captain_data.current_special_level}
-        default_sockets={this.state.captain_data.current_sockets}>
-        <div className="captain">
-          <div className="captainImage" style={this.state.backgroundStyle}>
-            <span className="captainLevel captainStat">Lv{this.state.captain_data.current_level}</span>
-            <span className="specialLevel captainStat">Sp{this.state.captain_data.current_special_level}</span>
-            <span className="hpCC cc">{this.state.hp_ccs}</span>
-            <span className="atkCC cc">{this.state.atk_ccs}</span>
-            <span className="rcvCC cc">{this.state.rcv_ccs}</span>
-          </div>
-          <div className="captainSocketsContainer">
-            <div className="captainSockets">
-              {this.getSocketDivs()}
-            </div>
+    const body = (<div className="captain">
+        <div className="captainImage" style={this.state.backgroundStyle}>
+          <span className="captainLevel captainStat">Lv{this.state.captain_data.current_level}</span>
+          <span className="specialLevel captainStat">Sp{this.state.captain_data.current_special_level}</span>
+          <span className="hpCC cc">{this.state.hp_ccs}</span>
+          <span className="atkCC cc">{this.state.atk_ccs}</span>
+          <span className="rcvCC cc">{this.state.rcv_ccs}</span>
+        </div>
+        <div className="captainSocketsContainer">
+          <div className="captainSockets">
+            {this.getSocketDivs()}
           </div>
         </div>
-      </CaptainEditor>
+      </div>);
+    if (this.state.edit) {
+      return (
+        <CaptainEditor
+          edit={this.state.edit}
+          account_id={this.state.account_id}
+          captain_id={this.state.captain_data._id}
+          unit_id={this.state.captain_data._unit}
+          default_level={this.state.captain_data.current_level}
+          default_special={this.state.captain_data.current_special_level}
+          default_sockets={this.state.captain_data.current_sockets}
+        >
+        {body}
+        </CaptainEditor>
+      );
+    }
+    return (
+      <Button bsStyle="link" href={`/unit/${this.state.captain_data._unit}`}>
+        {body}
+      </Button>
     );
   }
 }
 
 Captain.propTypes = {
+  edit: PropTypes.bool.isRequired,
   account_id: PropTypes.string.isRequired,
   captain_data: PropTypes.object.isRequired,
   socket_selections: PropTypes.arrayOf(PropTypes.object).isRequired,
