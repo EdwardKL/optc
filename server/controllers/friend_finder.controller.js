@@ -16,18 +16,27 @@ exports.search = function search(req, res, next) {
   CaptainModel
     .find({ _unit: captain_id, _user: { $ne: null } })
     .sort('current_level current_special_level')
-    // TODO: strip the user of sensitive data
     .populate('_user')
+    .populate({ path: '_user',
+      populate: {
+        path: '_accounts',
+        model: 'Account',
+        populate: {
+          path: '_captains',
+          model: 'Captain'
+      }}})
     // TODO: we shouldn't do it this way because we'd get a lot of repeated data. Call the unit model separately.
     .populate('_unit')
     .select('current_level current_sockets current_special_level current_hp_ccs current_atk_ccs current_rcv_ccs _user _unit')
     .exec((err, captains) => {
       if (err) throw err;
+      console.log("friend_finder controller returning captains: ", captains);
       captains.map((captain) => {
-        captain._user.clearSensitiveData();
+        if (captain._user) {
+          captain._user.clearSensitiveData();
+        }
       });
       res.json(captains);
       next();
-      return;
     });
 };

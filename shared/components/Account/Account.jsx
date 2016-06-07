@@ -11,6 +11,7 @@ String.prototype.capitalizeFirstLetter = function () {
 
 class Account extends Component {
   constructor(props, context) {
+    console.log('calling account constructor');
     super(props, context);
     this.state = {};
     this.state.account = props.account_data;

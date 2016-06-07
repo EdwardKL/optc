@@ -129,8 +129,10 @@ describe('FriendFinder', () => {
 
   function expectPopulatedUser(actual_user) {
     expect(actual_user._id.toString().valueOf()).to.equal(user_id.toString().valueOf());
-    expect(actual_user._accounts[0].toString().valueOf()).to.equal(account0._id.toString().valueOf());
-    expect(actual_user._accounts[1].toString().valueOf()).to.equal(account1._id.toString().valueOf());
+    expectAccountsEqual(actual_user._accounts[0], account0);
+    expectAccountsEqual(actual_user._accounts[1], account1);
+    // expect(actual_user._accounts[0].toString().valueOf()).to.equal(account0._id.toString().valueOf());
+    // expect(actual_user._accounts[1].toString().valueOf()).to.equal(account1._id.toString().valueOf());
     // Sensitive data should be stripped.
     expect(actual_user.password).to.equal('');
     expect(actual_user.salt).to.equal('');
@@ -156,6 +158,22 @@ describe('FriendFinder', () => {
       expect(actual_socket._socket).to.equal(expected_socket._socket);
       expect(actual_socket.socket_level).to.equal(expected_socket.socket_level);
     }
+  }
+
+  function expectAccountsEqual(actual_account, expected_account) {
+    expect(actual_account._id.toString().valueOf()).to.equal(expected_account._id.toString().valueOf());
+    expect(actual_account.pirate_level).to.equal(expected_account.pirate_level);
+    expect(actual_account.friend_id).to.equal(expected_account.friend_id);
+    expect(actual_account.crew_name).to.equal(expected_account.crew_name);
+    expect(actual_account.region).to.equal(expected_account.region);
+    expect(actual_account._captains.length).to.equal(expected_account._captains.length);
+
+    // TODO: this fails since the expected accounts are stored with array of captain IDs instead of the captain objs
+    // for (var i = 0; i < actual_account._captains.length; i++) {
+    //   console.log('actual capt: ', actual_account._captains[i]);
+    //   console.log('expected capt: ', expected_account._captains[i]);
+    //   expectCaptainsEqual(actual_account._captains[i], expected_account._captains[i]);
+    // }
   }
 
   function getCaptainFromResult(id, results) {
