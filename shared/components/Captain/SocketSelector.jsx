@@ -1,30 +1,35 @@
-import React, {Component, PropTypes} from 'react';
-import {Modal, Input, Row, Col, Button} from 'react-bootstrap';
+// Provides a row of inputs to specify the type and level of a socket.
+
+import React, { Component, PropTypes } from 'react';
+import { Input, Row, Col } from 'react-bootstrap';
 
 class SocketSelector extends Component {
-  constructor(props, context){
+  constructor(props, context) {
     super(props, context);
     this.state = {};
     this.state.key = props.key_prop;
     this.state.onChange = props.onChange;
-    this.state.getSocketSelections = props.getSocketSelections;
-    this.state.getSelectedSocket = props.getSelectedSocket;
-    this.state.default_level = props.default_level ? props.default_level : 1;
+    this.state.socket_selections = props.socket_selections;
+    this.state.default_level = props.default_level;
+    this.state.default_value = props.default_value;
   }
-  
+
   render() {
     return (
-      <Row>
+      <Row className="socketSelector">
         <Col xs={6}>
           <Input
             placeholder="Socket Type"
             label="Socket Type"
             name="socket_types"
             type="select"
-            value={this.state.getSelectedSocket(this.state.key)}
-            onChange={this.state.onChange}>
-            {this.state.getSocketSelections(this.state.key).map(function(socket) {
-              return <option value={socket._id} key={socket._id}>{socket.name}</option>
+            defaultValue={this.state.default_value}
+            onChange={this.state.onChange}
+          >
+            {this.state.socket_selections.map((socket) => {
+              return (<option value={socket._id} key={socket._id}>
+                        {socket.name}
+                      </option>);
             })}
           </Input>
         </Col>
@@ -36,19 +41,20 @@ class SocketSelector extends Component {
             type="number"
             defaultValue={this.state.default_level}
             min="1"
-            max="5"/>
+            max="5"
+          />
         </Col>
       </Row>
-    )
+    );
   }
 }
 
 SocketSelector.propTypes = {
   key_prop: PropTypes.number.isRequired,
-  getSelectedSocket: PropTypes.func.isRequired,
-  getSocketSelections: PropTypes.func.isRequired,
+  socket_selections: PropTypes.arrayOf(PropTypes.object).isRequired,
   onChange: PropTypes.func.isRequired,
-  default_level: PropTypes.number,
+  default_level: PropTypes.number.isRequired,
+  default_value: PropTypes.number.isRequired,
 };
 
 export default SocketSelector;

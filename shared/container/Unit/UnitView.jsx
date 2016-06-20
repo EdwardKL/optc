@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React, { PropTypes } from 'react';
 import * as Actions from '../../redux/actions/actions';
 import { Grid, Row, Col, Table } from 'react-bootstrap';
@@ -28,17 +29,15 @@ export class UnitView extends React.Component {
     };
     const unit_stars = [];
     const other_stars = [];
-    var stars_left = 6;
     var unit_stars_left = this.state.unit.stars;
-    while (stars_left > 0) {
+    _.times(6, (i) => {
       if (unit_stars_left > 0) {
         unit_stars.push(<i className="fa fa-star" aria-hidden="true"></i>);
         unit_stars_left -= 1;
       } else {
         other_stars.push(<i className="fa fa-star-o" aria-hidden="true"></i>);
       }
-      stars_left -= 1;
-    }
+    });
     return (
       <Grid id="content">
           <Row>

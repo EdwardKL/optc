@@ -1,1 +1,2 @@
 --timeout 60000
+--require test/fake_dom.js
