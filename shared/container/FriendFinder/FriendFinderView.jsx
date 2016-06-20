@@ -1,16 +1,13 @@
 import React, { Component, PropTypes } from 'react';
 import * as Actions from '../../redux/actions/actions';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
+import Account from '../../components/Account/Account';
 import { Grid, Row, Col, Button, Well, Label, Input } from 'react-bootstrap';
 
-import FriendFinderResult from '../../components/FriendFinderResult/FriendFinderResult';
-
-class FriendFinder extends Component {
+export class FriendFinderView extends Component {
   constructor(props, context) {
     console.log('calling friend finder constructor');
     super(props, context);
-    console.log('props: ', props);
     this.state = {};
     this.state.query = props.params.captain_id ? props.params.captain_id : '';
     this.state.friend_search_results = props.friend_search_results;
@@ -45,8 +42,16 @@ class FriendFinder extends Component {
         </Row>
         <Row>
           {console.log('search results:', this.state)}
-          {this.state.friend_search_results.map(function (result) {
-            return <FriendFinderResult data={result}/>;
+          {this.state.friend_search_results.map( (result) => {
+            if (result.user) {
+              {return result.user._accounts.map((account) => {
+                for (var i = 0; i < account._captains.length; i++) {
+                  if (account._captains[i]._unit == this.state.query) {
+                    return <Account edit={false} account_data={account} key={account._id}/>;
+                  }
+                }
+              })}
+            }
           })}
         </Row>
       </Grid>
@@ -55,7 +60,7 @@ class FriendFinder extends Component {
 
 }
 
-FriendFinder.need = [(params) => {
+FriendFinderView.need = [(params) => {
   if (params.captain_id) {
     console.log('params.captain_id not empty!');
     return Actions.fetchQuery(params.captain_id);
@@ -65,7 +70,7 @@ FriendFinder.need = [(params) => {
   }
 }];
 
-FriendFinder.propTypes = {
+FriendFinderView.propTypes = {
   friend_search_results: PropTypes.arrayOf(PropTypes.shape({
     current_level: PropTypes.number.isRequired,
     current_special_level: PropTypes.number.isRequired,
@@ -74,14 +79,14 @@ FriendFinder.propTypes = {
       display_name: PropTypes.string
     })
   })),
-  dispatch: PropTypes.func.isRequired
+  dispatch: PropTypes.func
 };
 
 
 function mapStateToProps(store) {
   return {
-    friend_search_results: store.friendFinder.friend_search_results ? store.friendFinder.friend_search_results : []
+    friend_search_results: store.friendFinder.friend_search_results
   };
 }
 
-export default connect(mapStateToProps)(FriendFinder);
+export default connect(mapStateToProps)(FriendFinderView);

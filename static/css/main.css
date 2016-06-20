@@ -39,6 +39,7 @@
 
 .accountPanel {
   box-shadow: 0 0 2rem rgba(202, 0, 0, 0.13)!important;
+  margin-top:10px;
 }
 
 .accountInfo {
