@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import * as Actions from '../../redux/actions/actions';
 import { connect } from 'react-redux';
 import Account from '../../components/Account/Account';
+import UnitSelector from '../../components/Captain/UnitSelector';
 import { Grid, Row, Col, Button, Well, Label, Input } from 'react-bootstrap';
 
 export class FriendFinderView extends Component {
@@ -9,14 +10,15 @@ export class FriendFinderView extends Component {
     console.log('calling friend finder constructor');
     super(props, context);
     this.state = {};
-    this.state.query = props.params.captain_id ? props.params.captain_id : '';
     this.state.friend_search_results = props.friend_search_results;
-    this.state.socket_selections = props.socket_selections;
-    this.handleChange = this.handleChange.bind(this);
+    this.state.unit_selections = props.unit_selections;
+    this.state.unit = props.params.captain_id ? this.state.unit_selections[props.params.captain_id - 1] : this.state.unit_selections[0];
+    this.unitSelected = this.unitSelected.bind(this);
   }
 
-  handleChange(e) {
-    this.setState({ query: e.target.value });
+  unitSelected(e) {
+    const unit = this.state.unit_selections[e.target.value - 1];
+    this.setState({ unit });
   }
 
   render() {
@@ -28,25 +30,28 @@ export class FriendFinderView extends Component {
           </h2>
           <hr/>
           <Col md={12}>
-            <Input
-              placeholder="Captain ID"
-              label="Captain ID"
-              name="captain_id"
-              type="text"
-              onChange={this.handleChange}/>
-            <br/>
-            <Button bsStyle="primary" type="submit" href={`/friend_finder/${this.state.query}`}>
+            <p>To look for friends who have a particular unit,
+              please select the unit in the drop down below.</p>
+          </Col>
+          <Col md={12}>
+            <UnitSelector
+              unit_selections={this.state.unit_selections}
+              default_unit_id={this.state.unit._id}
+              onChange={this.unitSelected}/>
+          </Col>
+          <Col md={12}>
+            <Button bsStyle="primary" type="submit" href={`/friend_finder/${this.state.unit._id}`}>
             Search
             </Button>
           </Col>
         </Row>
         <Row>
-          {console.log('search results:', this.state)}
+          {console.log('search results:', this.state.friend_search_results)}
           {this.state.friend_search_results.map( (result) => {
             if (result.user) {
               {return result.user._accounts.map((account) => {
                 for (var i = 0; i < account._captains.length; i++) {
-                  if (account._captains[i]._unit == this.state.query) {
+                  if (account._captains[i]._unit == this.state.unit._id) {
                     return <Account edit={false} account_data={account} key={account._id}/>;
                   }
                 }
@@ -79,13 +84,15 @@ FriendFinderView.propTypes = {
       display_name: PropTypes.string
     })
   })),
-  dispatch: PropTypes.func
+  dispatch: PropTypes.func,
+  unit_selections: PropTypes.arrayOf(PropTypes.object)
 };
 
 
 function mapStateToProps(store) {
   return {
-    friend_search_results: store.friendFinder.friend_search_results
+    friend_search_results: store.friendFinder.friend_search_results,
+    unit_selections: store.identity.unit_selections
   };
 }
 
