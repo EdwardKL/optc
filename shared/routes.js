@@ -9,6 +9,7 @@ import FriendFinderView from './container/FriendFinder/FriendFinderView';
 import HomeView from './container/Home/HomeView.jsx';
 import AccountView from './container/Account/AccountView';
 import UnitView from './container/Unit/UnitView';
+import UnitsView from './container/Unit/UnitsView';
 
 const routes = (
   <Route path="/" component={App} >
@@ -18,6 +19,7 @@ const routes = (
     <Route path="/signup" component={SignupView} />
     <Route path="/auth/oauth-signup" component={OAuthSignupView} />
     <Route path="/friend_finder(/:captain_id)" component={FriendFinderView} />
+    <Route path="/units" component={UnitsView} />
   </Route>
 );
 

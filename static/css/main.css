@@ -85,7 +85,14 @@
   display: inline-block;
 }
 
-.captainImage {
+.unitThumb {
+  width: 100px;
+  height: 95px;
+  position: relative;
+  display: inline-block;
+}
+
+.captainImage, .unitThumbImage {
   width: 80px;
   height: 80px;
   background-size: cover;
@@ -94,6 +101,18 @@
   position: absolute;
   left: 30px;
   box-shadow: 0 0 2rem rgba(0, 0, 0, 0.5);
+}
+
+.unitThumbId {
+  position: absolute;
+  text-shadow: 1px 1px 2px black,
+               1px -1px 2px black,
+               -1px 1px 2px black,
+               -1px -1px 2px black;
+  font: bold 12px sans-serif;
+  color: white;
+	right: 1px;
+	bottom: 0px;
 }
 
 .captainStat {

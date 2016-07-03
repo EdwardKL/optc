@@ -9,6 +9,42 @@ import { connectToTestDB, dropTestDB } from '../test_utils';
 
 const expect = chai.expect;
 
+describe('units.fetchIds', () => {
+  const unit1 = new UnitModel({
+    _id: 777,
+  });
+  const unit2 = new UnitModel({
+    _id: 888,
+  });
+  const unit3 = new UnitModel({
+    _id: 5,
+  });
+  // Setup fake user.
+  const req = new RequestMock();
+  const res = new ResponseMock();
+  before('Store units', function before(done) {  // eslint-disable-line prefer-arrow-callback
+    connectToTestDB(() => {
+      // Store the fake units into the DB.
+      unit1.save(() => {
+        unit2.save(() => {
+          unit3.save(done);
+        });
+      });
+    });
+  });
+
+  it('should return ids in order', (done) => {
+    UnitController.fetchIds(req, res, () => {
+      expect(res.getJson()).to.be.eql([5, 777, 888]);
+      done();
+    });
+  });
+
+  after(function after(done) {  // eslint-disable-line prefer-arrow-callback
+    dropTestDB(done);
+  });
+});
+
 describe('units.fetch', () => {
   const unit = new UnitModel({
     _id: 777,
@@ -36,7 +72,7 @@ describe('units.fetch', () => {
   const res = new ResponseMock();
   before('Store a unit', function before(done) {  // eslint-disable-line prefer-arrow-callback
     connectToTestDB(() => {
-      // Store the fake user into the DB.
+      // Store the fake unit into the DB.
       unit.save(done);
     });
   });

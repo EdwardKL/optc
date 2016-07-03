@@ -49,6 +49,7 @@ export class Header extends React.Component {
             <Navbar.Collapse>
               <Nav>
                 <NavItem href="/friend_finder" key='0'>Friend Finder</NavItem>
+                <NavItem href="/units" key='5'>Units</NavItem>
                 {links}
               </Nav>
               {right_element}

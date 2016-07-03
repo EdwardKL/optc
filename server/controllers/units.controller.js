@@ -29,6 +29,26 @@ exports.getAll = function (req, res) {
     .exec(callback);
 };*/
 
+exports.fetchIds = function fetch_ids(req, res, next) {
+  UnitModel
+    .find({})
+    .sort('_id')
+    .select('_id')
+    .exec((err, docs) => {
+      // In case of any error return nothing.
+      if (err || !docs) {
+        res.json({});
+      } else {
+        console.log('returning ids');
+        res.json(docs.map((doc) => {
+          return doc._id;
+        }));
+      }
+      next();
+      return;
+    });
+};
+
 exports.fetch = function fetch_unit(req, res, next) {
   const id = req.params.id;
   UnitModel.findById(id, (err, unit) => {

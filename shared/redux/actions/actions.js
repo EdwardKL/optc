@@ -48,14 +48,33 @@ export function addUnitResults(results) {
   };
 }
 
+export function addUnitIds(results) {
+  return {
+    type: ActionTypes.GET_UNIT_IDS,
+    results,
+  };
+}
+
 export function fetchUnit(id) {
   return (dispatch) => {
-    return fetch(`${baseURL}/units/api/${id}`, {
+    return fetch(`${baseURL}/units/api/id/${id}`, {
       method: 'get',
       headers: new Headers({
         'Content-Type': 'application/json',
       }),
     }).then((response) => response.json())
       .then(results => dispatch(addUnitResults(results)));
+  };
+}
+
+export function fetchUnitIds() {
+  return (dispatch) => {
+    return fetch(`${baseURL}/units/api/ids`, {
+      method: 'get',
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
+    }).then((response) => response.json())
+      .then(results => dispatch(addUnitIds(results)));
   };
 }

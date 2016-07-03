@@ -42,6 +42,11 @@ const unit = (state = {}, action) => {
         ...state,
         data: action.results,
       };
+    case ActionTypes.GET_UNIT_IDS:
+      return {
+        ...state,
+        ids: action.results,
+      };
     default:
       return state;
   }

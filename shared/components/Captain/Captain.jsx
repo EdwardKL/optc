@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { Panel, Row, Col, Button } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import CaptainEditor from '../../components/Captain/CaptainEditor';
 import { connect } from 'react-redux';
 
