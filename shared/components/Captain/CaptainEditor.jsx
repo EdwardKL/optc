@@ -117,7 +117,7 @@ export class CaptainEditor extends Component {
                             type="number"
                             onChange={this.handleSpecialChange}
                             value={this.getSpecialValue()}
-                            min="1"
+                            min={this.getMaxSpecial() > 0 ? "1" : "0"}
                             max={this.getMaxSpecial()}/>
                         </Col>
                     </Row>
