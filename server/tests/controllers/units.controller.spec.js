@@ -12,15 +12,18 @@ import RECOMMENDATION from '../../../constants/recommendation';
 
 const expect = chai.expect;
 
-describe('units.fetchIds', () => {
+describe('units.fetchIdAndNames', () => {
   const unit1 = new UnitModel({
     _id: 777,
+    name: 'unit1',
   });
   const unit2 = new UnitModel({
     _id: 888,
+    name: 'unit2',
   });
   const unit3 = new UnitModel({
     _id: 5,
+    name: 'unit3',
   });
   // Setup fake user.
   const req = new RequestMock();
@@ -36,9 +39,12 @@ describe('units.fetchIds', () => {
     });
   });
 
-  it('should return ids in order', (done) => {
-    UnitController.fetchIds(req, res, () => {
-      expect(res.getJson()).to.be.eql([5, 777, 888]);
+  it('should return ids in order with their names', (done) => {
+    UnitController.fetchIdAndNames(req, res, () => {
+      expect(res.getJson()).to.be.eql([
+        { id: 5, name: 'unit3' },
+        { id: 777, name: 'unit1' },
+        { id: 888, name: 'unit2' }]);
       done();
     });
   });
