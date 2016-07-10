@@ -11,7 +11,7 @@ const friendFinder = (state = {}, action) => {
         results.push({
           current_level: action.friend_search_results[i].current_level,
           current_special_level: action.friend_search_results[i].current_special_level,
-          user: action.friend_search_results[i]._user
+          user: action.friend_search_results[i]._user,
         });
       }
       return {
@@ -28,7 +28,7 @@ const account = (state = {}, action) => {
     case ActionTypes.FIND_ACCOUNTS:
       return {
         ...state,
-        user: action.results
+        user: action.results,
       };
     default:
       return state;
@@ -46,6 +46,16 @@ const unit = (state = {}, action) => {
       return {
         ...state,
         ids: action.results,
+      };
+    case ActionTypes.GET_GLOBAL_RECOMMENDATIONS:
+      return {
+        ...state,
+        global_recommendations: action.results,
+      };
+    case ActionTypes.GET_RECOMMENDATION:
+      return {
+        ...state,
+        recommendation: action.results,
       };
     default:
       return state;

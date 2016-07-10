@@ -11,7 +11,6 @@ export class SocketSelections extends Component {
     super(props, context);
     this.state = {};
     this.state.max_sockets = props.max_sockets;
-    console.log('constructed with: ', this.state.max_sockets);
     this.state.socket_selections = props.socket_selections;
     this.state.current_sockets = [];
     this.state.default_socket_levels = [];

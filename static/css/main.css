@@ -230,3 +230,15 @@
 .stars-4 { color: #f28e00; }
 .stars-5 { color: #ff0000; }
 .stars-6 { color: #9932cc; }
+
+#recommendation {
+	font-style: italic;
+	margin-bottom: -15px;
+	position: relative;
+}
+
+#recommend {
+	position: absolute;
+	right: 0px;
+	bottom: 0px;
+}

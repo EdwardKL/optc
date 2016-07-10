@@ -12,6 +12,10 @@ export default class RequestMock {
     return this.messages[type];
   }
 
+  clearFlash() {
+    this.messages = {};
+  }
+
   // Pretend that the user was logged in.
   login(user) {
     this.user = user;

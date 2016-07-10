@@ -1,9 +1,10 @@
 import _ from 'lodash';
 import React, { PropTypes } from 'react';
 import * as Actions from '../../redux/actions/actions';
-import { Grid, Row, Col, Table } from 'react-bootstrap';
+import { Grid, Row, Col, Table, Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { formatNumber } from '../../utils';
+import RECOMMENDATION from '../../../constants/recommendation';
 
 export class UnitView extends React.Component {
   constructor(props, context) {
@@ -11,6 +12,10 @@ export class UnitView extends React.Component {
     this.state = {};
     this.state.unit = props.unit;
     this.state.has_unit = props.unit._id ? true : false;
+    this.state.global_recommendations = props.global_recommendations;
+    this.state.recommendation = props.recommendation;
+    this.state.total_recommendations =
+      props.global_recommendations.not_recommended + props.global_recommendations.recommended;
   }
 
   render() {
@@ -38,6 +43,25 @@ export class UnitView extends React.Component {
         other_stars.push(<i className="fa fa-star-o" aria-hidden="true"></i>);
       }
     });
+    let recommend_buttons;
+    if (this.state.recommendation !== RECOMMENDATION.UNABLE) {
+      recommend_buttons = (<div id ="recommend">
+        <Button
+          bsStyle={this.state.recommendation === RECOMMENDATION.POSITIVE ? 'info' : 'default'}
+          bsSize="xsmall"
+          href={`/units/api/recommend/${this.state.unit._id}/1`}
+        >
+          Useful!
+        </Button> &nbsp;
+        <Button
+          bsStyle={this.state.recommendation === RECOMMENDATION.NEGATIVE ? 'danger' : 'default'}
+          bsSize="xsmall"
+          href={`/units/api/recommend/${this.state.unit._id}/0`}
+        >
+          Not useful!
+        </Button>
+      </div>);
+    }
     return (
       <Grid id="content">
           <Row>
@@ -48,6 +72,10 @@ export class UnitView extends React.Component {
                 <span className={'stars'}>{other_stars}</span>
               </span>
             </h2>
+            <div id="recommendation">
+              {`${this.state.global_recommendations.recommended} users out of ${this.state.total_recommendations} think this unit is useful.`}
+              {recommend_buttons}
+            </div>
             <hr/>
           </Row>
           <Row>
@@ -100,15 +128,23 @@ export class UnitView extends React.Component {
 function mapStateToProps(store) {
   return {
     unit: store.unit.data,
+    global_recommendations: store.unit.global_recommendations,
+    recommendation: store.unit.recommendation,
   };
 }
 
 UnitView.need = [(params) => {
   return Actions.fetchUnit(params.id);
+}, (params) => {
+  return Actions.fetchGlobalRecommendations(params.id);
+}, (params, user_id) => {
+  return Actions.fetchRecommendation(params.id, user_id);
 }];
 
 UnitView.propTypes = {
   unit: PropTypes.object.isRequired,
+  global_recommendations: PropTypes.object.isRequired,
+  recommendation: PropTypes.number.isRequired,
   // This comes by default with connect below.
   dispatch: PropTypes.func.isRequired,
 };

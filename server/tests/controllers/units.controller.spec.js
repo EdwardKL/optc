@@ -1,11 +1,14 @@
 /* eslint-disable no-unused-expressions */
 
 import chai from 'chai';
+import mongoose from 'mongoose';
 import UnitController from '../../controllers/units.controller';
 import UnitModel from '../../models/unit';
+import RecommendationModel from '../../models/recommendation';
 import RequestMock from '../mocks/request.mock';
 import ResponseMock from '../mocks/response.mock';
 import { connectToTestDB, dropTestDB } from '../test_utils';
+import RECOMMENDATION from '../../../constants/recommendation';
 
 const expect = chai.expect;
 
@@ -108,6 +111,228 @@ describe('units.fetch', () => {
       expect(actual_unit.captain_ability).to.equal(unit.captain_ability);
       expect(actual_unit.special_ability).to.equal(unit.special_ability);
       expect(actual_unit.region).to.equal(unit.region);
+      done();
+    });
+  });
+
+  after(function after(done) {  // eslint-disable-line prefer-arrow-callback
+    dropTestDB(done);
+  });
+});
+
+describe('units.recommend', () => {
+  const req = new RequestMock();
+  const res = new ResponseMock();
+
+  const user_id = new mongoose.Types.ObjectId();
+
+  const recommendation = new RecommendationModel({ _user: user_id, _unit: 4, recommended: false });
+
+  before('Store a recommendation', function before(done) {  // eslint-disable-line prefer-arrow-callback
+    connectToTestDB(() => {
+      recommendation.save(done);
+    });
+  });
+
+  afterEach(function afterEach(done) {  // eslint-disable-line prefer-arrow-callback
+    req.clearFlash();
+    done();
+  });
+
+  it('should redirect when signed out', (done) => {
+    UnitController.recommend(req, res, () => {
+      expect(req.getFlash('error_message')).to.equal('Please sign in.');
+      expect(res.getRedirectPath()).to.equal('/signup');
+      done();
+    });
+  });
+
+  it('should store a recommendation', (done) => {
+    req.setParams({ id: 3, recommended: '1' });
+    req.login({ _id: user_id });
+    UnitController.recommend(req, res, () => {
+      RecommendationModel.findOne({ _user: user_id, _unit: 3 }).exec((err, doc) => {
+        expect(req.getFlash('error_message')).to.not.exist;
+        expect(doc._user.toString().valueOf()).to.equal(user_id.toString().valueOf());
+        expect(doc._unit).to.equal(3);
+        expect(doc.recommended).to.be.true;
+        done();
+      });
+    });
+  });
+
+  it('should store a negative recommendation', (done) => {
+    req.setParams({ id: 5, recommended: 0 });
+    req.login({ _id: user_id });
+    UnitController.recommend(req, res, () => {
+      RecommendationModel.findOne({ _user: user_id, _unit: 5 }).exec((err, doc) => {
+        expect(req.getFlash('error_message')).to.not.exist;
+        expect(doc._user.toString().valueOf()).to.equal(user_id.toString().valueOf());
+        expect(doc._unit).to.equal(5);
+        expect(doc.recommended).to.be.false;
+        done();
+      });
+    });
+  });
+
+  it('should delete if the same recommendation already exists', (done) => {
+    req.setParams({ id: 4, recommended: 0 });
+    req.login({ _id: user_id });
+    UnitController.recommend(req, res, () => {
+      expect(req.getFlash('error_message')).to.not.exist;
+      expect(res.getRedirectPath()).to.equal(`/unit/4`);
+      RecommendationModel.findOne({ _user: user_id, _unit: 4 }).exec((err, doc) => {
+        expect(doc).to.not.exist;
+        done();
+      });
+    });
+  });
+
+  it('should swap recommendations', (done) => {
+    req.setParams({ id: 4, recommended: '1' });
+    req.login({ _id: user_id });
+    UnitController.recommend(req, res, () => {
+      RecommendationModel.findOne({ _user: user_id, _unit: 4 }).exec((err, doc) => {
+        expect(req.getFlash('error_message')).to.not.exist;
+        expect(doc._user.toString().valueOf()).to.equal(user_id.toString().valueOf());
+        expect(doc._unit).to.equal(4);
+        expect(doc.recommended).to.be.true;
+        done();
+      });
+    });
+  });
+
+  after(function after(done) {  // eslint-disable-line prefer-arrow-callback
+    dropTestDB(done);
+  });
+});
+
+describe('units.fetchGlobalRecommendations', () => {
+  const req = new RequestMock();
+  const res = new ResponseMock();
+
+  const recommendation1 = new RecommendationModel({
+    _user: new mongoose.Types.ObjectId(),
+    _unit: 4,
+    recommended: false,
+  });
+  const recommendation2 = new RecommendationModel({
+    _user: new mongoose.Types.ObjectId(),
+    _unit: 4,
+    recommended: true,
+  });
+  const recommendation3 = new RecommendationModel({
+    _user: new mongoose.Types.ObjectId(),
+    _unit: 4,
+    recommended: false,
+  });
+  const recommendation4 = new RecommendationModel({
+    _user: new mongoose.Types.ObjectId(),
+    _unit: 5,
+    recommended: false,
+  });
+
+  before('Store recommendations', function before(done) {  // eslint-disable-line prefer-arrow-callback
+    connectToTestDB(() => {
+      recommendation1.save(() => {
+        recommendation2.save(() => {
+          recommendation3.save(() => {
+            recommendation4.save(done);
+          });
+        });
+      });
+    });
+  });
+
+  it('should return 0s if no recommendation', (done) => {
+    req.setParams({ id: -1 });
+    UnitController.fetchGlobalRecommendations(req, res, () => {
+      const recommendations = res.getJson();
+      expect(recommendations.recommended).to.equal(0);
+      expect(recommendations.not_recommended).to.equal(0);
+      done();
+    });
+  });
+
+  it('should return right thing for unit 4', (done) => {
+    req.setParams({ id: 4 });
+    UnitController.fetchGlobalRecommendations(req, res, () => {
+      const recommendations = res.getJson();
+      expect(recommendations.recommended).to.equal(1);
+      expect(recommendations.not_recommended).to.equal(2);
+      done();
+    });
+  });
+
+  it('should return right thing for unit 5', (done) => {
+    req.setParams({ id: 5 });
+    UnitController.fetchGlobalRecommendations(req, res, () => {
+      const recommendations = res.getJson();
+      expect(recommendations.recommended).to.equal(0);
+      expect(recommendations.not_recommended).to.equal(1);
+      done();
+    });
+  });
+
+  after(function after(done) {  // eslint-disable-line prefer-arrow-callback
+    dropTestDB(done);
+  });
+});
+
+describe('units.fetchRecommendation', () => {
+  const req = new RequestMock();
+  const res = new ResponseMock();
+
+  const user_id = new mongoose.Types.ObjectId();
+
+  const recommendation1 = new RecommendationModel({
+    _user: user_id,
+    _unit: 4,
+    recommended: false,
+  });
+
+  const recommendation2 = new RecommendationModel({
+    _user: user_id,
+    _unit: 5,
+    recommended: true,
+  });
+
+  before('Store recommendation', function before(done) {  // eslint-disable-line prefer-arrow-callback
+    connectToTestDB(() => {
+      recommendation1.save((err) => {
+        recommendation2.save(done);
+      });
+    });
+  });
+
+  it('should return UNABLE if signed out', (done) => {
+    req.setParams({ id: 4 });
+    UnitController.fetchRecommendation(req, res, () => {
+      expect(res.getJson()).to.be.equal(RECOMMENDATION.UNABLE);
+      done();
+    });
+  });
+
+  it('should return NONE if no recommendation', (done) => {
+    req.setParams({ id: -1, user_id });
+    UnitController.fetchRecommendation(req, res, () => {
+      expect(res.getJson()).to.be.equal(RECOMMENDATION.NONE);
+      done();
+    });
+  });
+
+  it('should return NEGATIVE if negative recommendation exists', (done) => {
+    req.setParams({ id: 4, user_id });
+    UnitController.fetchRecommendation(req, res, () => {
+      expect(res.getJson()).to.be.equal(RECOMMENDATION.NEGATIVE);
+      done();
+    });
+  });
+
+  it('should return POSITIVE if positive recommendation exists', (done) => {
+    req.setParams({ id: 5, user_id });
+    UnitController.fetchRecommendation(req, res, () => {
+      expect(res.getJson()).to.be.equal(RECOMMENDATION.POSITIVE);
       done();
     });
   });

@@ -173,7 +173,7 @@ app.use((req, res) => {
       initialState.identity.error_message = error_message;
     }
     const store = configureStore(initialState);
-    fetchComponentData(store.dispatch, renderProps.components, renderProps.params)
+    fetchComponentData(store.dispatch, renderProps.components, renderProps.params, req.user ? req.user._id : null)
       .then(() => {
         const initialView = renderToString(
           <Provider store={store}>

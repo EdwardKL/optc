@@ -55,6 +55,20 @@ export function addUnitIds(results) {
   };
 }
 
+export function addGlobalRecommendations(results) {
+  return {
+    type: ActionTypes.GET_GLOBAL_RECOMMENDATIONS,
+    results,
+  };
+}
+
+export function addRecommendation(results) {
+  return {
+    type: ActionTypes.GET_RECOMMENDATION,
+    results,
+  };
+}
+
 export function fetchUnit(id) {
   return (dispatch) => {
     return fetch(`${baseURL}/units/api/id/${id}`, {
@@ -76,5 +90,29 @@ export function fetchUnitIds() {
       }),
     }).then((response) => response.json())
       .then(results => dispatch(addUnitIds(results)));
+  };
+}
+
+export function fetchGlobalRecommendations(id) {
+  return (dispatch) => {
+    return fetch(`${baseURL}/units/api/recommendations/${id}`, {
+      method: 'get',
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
+    }).then((response) => response.json())
+      .then(results => dispatch(addGlobalRecommendations(results)));
+  };
+}
+
+export function fetchRecommendation(id, user_id) {
+  return (dispatch) => {
+    return fetch(`${baseURL}/units/api/recommendation/${id}/${user_id}`, {
+      method: 'get',
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
+    }).then((response) => response.json())
+      .then(results => dispatch(addRecommendation(results)));
   };
 }
