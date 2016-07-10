@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { Panel, Row, Col } from 'react-bootstrap';
+import { Panel, Row, Col, Button } from 'react-bootstrap';
 import AccountEditor from '../../components/Account/AccountEditor';
 import CaptainEditor from '../../components/Captain/CaptainEditor';
 import Captain from '../../components/Captain/Captain';
@@ -20,7 +20,9 @@ class Account extends Component {
 
   render() {
     const editor = (<Col xs={1}>
-      <CaptainEditor edit={false} account_id={this.state.account._id}><span>Add Captain</span></CaptainEditor>
+      <CaptainEditor edit={false} account_id={this.state.account._id}>
+        <Button bsStyle="primary" className="addCaptainButton">Add Captain</Button>
+      </CaptainEditor>
       <Row>
         <AccountEditor
           edit
@@ -31,7 +33,11 @@ class Account extends Component {
           account_id={this.state.account._id}
         />
       </Row>
-      <Row><a href={'/accounts/delete/id'.replace('id', this.state.account._id)}>Delete</a></Row>
+      <Row>
+        <Button bsStyle="danger" className="deleteAccountButton" href={'/accounts/delete/id'.replace('id', this.state.account._id)}>
+          Delete
+        </Button>
+      </Row>
     </Col>);
     return (
       <Panel className="accountPanel">
