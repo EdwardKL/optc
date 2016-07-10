@@ -8,7 +8,7 @@ export class UnitsView extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {};
-    this.state.ids = props.ids;
+    this.state.id_and_names = props.id_and_names;
   }
 
   render() {
@@ -18,8 +18,8 @@ export class UnitsView extends React.Component {
           <h2>Units</h2>
           <hr/>
         </Row>
-        {this.state.ids.map((id) => {
-          return (<Unit id={id} key={id}/>);
+        {this.state.id_and_names.map((id_and_name) => {
+          return (<Unit id={id_and_name.id} name={id_and_name.name} key={id_and_name.id}/>);
         })}
       </Grid>
     );
@@ -28,18 +28,18 @@ export class UnitsView extends React.Component {
 
 function mapStateToProps(store) {
   return {
-    ids: store.unit.ids,
+    id_and_names: store.unit.id_and_names,
   };
 }
 
 // For some reason if you don't supply params here this gets called and responds before mongoose has a chance to do anything...
 // ... ?!
 UnitsView.need = [(params) => {
-  return Actions.fetchUnitIds();
+  return Actions.fetchUnitIdAndNames();
 }];
 
 UnitsView.propTypes = {
-  ids: PropTypes.arrayOf(PropTypes.number).isRequired,
+  id_and_names: PropTypes.arrayOf(PropTypes.object).isRequired,
   // This comes by default with connect below.
   dispatch: PropTypes.func.isRequired,
 };

@@ -32,18 +32,18 @@ exports.getAll = function (req, res) {
     .exec(callback);
 };*/
 
-exports.fetchIds = function fetch_ids(req, res, next) {
+exports.fetchIdAndNames = function fetch_id_and_names(req, res, next) {
   UnitModel
     .find({})
     .sort('_id')
-    .select('_id')
+    .select('_id name')
     .exec((err, docs) => {
       // In case of any error return nothing.
       if (err || !docs) {
-        res.json({});
+        res.json([{}]);
       } else {
         res.json(docs.map((doc) => {
-          return doc._id;
+          return { id: doc._id, name: doc.name };
         }));
       }
       next();

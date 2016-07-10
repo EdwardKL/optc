@@ -87,12 +87,12 @@
 
 .unitThumb {
   width: 100px;
-  height: 95px;
+  height: 110px;
   position: relative;
   display: inline-block;
 }
 
-.captainImage, .unitThumbImage {
+.captainImage {
   width: 80px;
   height: 80px;
   background-size: cover;
@@ -100,6 +100,17 @@
   display: inline-block;
   position: absolute;
   left: 30px;
+  box-shadow: 0 0 2rem rgba(0, 0, 0, 0.5);
+}
+
+.unitThumbImage {
+  width: 80px;
+  height: 80px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  display: inline-block;
+  position: absolute;
+  left: 10px;
   box-shadow: 0 0 2rem rgba(0, 0, 0, 0.5);
 }
 
@@ -112,7 +123,20 @@
   font: bold 12px sans-serif;
   color: white;
 	right: 1px;
-	bottom: 0px;
+	top: 0px;
+}
+
+.unitThumbName {
+  position: absolute;
+  text-shadow: 1px 1px 2px black,
+               1px -1px 2px black,
+               -1px 1px 2px black,
+               -1px -1px 2px black;
+  font: bold 10px sans-serif;
+  color: white;
+	right: 1px;
+	top: 85px;
+	width: 100px;
 }
 
 .captainStat {
@@ -182,7 +206,7 @@
   background-size: cover;
   display: inline-block;
 }
-.socketLevel{
+.socketLevel {
   font: bold 12px sans-serif;
   display: inline-block;
   margin-top: 3px;

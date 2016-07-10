@@ -48,9 +48,9 @@ export function addUnitResults(results) {
   };
 }
 
-export function addUnitIds(results) {
+export function addUnitIdAndNames(results) {
   return {
-    type: ActionTypes.GET_UNIT_IDS,
+    type: ActionTypes.GET_UNIT_ID_AND_NAMES,
     results,
   };
 }
@@ -81,15 +81,15 @@ export function fetchUnit(id) {
   };
 }
 
-export function fetchUnitIds() {
+export function fetchUnitIdAndNames() {
   return (dispatch) => {
-    return fetch(`${baseURL}/units/api/ids`, {
+    return fetch(`${baseURL}/units/api/id_and_names`, {
       method: 'get',
       headers: new Headers({
         'Content-Type': 'application/json',
       }),
     }).then((response) => response.json())
-      .then(results => dispatch(addUnitIds(results)));
+      .then(results => dispatch(addUnitIdAndNames(results)));
   };
 }
 

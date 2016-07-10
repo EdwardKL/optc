@@ -42,10 +42,10 @@ const unit = (state = {}, action) => {
         ...state,
         data: action.results,
       };
-    case ActionTypes.GET_UNIT_IDS:
+    case ActionTypes.GET_UNIT_ID_AND_NAMES:
       return {
         ...state,
-        ids: action.results,
+        id_and_names: action.results,
       };
     case ActionTypes.GET_GLOBAL_RECOMMENDATIONS:
       return {

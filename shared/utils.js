@@ -1,3 +1,5 @@
+import React from 'react';
+
 export function formatNumber(num) {
   const str_num = String(num);
   var result = '';
@@ -12,6 +14,32 @@ export function formatNumber(num) {
       result = `,${result}`;
     }
     index -= 1;
+  }
+  return result;
+}
+
+export function wrapText(str) {
+  const wrap_length = 20;
+  let num_so_far = 0;
+  const result = [];
+  const words = str.split(' ');
+  for (let i = 0; i < words.length; i++) {
+    const word = words[i];
+    num_so_far += word.length + 1;
+    let extra_char = '';
+    let push_br = false;
+    if (i + 1 < words.length) {
+      if (words[i + 1].length + num_so_far >= wrap_length) {
+        push_br = true;
+        num_so_far = 0;
+      } else {
+        extra_char = ' ';
+      }
+    }
+    result.push(word + extra_char);
+    if (push_br) {
+      result.push(<br />);
+    }
   }
   return result;
 }
