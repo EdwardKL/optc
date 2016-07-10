@@ -34,13 +34,13 @@ export class UnitView extends React.Component {
     };
     const unit_stars = [];
     const other_stars = [];
-    var unit_stars_left = this.state.unit.stars;
+    let unit_stars_left = this.state.unit.stars;
     _.times(6, (i) => {
       if (unit_stars_left > 0) {
-        unit_stars.push(<i className="fa fa-star" aria-hidden="true"></i>);
+        unit_stars.push(<i className="fa fa-star" aria-hidden="true" key={i}></i>);
         unit_stars_left -= 1;
       } else {
-        other_stars.push(<i className="fa fa-star-o" aria-hidden="true"></i>);
+        other_stars.push(<i className="fa fa-star-o" aria-hidden="true" key={i}></i>);
       }
     });
     let recommend_buttons;

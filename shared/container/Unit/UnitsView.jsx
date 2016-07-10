@@ -19,7 +19,7 @@ export class UnitsView extends React.Component {
           <hr/>
         </Row>
         {this.state.ids.map((id) => {
-          return (<Unit id={id} />);
+          return (<Unit id={id} key={id}/>);
         })}
       </Grid>
     );
