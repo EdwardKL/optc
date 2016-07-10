@@ -10,8 +10,8 @@ class AccountEditor extends Component {
     this.state.account_id = this.state.edit ? props.account_id : -1;
     this.state.label = this.state.edit ? 'Edit' : 'Add Account';
     this.state.title = this.state.edit ? 'Edit Account' : 'Add Account';
-    this.state.link_type = this.state.edit ? 'link' : 'primary';
     this.state.action_name = this.state.edit ? 'Edit' : 'Add';
+    this.state.button_class = this.state.edit ? 'editAccountButton' : 'addAccountButton';
     this.state.default_crew_name = this.state.edit ? props.crew_name : '';
     this.state.default_friend_id = this.state.edit ? props.friend_id : '';
     this.state.default_pirate_level = this.state.edit ? props.pirate_level : 1;
@@ -31,7 +31,7 @@ class AccountEditor extends Component {
   render() {
     return (
       <div>
-        <Button bsStyle="primary" onClick={this.open} bsStyle={this.state.link_type}>{this.state.label}</Button>
+        <Button className={this.state.button_class} onClick={this.open}>{this.state.label}</Button>
         <Modal show={this.state.showModal} onHide={this.close}>
           <form action="/accounts/add" method="POST">
             <Modal.Header closeButton>

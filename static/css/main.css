@@ -40,6 +40,7 @@
 .accountPanel {
   box-shadow: 0 0 2rem rgba(202, 0, 0, 0.13)!important;
   margin-top:10px;
+  position: relative;
 }
 
 .accountInfo {
@@ -48,6 +49,7 @@
   vertical-align: bottom;
   position: relative;
   border-right: 1px solid lightgrey;
+  height: 85px;
 }
 
 .crewName {
@@ -222,6 +224,25 @@
   position: absolute;
   left: 15px;
 }
+
+.addCaptainButton {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.deleteAccountButton {
+  position: absolute;
+  right: 0;
+  top: 45px;
+}
+
+.editAccountButton {
+  position: absolute;
+  right: 75px;
+  top: 45px;
+}
+
 
 .unitImage {
   width: 320px;
