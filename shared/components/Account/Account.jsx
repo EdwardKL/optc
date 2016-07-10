@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { Panel, Row, Col, Button } from 'react-bootstrap';
+import { Panel, Row, Col, Button, Modal } from 'react-bootstrap';
 import AccountEditor from '../../components/Account/AccountEditor';
 import CaptainEditor from '../../components/Captain/CaptainEditor';
 import Captain from '../../components/Captain/Captain';
@@ -14,8 +14,19 @@ class Account extends Component {
     console.log('calling account constructor');
     super(props, context);
     this.state = {};
+    this.state.showModal = false;
     this.state.account = props.account_data;
     this.state.edit = props.edit;
+    this.close = this.close.bind(this);
+    this.open = this.open.bind(this);
+  }
+
+  open() {
+    this.setState({ showModal: true });
+  }
+
+  close() {
+    this.setState({ showModal: false });
   }
 
   render() {
@@ -34,9 +45,21 @@ class Account extends Component {
         />
       </Row>
       <Row>
-        <Button bsStyle="danger" className="deleteAccountButton" href={'/accounts/delete/id'.replace('id', this.state.account._id)}>
+        <Button bsStyle="danger"
+                className="deleteAccountButton"
+                onClick={this.open}>
           Delete
         </Button>
+        <Modal show={this.state.showModal} onHide={this.close}>
+          <Modal.Body>
+            <h4> Are you sure you want to delete your account? </h4>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button bsStyle="danger"
+                    href={'/accounts/delete/id'.replace('id', this.state.account._id)}>Yes</Button>
+            <Button onClick={this.close}>No</Button>
+          </Modal.Footer>
+        </Modal>
       </Row>
     </Col>);
     return (
