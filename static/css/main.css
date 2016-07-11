@@ -272,6 +272,29 @@
 	padding-bottom: 5px;
 }
 
+.abilityCell {
+	vertical-align: middle !important;
+	text-align: center;
+	background-color: #f9f9f9;
+}
+
+.specialName {
+	font-weight: bold;
+}
+
+.specialNotes {
+	font-size: 12px;
+}
+
+.stageLabel {
+	font-weight: bold;
+}
+
+.stageCooldown {
+	font-size: 13px;
+	font-style: italic;
+}
+
 .stars { color: #cccccc; }
 .stars-1 { color: #40a3da; }
 .stars-2 { color: #acc523; }

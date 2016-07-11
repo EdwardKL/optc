@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { Button } from 'react-bootstrap';
-import { wrapText } from '../../utils';
+import { wrapText, getUnitThumbnailUrl } from '../../utils';
 
 class Unit extends Component {
   constructor(props, context) {
@@ -8,10 +8,7 @@ class Unit extends Component {
     this.state = {};
     this.state.id = props.id;
     this.state.name = props.name;
-    this.state.thumb_url = 'http://onepiece-treasurecruise.com/wp-content/uploads/f' + String('0000' + props.id).slice(-4) + '.png';
-    this.state.backgroundStyle = {
-      backgroundImage: `url(${this.state.thumb_url})`,
-    };
+    this.state.backgroundStyle = { backgroundImage: getUnitThumbnailUrl(props.id) };
   }
 
   render() {

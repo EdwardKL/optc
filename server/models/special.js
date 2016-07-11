@@ -14,8 +14,8 @@ const specialSchema = new Schema({
       max_cd: { type: Number },
     }],
     region: { type: String, enum: ['global', 'japan', 'all'] },
-    notes: { type: String },
   }],
+  notes: { type: String },
 });
 
 var Special = mongoose.model('Special', specialSchema);

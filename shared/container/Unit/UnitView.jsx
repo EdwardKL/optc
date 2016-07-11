@@ -1,9 +1,9 @@
 import _ from 'lodash';
 import React, { PropTypes } from 'react';
 import * as Actions from '../../redux/actions/actions';
-import { Grid, Row, Col, Table, Button } from 'react-bootstrap';
+import { Grid, Row, Col, Table, Button, Panel } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import { formatNumber } from '../../utils';
+import { formatNumber, getUnitPortraitUrl } from '../../utils';
 import RECOMMENDATION from '../../../constants/recommendation';
 
 export class UnitView extends React.Component {
@@ -16,6 +16,52 @@ export class UnitView extends React.Component {
     this.state.recommendation = props.recommendation;
     this.state.total_recommendations =
       props.global_recommendations.not_recommended + props.global_recommendations.recommended;
+
+    this.getSpecialJSXRows = () => {
+      if (!this.state.unit.special_ability) return [];
+      const result = [];
+      const notes = this.state.unit.special_ability.notes;
+      for (let i = 0; i < this.state.unit.special_ability.subspecials.length; i++) {
+        const subspecial = this.state.unit.special_ability.subspecials[i];
+        let region_disclaimer = '';
+        if (subspecial.region !== 'all') {
+          region_disclaimer = `(${subspecial.region} only)`;
+        }
+        result.push(<tr>
+              <td className="abilityCell">Special {region_disclaimer}</td>
+              <td>
+                <span className="specialName">{subspecial.name}</span><br/>
+                {subspecial.stages.map((stage, index) => {
+                  return (<div className="stage">
+                        <span className="stageLabel">
+                          {subspecial.stages.length > 1 ? `Stage ${index + 1}: ` : ''}
+                        </span>
+                        <span className="stageDescription">
+                          {stage.description}
+                        </span><br/>
+                        <span className="stageCooldown">
+                          {stage.base_cd === stage.max_cd ? `Cooldown: ${stage.base_cd} turns` : `Cooldown: ${stage.base_cd} => ${stage.max_cd} turns`}
+                        </span>
+                      </div>);
+                })}
+                <span className="specialNotes">
+                  {notes ? `Notes: ${notes}` : ''}
+                </span>
+              </td>
+            </tr>);
+      }
+      return result;
+    };
+
+    this.getCaptainJSXRows = () => {
+      if (!this.state.unit.captain_ability) return [];
+      return (<tr>
+                <td className="abilityCell">Captain Ability</td>
+                <td>
+                  <span className="captainDescription">{this.state.unit.captain_ability.description}</span>
+                </td>
+              </tr>);
+    };
   }
 
   render() {
@@ -30,7 +76,7 @@ export class UnitView extends React.Component {
       );
     }
     const style = {
-      backgroundImage: 'url(http://onepiece-treasurecruise.com/wp-content/uploads/c' + String('0000' + this.state.unit._id).slice(-4) + '.png)',
+      backgroundImage: getUnitPortraitUrl(this.state.unit._id),
     };
     const unit_stars = [];
     const other_stars = [];
@@ -73,7 +119,7 @@ export class UnitView extends React.Component {
               </span>
             </h2>
             <div id="recommendation">
-              {`${this.state.global_recommendations.recommended} users out of ${this.state.total_recommendations} think this unit is useful.`}
+              {`${this.state.global_recommendations.recommended} ${this.state.global_recommendations.recommended === 1 ? 'user' : 'users'} out of ${this.state.total_recommendations} think this unit is useful.`}
               {recommend_buttons}
             </div>
             <hr/>
@@ -116,6 +162,16 @@ export class UnitView extends React.Component {
                       <td>{this.state.unit.max_atk}</td>
                       <td>{this.state.unit.max_rcv}</td>
                     </tr>
+                </tbody>
+              </Table>
+            </Col>
+          </Row>
+          <Row>
+            <Col xs={12}>
+              <Table bordered hover responsive className="unitAbilities column-stripes">
+                <tbody>
+                  {this.getCaptainJSXRows()}
+                  {this.getSpecialJSXRows()}
                 </tbody>
               </Table>
             </Col>

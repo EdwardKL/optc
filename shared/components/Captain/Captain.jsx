@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { Button } from 'react-bootstrap';
 import CaptainEditor from '../../components/Captain/CaptainEditor';
 import { connect } from 'react-redux';
+import { getUnitThumbnailUrl } from '../../utils';
 
 class Captain extends Component {
   constructor(props, context) {
@@ -11,10 +12,7 @@ class Captain extends Component {
     this.state.captain_data = props.captain_data;
     this.state.account_id = props.account_id;
     this.state.socket_selections = props.socket_selections;
-    this.state.thumb_url = 'http://onepiece-treasurecruise.com/wp-content/uploads/f' + String('0000' + this.state.captain_data._unit).slice(-4) + '.png';
-    this.state.backgroundStyle = {
-      backgroundImage: 'url(' + this.state.thumb_url + ')',
-    };
+    this.state.backgroundStyle = { backgroundImage: getUnitThumbnailUrl(this.state.captain_data._unit) };
     if (this.state.captain_data.current_hp_ccs > 0) {
       this.state.hp_ccs = '+' + this.state.captain_data.current_hp_ccs;
     }

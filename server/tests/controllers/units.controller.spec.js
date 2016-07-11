@@ -3,6 +3,8 @@
 import chai from 'chai';
 import mongoose from 'mongoose';
 import UnitController from '../../controllers/units.controller';
+import CaptainAbilityModel from '../../models/captain_ability';
+import SpecialModel from '../../models/special';
 import UnitModel from '../../models/unit';
 import RecommendationModel from '../../models/recommendation';
 import RequestMock from '../mocks/request.mock';
@@ -55,6 +57,24 @@ describe('units.fetchIdAndNames', () => {
 });
 
 describe('units.fetch', () => {
+  const captain_ability = new CaptainAbilityModel({
+    _id: 1,
+    description: 'test description',
+  });
+
+  const special = new SpecialModel({
+    _id: 2,
+    notes: 'test notes',
+    subspecials: [{
+      name: 'subspecial',
+      stages: [{
+        description: 'subspecial_descript',
+        base_cd: 10,
+        max_cd: 20,
+      }],
+      region: 'japan',
+    }],
+  });
   const unit = new UnitModel({
     _id: 777,
     name: 'test unit',
@@ -82,7 +102,11 @@ describe('units.fetch', () => {
   before('Store a unit', function before(done) {  // eslint-disable-line prefer-arrow-callback
     connectToTestDB(() => {
       // Store the fake unit into the DB.
-      unit.save(done);
+      unit.save((e1) => {
+        special.save((e2) => {
+          captain_ability.save(done);
+        });
+      });
     });
   });
 
@@ -93,6 +117,16 @@ describe('units.fetch', () => {
       done();
     });
   });
+
+  const expectSpecialPopulated = (actual) => {
+    expect(actual._id).to.equal(special._id);
+    expect(actual.notes).to.equal(special.notes);
+    expect(actual.subspecials[0].name).to.equal(special.subspecials[0].name);
+    expect(actual.subspecials[0].region).to.equal(special.subspecials[0].region);
+    expect(actual.subspecials[0].stages[0].description).to.equal(special.subspecials[0].stages[0].description);
+    expect(actual.subspecials[0].stages[0].base_cd).to.equal(special.subspecials[0].stages[0].base_cd);
+    expect(actual.subspecials[0].stages[0].max_cd).to.equal(special.subspecials[0].stages[0].max_cd);
+  };
 
   it('should return the unit if found', (done) => {
     req.setParams({ id: unit._id });
@@ -114,8 +148,9 @@ describe('units.fetch', () => {
       expect(actual_unit.max_hp).to.equal(unit.max_hp);
       expect(actual_unit.max_atk).to.equal(unit.max_atk);
       expect(actual_unit.max_rcv).to.equal(unit.max_rcv);
-      expect(actual_unit.captain_ability).to.equal(unit.captain_ability);
-      expect(actual_unit.special_ability).to.equal(unit.special_ability);
+      expect(actual_unit.captain_ability._id).to.equal(captain_ability._id);
+      expect(actual_unit.captain_ability.description).to.equal(captain_ability.description);
+      expectSpecialPopulated(actual_unit.special_ability);
       expect(actual_unit.region).to.equal(unit.region);
       done();
     });

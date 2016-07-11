@@ -71,7 +71,7 @@ export function addRecommendation(results) {
 
 export function fetchUnit(id) {
   return (dispatch) => {
-    return fetch(`${baseURL}/units/api/id/${id}`, {
+    return fetch(`${baseURL}/units/api/fetch/${id}`, {
       method: 'get',
       headers: new Headers({
         'Content-Type': 'application/json',
