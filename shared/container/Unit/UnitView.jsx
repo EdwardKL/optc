@@ -3,7 +3,7 @@ import React, { PropTypes } from 'react';
 import * as Actions from '../../redux/actions/actions';
 import { Grid, Row, Col, Table, Button, Panel } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import { formatNumber } from '../../utils';
+import { formatNumber, getUnitPortraitUrl } from '../../utils';
 import RECOMMENDATION from '../../../constants/recommendation';
 
 export class UnitView extends React.Component {
@@ -76,7 +76,7 @@ export class UnitView extends React.Component {
       );
     }
     const style = {
-      backgroundImage: 'url(http://onepiece-treasurecruise.com/wp-content/uploads/c' + String('0000' + this.state.unit._id).slice(-4) + '.png)',
+      backgroundImage: getUnitPortraitUrl(this.state.unit._id),
     };
     const unit_stars = [];
     const other_stars = [];

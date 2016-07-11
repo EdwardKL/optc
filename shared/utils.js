@@ -18,6 +18,24 @@ export function formatNumber(num) {
   return result;
 }
 
+export function getUnitThumbnailUrl(id) {
+  // Aokiji is a noob.
+  let slice_length = -4;
+  if (id === 574 || id === 575) {
+    slice_length = -5;
+  }
+  return `url(http://onepiece-treasurecruise.com/wp-content/uploads/f${`0000${id}`.slice(slice_length)}.png)`;
+}
+
+export function getUnitPortraitUrl(id) {
+  // Aokiji is too cool for our site.
+  let slice_length = -4;
+  if (id === 574 || id === 575) {
+    slice_length = -5;
+  }
+  return `url(http://onepiece-treasurecruise.com/wp-content/uploads/c${`0000${id}`.slice(slice_length)}.png)`;
+}
+
 export function wrapText(str) {
   const wrap_length = 20;
   let num_so_far = 0;
