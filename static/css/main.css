@@ -256,6 +256,16 @@
 	margin-top: 20px;
 }
 
+.unitHeader {
+	position: relative;
+}
+
+.unitId {
+	position: absolute;
+	right: 0;
+	color: grey;
+}
+
 .unitStars {
 	padding-left: 20px;
 }
@@ -289,6 +299,18 @@
 .stageCooldown {
 	font-size: 13px;
 	font-style: italic;
+}
+
+.abilityRow {
+	position: relative;
+}
+
+.credits {
+	position: absolute;
+	right: 15px;
+	bottom: 0px;
+	font-style: italic;
+	font-size: 12px;
 }
 
 .stars { color: #cccccc; }

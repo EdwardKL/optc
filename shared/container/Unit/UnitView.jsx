@@ -40,7 +40,7 @@ export class UnitView extends React.Component {
                           {stage.description}
                         </span><br/>
                         <span className="stageCooldown">
-                          {stage.base_cd === stage.max_cd ? `Cooldown: ${stage.base_cd} turns` : `Cooldown: ${stage.base_cd} => ${stage.max_cd} turns`}
+                          {stage.base_cd === stage.max_cd ? `Cooldown: ${stage.base_cd} turns` : `Cooldown: ${stage.base_cd} → ${stage.max_cd} turns`}
                         </span>
                       </div>);
                 })}
@@ -111,12 +111,13 @@ export class UnitView extends React.Component {
     return (
       <Grid id="content">
           <Row>
-            <h2>
+            <h2 className="unitHeader">
               {this.state.unit.name}
               <span className="unitStars">
                 <span className={`stars-${this.state.unit.stars}`}>{unit_stars}</span>
                 <span className={'stars'}>{other_stars}</span>
               </span>
+              <span className="unitId">#{this.state.unit._id}</span>
             </h2>
             <div id="recommendation">
               {`${this.state.global_recommendations.recommended} ${this.state.global_recommendations.recommended === 1 ? 'user' : 'users'} out of ${this.state.total_recommendations} think this unit is useful.`}
@@ -166,7 +167,7 @@ export class UnitView extends React.Component {
               </Table>
             </Col>
           </Row>
-          <Row>
+          <Row className="abilityRow">
             <Col xs={12}>
               <Table bordered hover responsive className="unitAbilities column-stripes">
                 <tbody>
@@ -175,6 +176,10 @@ export class UnitView extends React.Component {
                 </tbody>
               </Table>
             </Col>
+            <span className="credits">
+              Image source: <a href="http://onepiece-treasurecruise.com/">onepiece-treasurecruise.com</a>.
+              Data source: <a href={`http://optc-db.github.io/characters/#/view/${this.state.unit._id}`}>optc-db</a>.
+            </span>
           </Row>
       </Grid>
     );

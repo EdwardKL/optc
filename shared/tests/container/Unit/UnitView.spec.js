@@ -12,7 +12,7 @@ const global_recommendations = { recommended: 4, not_recommended: 8 };
 const getExpectedJSX = function (recommendation) {
   return (<Grid id="content">
         <Row>
-          <h2>
+          <h2 className="unitHeader">
             test unit
             <span className="unitStars">
               <span className="stars-5">
@@ -26,6 +26,7 @@ const getExpectedJSX = function (recommendation) {
                 <i className="fa fa-star-o" aria-hidden="true"></i>
               </span>
             </span>
+            <span className="unitId">#5</span>
           </h2>
           <div id="recommendation">
             {`4 users out of 12 think this unit is useful.`}
@@ -77,7 +78,7 @@ const getExpectedJSX = function (recommendation) {
             </Table>
           </Col>
         </Row>
-        <Row>
+        <Row className="abilityRow">
           <Col xs={12}>
             <Table bordered hover responsive className="unitAbilities column-stripes">
               <tbody>
@@ -94,12 +95,12 @@ const getExpectedJSX = function (recommendation) {
                     <div className="stage">
                       <span className="stageLabel">Stage 1: </span>
                       <span className="stageDescription">subspecial1, stage1 descript</span><br/>
-                      <span className="stageCooldown">Cooldown: 10 => 15 turns</span>
+                      <span className="stageCooldown">Cooldown: 10 → 15 turns</span>
                     </div>
                     <div className="stage">
                       <span className="stageLabel">Stage 2: </span>
                       <span className="stageDescription">subspecial1, stage2 descript</span><br/>
-                      <span className="stageCooldown">Cooldown: 20 => 25 turns</span>
+                      <span className="stageCooldown">Cooldown: 20 → 25 turns</span>
                     </div>
                     <span className="specialNotes">Notes: test note</span>
                   </td>
@@ -119,6 +120,10 @@ const getExpectedJSX = function (recommendation) {
               </tbody>
             </Table>
           </Col>
+          <span className="credits">
+            Image source: <a href="http://onepiece-treasurecruise.com/">onepiece-treasurecruise.com</a>.
+            Data source: <a href="http://optc-db.github.io/characters/#/view/5">optc-db</a>.
+          </span>
         </Row>
     </Grid>);
 };
