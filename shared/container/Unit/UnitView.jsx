@@ -119,7 +119,7 @@ export class UnitView extends React.Component {
               </span>
             </h2>
             <div id="recommendation">
-              {`${this.state.global_recommendations.recommended} users out of ${this.state.total_recommendations} think this unit is useful.`}
+              {`${this.state.global_recommendations.recommended} ${this.state.global_recommendations.recommended === 1 ? 'user' : 'users'} out of ${this.state.total_recommendations} think this unit is useful.`}
               {recommend_buttons}
             </div>
             <hr/>
