@@ -243,6 +243,10 @@
   top: 45px;
 }
 
+.editPasswordButton {
+  position: absolute;
+  right: 110px;
+}
 
 .unitImage {
   width: 320px;
@@ -286,4 +290,14 @@
 	position: absolute;
 	right: 0px;
 	bottom: 0px;
+}
+
+#userButtons {
+  position: absolute;
+  right: 0;
+  top: 20px;
+}
+
+#accountHeaderRow {
+  position: relative;
 }
