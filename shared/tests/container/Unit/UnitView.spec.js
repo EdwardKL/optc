@@ -79,8 +79,14 @@ const getExpectedJSX = function (recommendation) {
         </Row>
         <Row>
           <Col xs={12}>
-            <Table bordered hover responsive className="unitAbilities">
+            <Table bordered hover responsive className="unitAbilities column-stripes">
               <tbody>
+                <tr>
+                  <td className="abilityCell">Captain Ability</td>
+                  <td>
+                    <span className="captainDescription">captain ability description</span>
+                  </td>
+                </tr>
                 <tr>
                   <td className="abilityCell">Special (global only)</td>
                   <td>
@@ -98,18 +104,18 @@ const getExpectedJSX = function (recommendation) {
                     <span className="specialNotes">Notes: test note</span>
                   </td>
                 </tr>
-                  <tr>
-                    <td className="abilityCell">Special (japan only)</td>
-                    <td>
-                      <span className="specialName">subspecial2</span><br/>
-                      <div className="stage">
-                        <span className="stageLabel"></span>
-                        <span className="stageDescription">subspecial2 descript</span><br/>
-                        <span className="stageCooldown">Cooldown: 10 turns</span>
-                      </div>
-                      <span className="specialNotes">Notes: test note</span>
-                    </td>
-                  </tr>
+                <tr>
+                  <td className="abilityCell">Special (japan only)</td>
+                  <td>
+                    <span className="specialName">subspecial2</span><br/>
+                    <div className="stage">
+                      <span className="stageLabel"></span>
+                      <span className="stageDescription">subspecial2 descript</span><br/>
+                      <span className="stageCooldown">Cooldown: 10 turns</span>
+                    </div>
+                    <span className="specialNotes">Notes: test note</span>
+                  </td>
+                </tr>
               </tbody>
             </Table>
           </Col>
@@ -135,6 +141,10 @@ describe('UnitView ', () => {
     max_hp: 100,
     max_atk: 234,
     max_rcv: 5555,
+    captain_ability: {
+      _id: 777,
+      description: 'captain ability description',
+    },
     special_ability: {
       _id: 77,
       subspecials: [

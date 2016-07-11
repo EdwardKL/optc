@@ -8,5 +8,5 @@ const captainAbilitySchema = new Schema({
   description: { type: String },
 });
 
-const CaptainAbility = mongoose.model('CaptainAbility', captainAbilitySchema);
+const CaptainAbility = mongoose.model('captain_abilities', captainAbilitySchema);
 module.exports = CaptainAbility;

@@ -52,8 +52,17 @@ export class UnitView extends React.Component {
       }
       return result;
     };
-  }
 
+    this.getCaptainJSXRows = () => {
+      if (!this.state.unit.captain_ability) return [];
+      return (<tr>
+                <td className="abilityCell">Captain Ability</td>
+                <td>
+                  <span className="captainDescription">{this.state.unit.captain_ability.description}</span>
+                </td>
+              </tr>);
+    };
+  }
 
   render() {
     if (!this.state.has_unit) {
@@ -159,8 +168,9 @@ export class UnitView extends React.Component {
           </Row>
           <Row>
             <Col xs={12}>
-              <Table bordered hover responsive className="unitAbilities">
+              <Table bordered hover responsive className="unitAbilities column-stripes">
                 <tbody>
+                  {this.getCaptainJSXRows()}
                   {this.getSpecialJSXRows()}
                 </tbody>
               </Table>

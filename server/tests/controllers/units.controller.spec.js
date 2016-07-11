@@ -3,6 +3,7 @@
 import chai from 'chai';
 import mongoose from 'mongoose';
 import UnitController from '../../controllers/units.controller';
+import CaptainAbilityModel from '../../models/captain_ability';
 import SpecialModel from '../../models/special';
 import UnitModel from '../../models/unit';
 import RecommendationModel from '../../models/recommendation';
@@ -56,6 +57,11 @@ describe('units.fetchIdAndNames', () => {
 });
 
 describe('units.fetch', () => {
+  const captain_ability = new CaptainAbilityModel({
+    _id: 1,
+    description: 'test description',
+  });
+
   const special = new SpecialModel({
     _id: 2,
     notes: 'test notes',
@@ -96,8 +102,10 @@ describe('units.fetch', () => {
   before('Store a unit', function before(done) {  // eslint-disable-line prefer-arrow-callback
     connectToTestDB(() => {
       // Store the fake unit into the DB.
-      unit.save((err) => {
-        special.save(done);
+      unit.save((e1) => {
+        special.save((e2) => {
+          captain_ability.save(done);
+        });
       });
     });
   });
@@ -140,7 +148,8 @@ describe('units.fetch', () => {
       expect(actual_unit.max_hp).to.equal(unit.max_hp);
       expect(actual_unit.max_atk).to.equal(unit.max_atk);
       expect(actual_unit.max_rcv).to.equal(unit.max_rcv);
-      expect(actual_unit.captain_ability).to.equal(unit.captain_ability);
+      expect(actual_unit.captain_ability._id).to.equal(captain_ability._id);
+      expect(actual_unit.captain_ability.description).to.equal(captain_ability.description);
       expectSpecialPopulated(actual_unit.special_ability);
       expect(actual_unit.region).to.equal(unit.region);
       done();

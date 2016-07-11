@@ -271,6 +271,7 @@
 .abilityCell {
 	vertical-align: middle !important;
 	text-align: center;
+	background-color: #f9f9f9;
 }
 
 .specialName {

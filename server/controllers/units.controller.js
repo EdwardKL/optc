@@ -55,7 +55,7 @@ exports.fetch = function fetch_unit(req, res, next) {
   const id = req.params.id;
   UnitModel
     .findById(id)
-    .populate('special_ability')
+    .populate('special_ability captain_ability')
     .exec((err, unit) => {
       // In case of any error return nothing.
       if (err || !unit) {
