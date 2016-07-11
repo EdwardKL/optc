@@ -16,19 +16,18 @@ class AccountView extends React.Component {
   }
 
   render() {
-    const editor = (<div>
-      <Row>{ this.state.user.is_local ? <PasswordEditor /> : <div/> }</Row>
-      <Row> <UserDeleter /> </Row>
+    const editor = (<div id="userButtons">
+      { this.state.user.is_local ? <PasswordEditor /> : <div/> } <UserDeleter />
     </div>);
     return (
       <Grid id="content">
-          <Row>
+          <Row id="accountHeaderRow">
             <h2>
             {`${this.state.user.display_name}'s Accounts`}
             </h2>
+            {this.state.edit ? editor : <div/>}
             <hr/>
           </Row>
-          {this.state.edit ? editor : <div/>}
           <Row>
             {this.state.user._accounts.map((account) => {
               return <Account edit={this.state.edit} account_data={account} key={account._id}/>;

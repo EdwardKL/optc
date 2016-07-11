@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { Panel, Row, Col, Button, Modal } from 'react-bootstrap';
+import { Panel, Row, Col, Button, Modal, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import AccountEditor from '../../components/Account/AccountEditor';
 import CaptainEditor from '../../components/Captain/CaptainEditor';
 import Captain from '../../components/Captain/Captain';
@@ -19,6 +19,7 @@ class Account extends Component {
     this.state.edit = props.edit;
     this.close = this.close.bind(this);
     this.open = this.open.bind(this);
+    this.accountHasMaxCaptains = this.accountHasMaxCaptains.bind(this);
   }
 
   open() {
@@ -29,10 +30,24 @@ class Account extends Component {
     this.setState({ showModal: false });
   }
 
+  accountHasMaxCaptains() {
+    const MAX_CAPTAINS = 10;
+    return this.state.account._captains.length >= MAX_CAPTAINS;
+  }
+
   render() {
+    const disabledAddAccountTooltip = (
+      <Tooltip id="tooltip"><strong>You can only have a maximum of 10 captains.</strong></Tooltip>
+    );
     const editor = (<Col xs={1}>
       <CaptainEditor edit={false} account_id={this.state.account._id}>
-        <Button bsStyle="primary" className="addCaptainButton">Add Captain</Button>
+        <OverlayTrigger placement="top" overlay={disabledAddAccountTooltip}>
+          <Button bsStyle="primary"
+                  className="addCaptainButton"
+                  disabled = {this.accountHasMaxCaptains()}>
+            Add Captain
+          </Button>
+        </OverlayTrigger>
       </CaptainEditor>
       <Row>
         <AccountEditor

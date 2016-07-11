@@ -9,7 +9,7 @@ class UserDeleter extends Component {
     this.close = this.close.bind(this);
     this.open = this.open.bind(this);
   }
-  
+
   close(e) {
     this.setState({ showModal: false });
   }
@@ -17,11 +17,11 @@ class UserDeleter extends Component {
   open(e) {
     this.setState({ showModal: true });
   }
-  
+
   render() {
     return (
       <div>
-        <Button bsStyle="primary" onClick={this.open} bsStyle="link">Delete User</Button>
+        <Button onClick={this.open} bsStyle="danger">Delete User</Button>
         <Modal show={this.state.showModal} onHide={this.close}>
           <form action="/auth/delete" method="POST">
             <Modal.Header>

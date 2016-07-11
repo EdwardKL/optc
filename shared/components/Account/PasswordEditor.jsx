@@ -13,7 +13,7 @@ class PasswordEditor extends Component {
     this.handleInputPassword =  this.handleInputPassword.bind(this);
     this.handleInputConfirmation =  this.handleInputConfirmation.bind(this);
   }
-  
+
   close(e) {
     this.setState({ showModal: false });
   }
@@ -31,7 +31,7 @@ class PasswordEditor extends Component {
     if (length > 3) return 'warning';
     if (length > 0) return 'error';
   }
-  
+
   handleInputConfirmation(e){
     this.setState({password_confirmation: e.target.value});
   }
@@ -41,11 +41,11 @@ class PasswordEditor extends Component {
     if (this.state.password == this.state.password_confirmation) return 'success';
     if (length > 0) return 'error';
   }
-  
+
   render() {
     return (
       <div>
-        <Button bsStyle="primary" onClick={this.open} bsStyle="link">Edit Password</Button>
+        <Button className="editPasswordButton" onClick={this.open}>Edit Password</Button>
         <Modal show={this.state.showModal} onHide={this.close}>
           <form action="/auth/editpass" method="POST">
             <Modal.Header closeButton>

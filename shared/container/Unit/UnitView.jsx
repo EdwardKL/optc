@@ -91,7 +91,7 @@ export class UnitView extends React.Component {
     });
     let recommend_buttons;
     if (this.state.recommendation !== RECOMMENDATION.UNABLE) {
-      recommend_buttons = (<div id ="recommend">
+      recommend_buttons = (<div id="recommend">
         <Button
           bsStyle={this.state.recommendation === RECOMMENDATION.POSITIVE ? 'info' : 'default'}
           bsSize="xsmall"
