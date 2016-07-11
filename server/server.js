@@ -40,6 +40,7 @@ mongoose.connect(serverConfig.mongoURL, (error) => {
 });
 
 require('./models/captain');
+require('./models/captain_ability');
 require('./models/special');
 require('./models/unit');
 import User from './models/user';

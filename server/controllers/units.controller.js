@@ -53,16 +53,19 @@ exports.fetchIdAndNames = function fetch_id_and_names(req, res, next) {
 
 exports.fetch = function fetch_unit(req, res, next) {
   const id = req.params.id;
-  UnitModel.findById(id, (err, unit) => {
-    // In case of any error return nothing.
-    if (err || !unit) {
-      res.json({});
-    } else {
-      res.json(unit);
-    }
-    next();
-    return;
-  });
+  UnitModel
+    .findById(id)
+    .populate('special_ability')
+    .exec((err, unit) => {
+      // In case of any error return nothing.
+      if (err || !unit) {
+        res.json({});
+      } else {
+        res.json(unit);
+      }
+      next();
+      return;
+    });
 };
 
 exports.recommend = function recommend(req, res, next) {

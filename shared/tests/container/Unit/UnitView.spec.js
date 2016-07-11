@@ -77,29 +77,95 @@ const getExpectedJSX = function (recommendation) {
             </Table>
           </Col>
         </Row>
+        <Row>
+          <Col xs={12}>
+            <Table bordered hover responsive className="unitAbilities">
+              <tbody>
+                <tr>
+                  <td className="abilityCell">Special (global only)</td>
+                  <td>
+                    <span className="specialName">subspecial1</span><br/>
+                    <div className="stage">
+                      <span className="stageLabel">Stage 1: </span>
+                      <span className="stageDescription">subspecial1, stage1 descript</span><br/>
+                      <span className="stageCooldown">Cooldown: 10 => 15 turns</span>
+                    </div>
+                    <div className="stage">
+                      <span className="stageLabel">Stage 2: </span>
+                      <span className="stageDescription">subspecial1, stage2 descript</span><br/>
+                      <span className="stageCooldown">Cooldown: 20 => 25 turns</span>
+                    </div>
+                    <span className="specialNotes">Notes: test note</span>
+                  </td>
+                </tr>
+                  <tr>
+                    <td className="abilityCell">Special (japan only)</td>
+                    <td>
+                      <span className="specialName">subspecial2</span><br/>
+                      <div className="stage">
+                        <span className="stageLabel"></span>
+                        <span className="stageDescription">subspecial2 descript</span><br/>
+                        <span className="stageCooldown">Cooldown: 10 turns</span>
+                      </div>
+                      <span className="specialNotes">Notes: test note</span>
+                    </td>
+                  </tr>
+              </tbody>
+            </Table>
+          </Col>
+        </Row>
     </Grid>);
 };
 
 describe('UnitView ', () => {
+  const unit = {
+    _id: 5,
+    name: 'test unit',
+    stars: 5,
+    classes: ['Tough', 'Ambition'],
+    type: 'PSY',
+    cost: 10,
+    combo: 4,
+    slots: 2,
+    max_level: 89,
+    max_exp: 123456789,
+    base_hp: 10,
+    base_atk: 23,
+    base_rcv: 50,
+    max_hp: 100,
+    max_atk: 234,
+    max_rcv: 5555,
+    special_ability: {
+      _id: 77,
+      subspecials: [
+        {
+          name: 'subspecial1',
+          stages: [{
+            description: 'subspecial1, stage1 descript',
+            base_cd: 10,
+            max_cd: 15,
+          }, {
+            description: 'subspecial1, stage2 descript',
+            base_cd: 20,
+            max_cd: 25,
+          }],
+          region: 'global',
+        },
+        {
+          name: 'subspecial2',
+          stages: [{
+            description: 'subspecial2 descript',
+            base_cd: 10,
+            max_cd: 10,
+          }],
+          region: 'japan',
+        },
+      ],
+      notes: 'test note',
+    },
+  };
+
   it('should render the unit when found with no recommend buttons', () => {
-    const unit = {
-      _id: 5,
-      name: 'test unit',
-      stars: 5,
-      classes: ['Tough', 'Ambition'],
-      type: 'PSY',
-      cost: 10,
-      combo: 4,
-      slots: 2,
-      max_level: 89,
-      max_exp: 123456789,
-      base_hp: 10,
-      base_atk: 23,
-      base_rcv: 50,
-      max_hp: 100,
-      max_atk: 234,
-      max_rcv: 5555,
-    };
     const renderer = TestUtils.createRenderer();
     renderer.render(<UnitView unit={unit} global_recommendations={global_recommendations} recommendation={RECOMMENDATION.UNABLE} />);
     const output = renderer.getRenderOutput();
@@ -107,24 +173,6 @@ describe('UnitView ', () => {
   });
 
   it('should render the unit when found with default recommend buttons', () => {
-    const unit = {
-      _id: 5,
-      name: 'test unit',
-      stars: 5,
-      classes: ['Tough', 'Ambition'],
-      type: 'PSY',
-      cost: 10,
-      combo: 4,
-      slots: 2,
-      max_level: 89,
-      max_exp: 123456789,
-      base_hp: 10,
-      base_atk: 23,
-      base_rcv: 50,
-      max_hp: 100,
-      max_atk: 234,
-      max_rcv: 5555,
-    };
     const renderer = TestUtils.createRenderer();
     renderer.render(<UnitView unit={unit} global_recommendations={global_recommendations} recommendation={RECOMMENDATION.NONE} />);
     const output = renderer.getRenderOutput();
@@ -147,24 +195,6 @@ describe('UnitView ', () => {
   });
 
   it('should render the unit when found with positive recommend buttons', () => {
-    const unit = {
-      _id: 5,
-      name: 'test unit',
-      stars: 5,
-      classes: ['Tough', 'Ambition'],
-      type: 'PSY',
-      cost: 10,
-      combo: 4,
-      slots: 2,
-      max_level: 89,
-      max_exp: 123456789,
-      base_hp: 10,
-      base_atk: 23,
-      base_rcv: 50,
-      max_hp: 100,
-      max_atk: 234,
-      max_rcv: 5555,
-    };
     const renderer = TestUtils.createRenderer();
     renderer.render(<UnitView unit={unit} global_recommendations={global_recommendations} recommendation={RECOMMENDATION.POSITIVE} />);
     const output = renderer.getRenderOutput();
@@ -187,24 +217,6 @@ describe('UnitView ', () => {
   });
 
   it('should render the unit when found with negative recommend buttons', () => {
-    const unit = {
-      _id: 5,
-      name: 'test unit',
-      stars: 5,
-      classes: ['Tough', 'Ambition'],
-      type: 'PSY',
-      cost: 10,
-      combo: 4,
-      slots: 2,
-      max_level: 89,
-      max_exp: 123456789,
-      base_hp: 10,
-      base_atk: 23,
-      base_rcv: 50,
-      max_hp: 100,
-      max_atk: 234,
-      max_rcv: 5555,
-    };
     const renderer = TestUtils.createRenderer();
     renderer.render(<UnitView unit={unit} global_recommendations={global_recommendations} recommendation={RECOMMENDATION.NEGATIVE} />);
     const output = renderer.getRenderOutput();
