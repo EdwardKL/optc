@@ -139,7 +139,7 @@ describe('SocketSelections', () => {
   function shouldHaveOption(option_key, selected, type_input) {
     const option = type_input.find('option[value=' + option_key + ']');
     chai.expect(option.html()).to.equal(
-      `<option ${selected ? 'selected="" ' : ''}value="${option_key}">${socket_selections[option_key - 1].name}</option>`);
+      `<option value="${option_key}">${socket_selections[option_key - 1].name}</option>`);
   }
 
   function shouldHaveOptions(expected_option_keys, selected_option, type_input) {
@@ -170,6 +170,7 @@ describe('SocketSelections', () => {
     chai.expect(type_input).to.have.length(1);
     chai.expect(type_input.prop('defaultValue')).to.equal(1);
 
+    console.log('type input', type_input);
     // All options from socket_selections should be available.
     shouldHaveOptions([1, 2, 3, 4, 5], 1, type_input);
 
