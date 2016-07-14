@@ -22,6 +22,9 @@ export class FriendFinderView extends Component {
   }
 
   render() {
+
+    let accountSet = new Set();
+
     return (
       <Grid id="content">
         <Row>
@@ -50,9 +53,13 @@ export class FriendFinderView extends Component {
           {this.state.friend_search_results.map( (result) => {
             if (result.user) {
               {return result.user._accounts.map((account) => {
-                for (var i = 0; i < account._captains.length; i++) {
-                  if (account._captains[i]._unit == this.state.unit._id) {
-                    return <Account edit={false} account_data={account} key={account._id}/>;
+                // prevent displaying the same account multiple times (when the accounts have same captains)
+                if (!accountSet.has(account._id)) {
+                  accountSet.add(account._id);
+                  for (var i = 0; i < account._captains.length; i++) {
+                    if (account._captains[i]._unit == this.state.unit._id) {
+                      return <Account edit={false} account_data={account} key={account._id}/>;
+                    }
                   }
                 }
               })}

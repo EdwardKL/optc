@@ -11,7 +11,7 @@ String.prototype.capitalizeFirstLetter = function () {
 
 class Account extends Component {
   constructor(props, context) {
-    console.log('calling account constructor');
+    console.log('calling account constructor w/ friend_id:', props.account_data.friend_id);
     super(props, context);
     this.state = {};
     this.state.showModal = false;
@@ -44,7 +44,7 @@ class Account extends Component {
         <OverlayTrigger placement="top" overlay={disabledAddAccountTooltip}>
           <Button bsStyle="primary"
                   className="addCaptainButton"
-                  disabled = {this.accountHasMaxCaptains()}>
+                  disabled={this.accountHasMaxCaptains()}>
             Add Captain
           </Button>
         </OverlayTrigger>
