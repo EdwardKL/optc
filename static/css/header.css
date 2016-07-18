@@ -26,6 +26,21 @@
 }
 
 @media (max-width: 1000px) {
+  #brand {
+    position: absolute;
+    left: 50px;
+  }
+
+  #navbar-image {
+    position: absolute;
+    top: -3px;
+    left: 10px;
+  }
+
+  .navbar-brand {
+    position: relative;
+  }
+
   #header-bar .navbar-header {
       float: none;
   }
