@@ -16,11 +16,11 @@ const expect = chai.expect;
 
 describe('units.fetchUnits', () => {
   const unit1 = new UnitModel({
-    _id: 7,
+    _id: 17,
     name: 'unit1',
   });
   const unit2 = new UnitModel({
-    _id: 8,
+    _id: 28,
     name: 'unit2',
   });
   const unit3 = new UnitModel({
@@ -28,11 +28,11 @@ describe('units.fetchUnits', () => {
     name: 'unit3',
   });
   const unit4 = new UnitModel({
-    _id: 27,
+    _id: 47,
     name: 'unit4',
   });
   const unit5 = new UnitModel({
-    _id: 22,
+    _id: 42,
     name: 'unit5',
   });
   const req = new RequestMock();
@@ -57,8 +57,8 @@ describe('units.fetchUnits', () => {
     UnitController.fetchUnits(req, res, () => {
       expect(res.getJson()).to.be.eql([
         { id: 5, name: 'unit3' },
-        { id: 7, name: 'unit1' },
-        { id: 8, name: 'unit2' }]);
+        { id: 17, name: 'unit1' },
+        { id: 28, name: 'unit2' }]);
       done();
     });
   });
@@ -67,8 +67,8 @@ describe('units.fetchUnits', () => {
     req.setParams({ page: 2 });
     UnitController.fetchUnits(req, res, () => {
       expect(res.getJson()).to.be.eql([
-        { id: 22, name: 'unit5' },
-        { id: 27, name: 'unit4' }]);
+        { id: 42, name: 'unit5' },
+        { id: 47, name: 'unit4' }]);
       done();
     });
   });
@@ -93,9 +93,9 @@ const add_units = function add_units(num_times, done) {
 };
 
 describe('units.fetchNumUnitPages', () => {
-  before('Store 20 units', (done) => {
+  before('Store 40 units', (done) => {
     connectToTestDB(() => {
-      add_units(20, done);
+      add_units(40, done);
     });
   });
 
@@ -114,9 +114,9 @@ describe('units.fetchNumUnitPages', () => {
 });
 
 describe('units.fetchNumUnitPages', () => {
-  before('Store 21 units', (done) => {
+  before('Store 41 units', (done) => {
     connectToTestDB(() => {
-      add_units(21, done);
+      add_units(41, done);
     });
   });
 
