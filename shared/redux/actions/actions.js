@@ -55,6 +55,20 @@ export function addUnitIdAndNames(results) {
   };
 }
 
+export function addUnits(results) {
+  return {
+    type: ActionTypes.ADD_UNITS,
+    results,
+  };
+}
+
+export function addNumUnitPages(results) {
+  return {
+    type: ActionTypes.ADD_NUM_UNIT_PAGES,
+    results,
+  };
+}
+
 export function addGlobalRecommendations(results) {
   return {
     type: ActionTypes.GET_GLOBAL_RECOMMENDATIONS,
@@ -81,15 +95,27 @@ export function fetchUnit(id) {
   };
 }
 
-export function fetchUnitIdAndNames() {
+export function fetchNumUnitPages() {
   return (dispatch) => {
-    return fetch(`${baseURL}/units/api/id_and_names`, {
+    return fetch(`${baseURL}/units/api/num_unit_pages`, {
       method: 'get',
       headers: new Headers({
         'Content-Type': 'application/json',
       }),
     }).then((response) => response.json())
-      .then(results => dispatch(addUnitIdAndNames(results)));
+      .then(results => dispatch(addNumUnitPages(results)));
+  };
+}
+
+export function fetchUnits(page) {
+  return (dispatch) => {
+    return fetch(`${baseURL}/units/api/units/${page}`, {
+      method: 'get',
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
+    }).then((response) => response.json())
+      .then(results => dispatch(addUnits(results)));
   };
 }
 

@@ -16,7 +16,7 @@ const friendFinder = (state = {}, action) => {
       }
       return {
         ...state,
-        friend_search_results: results
+        friend_search_results: results,
       };
     default:
       return state;
@@ -56,6 +56,16 @@ const unit = (state = {}, action) => {
       return {
         ...state,
         recommendation: action.results,
+      };
+    case ActionTypes.ADD_UNITS:
+      return {
+        ...state,
+        units: action.results,
+      };
+    case ActionTypes.ADD_NUM_UNIT_PAGES:
+      return {
+        ...state,
+        num_pages: action.results,
       };
     default:
       return state;

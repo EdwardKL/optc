@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import * as Actions from '../../redux/actions/actions';
-import { Grid, Row } from 'react-bootstrap';
+import { Grid, Pagination, Row } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import Unit from '../../components/Unit/Unit';
 
@@ -8,7 +8,29 @@ export class UnitsView extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {};
-    this.state.id_and_names = props.id_and_names;
+    this.state.units = props.units;
+    this.state.activePage = 1;
+    this.state.num_pages = props.num_pages;
+    this.dispatch = props.dispatch;
+
+    this.handlePagination = (eventKey) => {
+      this.dispatch(Actions.fetchUnits(eventKey));
+      this.setState({
+        activePage: eventKey,
+        update: false,
+      });
+    };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      units: nextProps.units,
+      update: true,
+    });
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return nextState.update;
   }
 
   render() {
@@ -16,11 +38,28 @@ export class UnitsView extends React.Component {
       <Grid id="content">
         <Row>
           <h2>Units</h2>
-          <hr/>
+          <hr />
         </Row>
-        {this.state.id_and_names.map((id_and_name) => {
-          return (<Unit id={id_and_name.id} name={id_and_name.name} key={id_and_name.id}/>);
-        })}
+        <Row>
+          {this.state.units.map((unit) => {
+            return (<Unit id={unit.id} name={unit.name} key={unit.id} />);
+          })}
+        </Row>
+        <Row className="unitPagination">
+          <Pagination
+            bsSize="medium"
+            ellipsis
+            prev
+            next
+            first
+            last
+            boundaryLinks
+            maxButtons={7}
+            items={this.state.num_pages}
+            activePage={this.state.activePage}
+            onSelect={this.handlePagination}
+          />
+        </Row>
       </Grid>
     );
   }
@@ -28,18 +67,22 @@ export class UnitsView extends React.Component {
 
 function mapStateToProps(store) {
   return {
-    id_and_names: store.unit.id_and_names,
+    units: store.unit.units,
+    num_pages: store.unit.num_pages,
   };
 }
 
 // For some reason if you don't supply params here this gets called and responds before mongoose has a chance to do anything...
 // ... ?!
 UnitsView.need = [(params) => {
-  return Actions.fetchUnitIdAndNames();
+  return Actions.fetchUnits(1);
+}, (params) => {
+  return Actions.fetchNumUnitPages();
 }];
 
 UnitsView.propTypes = {
-  id_and_names: PropTypes.arrayOf(PropTypes.object).isRequired,
+  units: PropTypes.arrayOf(PropTypes.object).isRequired,
+  num_pages: PropTypes.number.isRequired,
   // This comes by default with connect below.
   dispatch: PropTypes.func.isRequired,
 };

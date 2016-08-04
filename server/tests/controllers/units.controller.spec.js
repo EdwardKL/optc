@@ -14,39 +14,117 @@ import RECOMMENDATION from '../../../constants/recommendation';
 
 const expect = chai.expect;
 
-describe('units.fetchIdAndNames', () => {
+describe('units.fetchUnits', () => {
   const unit1 = new UnitModel({
-    _id: 777,
+    _id: 7,
     name: 'unit1',
   });
   const unit2 = new UnitModel({
-    _id: 888,
+    _id: 8,
     name: 'unit2',
   });
   const unit3 = new UnitModel({
     _id: 5,
     name: 'unit3',
   });
-  // Setup fake user.
+  const unit4 = new UnitModel({
+    _id: 27,
+    name: 'unit4',
+  });
+  const unit5 = new UnitModel({
+    _id: 22,
+    name: 'unit5',
+  });
   const req = new RequestMock();
+  req.setParams({ page: 1 });
   const res = new ResponseMock();
   before('Store units', function before(done) {  // eslint-disable-line prefer-arrow-callback
     connectToTestDB(() => {
       // Store the fake units into the DB.
       unit1.save(() => {
         unit2.save(() => {
-          unit3.save(done);
+          unit3.save(() => {
+            unit4.save(() => {
+              unit5.save(done);
+            });
+          });
         });
       });
     });
   });
 
   it('should return ids in order with their names', (done) => {
-    UnitController.fetchIdAndNames(req, res, () => {
+    UnitController.fetchUnits(req, res, () => {
       expect(res.getJson()).to.be.eql([
         { id: 5, name: 'unit3' },
-        { id: 777, name: 'unit1' },
-        { id: 888, name: 'unit2' }]);
+        { id: 7, name: 'unit1' },
+        { id: 8, name: 'unit2' }]);
+      done();
+    });
+  });
+
+  it('should return the second page properly', (done) => {
+    req.setParams({ page: 2 });
+    UnitController.fetchUnits(req, res, () => {
+      expect(res.getJson()).to.be.eql([
+        { id: 22, name: 'unit5' },
+        { id: 27, name: 'unit4' }]);
+      done();
+    });
+  });
+
+  after(function after(done) {  // eslint-disable-line prefer-arrow-callback
+    dropTestDB(done);
+  });
+});
+
+const add_units = function add_units(num_times, done) {
+  const unit = new UnitModel({
+    _id: num_times,
+    name: 'dummy unit created by add_units',
+  });
+  unit.save(() => {
+    if (num_times === 1) {
+      done();
+      return;
+    }
+    add_units(num_times - 1, done);
+  });
+};
+
+describe('units.fetchNumUnitPages', () => {
+  before('Store 20 units', (done) => {
+    connectToTestDB(() => {
+      add_units(20, done);
+    });
+  });
+
+  const req = new RequestMock();
+  const res = new ResponseMock();
+  it('should return num unit pages', (done) => {
+    UnitController.fetchNumUnitPages(req, res, () => {
+      expect(res.getJson()).to.be.eql(1);
+      done();
+    });
+  });
+
+  after(function after(done) {  // eslint-disable-line prefer-arrow-callback
+    dropTestDB(done);
+  });
+});
+
+describe('units.fetchNumUnitPages', () => {
+  before('Store 21 units', (done) => {
+    connectToTestDB(() => {
+      add_units(21, done);
+    });
+  });
+
+  const req = new RequestMock();
+  const res = new ResponseMock();
+  it('should return num unit pages, rounded up', (done) => {
+    UnitController.fetchNumUnitPages(req, res, () => {
+      expect(res.getJson()).to.be.eql(2);
       done();
     });
   });
@@ -221,7 +299,7 @@ describe('units.recommend', () => {
     req.login({ _id: user_id });
     UnitController.recommend(req, res, () => {
       expect(req.getFlash('error_message')).to.not.exist;
-      expect(res.getRedirectPath()).to.equal(`/unit/4`);
+      expect(res.getRedirectPath()).to.equal('/unit/4');
       RecommendationModel.findOne({ _user: user_id, _unit: 4 }).exec((err, doc) => {
         expect(doc).to.not.exist;
         done();

@@ -2,6 +2,7 @@ import UnitModel from '../models/unit';
 import RecommendationModel from '../models/recommendation';
 import RECOMMENDATION from '../../constants/recommendation';
 import { redirectIfLoggedOut } from './utils';
+import { UNITS_PAGE_SIZE } from '../../constants/common';
 
 /* For internal uses only.
 exports.getAll = function (req, res) {
@@ -32,9 +33,12 @@ exports.getAll = function (req, res) {
     .exec(callback);
 };*/
 
-exports.fetchIdAndNames = function fetch_id_and_names(req, res, next) {
+exports.fetchUnits = function fetch_units(req, res, next) {
+  const page = Number(req.params.page);
+  const min_id = (page - 1) * UNITS_PAGE_SIZE;
+  const max_id = page * UNITS_PAGE_SIZE;
   UnitModel
-    .find({})
+    .find({ _id: { $gt: min_id, $lte: max_id } })
     .sort('_id')
     .select('_id name')
     .exec((err, docs) => {
@@ -46,6 +50,16 @@ exports.fetchIdAndNames = function fetch_id_and_names(req, res, next) {
           return { id: doc._id, name: doc.name };
         }));
       }
+      next();
+      return;
+    });
+};
+
+exports.fetchNumUnitPages = function fetch_num_unit_pages(req, res, next) {
+  UnitModel
+    .count({})
+    .exec((err, total) => {
+      res.json(Math.ceil(total / UNITS_PAGE_SIZE));
       next();
       return;
     });
