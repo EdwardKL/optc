@@ -35,4 +35,9 @@ export default class RequestMock {
   setParams(params) {
     this.params = params;
   }
+
+  // Sets the request query
+  setQuery(query) {
+    this.query = query;
+  }
 }

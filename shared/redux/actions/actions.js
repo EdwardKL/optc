@@ -10,9 +10,9 @@ export function addFriendFinderResults(friend_search_results) {
   };
 }
 
-export function fetchQuery(query) {
+export function fetchFriendFinderResults(captain_id, region) {
   return (dispatch) => {
-    return fetch(`${baseURL}/friend_finder/api/${query}`, {
+    return fetch(`${baseURL}/friend_finder/api/${captain_id}?region=${region}`, {
       method: 'get',
       headers: new Headers({
         'Content-Type': 'application/json',
