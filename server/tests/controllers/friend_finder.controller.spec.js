@@ -128,14 +128,14 @@ describe('FriendFinder', () => {
     });
   });
 
-  // function expectPopulatedUser(actual_user) {
-  //   expect(actual_user._id.toString().valueOf()).to.equal(user_id.toString().valueOf());
-  //   expectAccountsEqual(actual_user._accounts[0], account0);
-  //   expectAccountsEqual(actual_user._accounts[1], account1);
-  //   // Sensitive data should be stripped.
-  //   expect(actual_user.password).to.equal('');
-  //   expect(actual_user.salt).to.equal('');
-  // }
+  function expectPopulatedUser(actual_user) {
+    expect(actual_user._id.toString().valueOf()).to.equal(user_id.toString().valueOf());
+    expectAccountsEqual(actual_user._accounts[0], account0);
+    expectAccountsEqual(actual_user._accounts[1], account1);
+    // Sensitive data should be stripped.
+    expect(actual_user.password).to.equal('');
+    expect(actual_user.salt).to.equal('');
+  }
 
   function expectedPopulatedUserWithAccount(actual_user, account) {
     expect(actual_user._id.toString().valueOf()).to.equal(user_id.toString().valueOf());
@@ -158,7 +158,6 @@ describe('FriendFinder', () => {
     expect(actual_captain.current_rcv_ccs).to.equal(expected_captain.current_rcv_ccs);
     // expectPopulatedUser(actual_captain._user);
     expectedPopulatedUserWithAccount(actual_captain._user, actual_captain._user._accounts[0]);
-
     expectPopulatedUnit(actual_captain._unit);
     expect(actual_captain.current_sockets).to.have.lengthOf(expected_captain.current_sockets.length);
     for (const i in expected_captain.current_sockets) {  // eslint-disable-line guard-for-in
