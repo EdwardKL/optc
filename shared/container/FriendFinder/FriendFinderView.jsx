@@ -3,7 +3,7 @@ import * as Actions from '../../redux/actions/actions';
 import { connect } from 'react-redux';
 import Account from '../../components/Account/Account';
 import UnitSelector from '../../components/Captain/UnitSelector';
-import { Grid, Row, Col, Button, Well, Label, Input } from 'react-bootstrap';
+import { Grid, Row, Col, Button, FormGroup, Radio } from 'react-bootstrap';
 
 export class FriendFinderView extends Component {
   constructor(props, context) {
@@ -13,12 +13,40 @@ export class FriendFinderView extends Component {
     this.state.friend_search_results = props.friend_search_results;
     this.state.unit_selections = props.unit_selections;
     this.state.unit = props.params.captain_id ? this.state.unit_selections[props.params.captain_id - 1] : this.state.unit_selections[0];
+    this.state.selected_region = 'global';
+    this.dispatch = props.dispatch;
     this.unitSelected = this.unitSelected.bind(this);
+    this.handleRegionOptionChange = this.handleRegionOptionChange.bind(this);
+
+    this.handleFriendSearch = (eventKey) => {
+      this.dispatch(Actions.fetchFriendFinderResults(this.state.unit._id, this.state.selected_region));
+    };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    console.log('component receiving nextprops.friendsearchresults:', nextProps.friend_search_results);
+    this.setState({
+      friend_search_results: nextProps.friend_search_results,
+      update: true,
+    });
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    console.log('should component update called');
+    return nextState.update;
   }
 
   unitSelected(e) {
-    const unit = this.state.unit_selections[e.target.value - 1];
-    this.setState({ unit });
+    this.setState({
+      unit: this.state.unit_selections[e.target.value - 1],
+      update: false
+    });
+  }
+
+  handleRegionOptionChange(e) {
+    this.setState({
+      selected_region: e.target.value
+    });
   }
 
   render() {
@@ -42,9 +70,29 @@ export class FriendFinderView extends Component {
               default_unit_id={this.state.unit._id}
               onChange={this.unitSelected}/>
           </Col>
+
           <Col md={12}>
-            <Button bsStyle="primary" type="submit" href={`/friend_finder/${this.state.unit._id}`}>
-            Search
+            <FormGroup>
+              <Radio inline
+                     onChange={this.handleRegionOptionChange}
+                     value="global"
+                     checked={this.state.selected_region === 'global'}>
+                Global
+              </Radio>
+              <Radio inline
+                     onChange={this.handleRegionOptionChange}
+                     value="japan"
+                     checked={this.state.selected_region === 'japan'}>
+                Japan
+              </Radio>
+            </FormGroup>
+            </Col>
+
+            <Col md={12}>
+            <Button bsStyle="primary"
+                    type="submit"
+                    onClick={this.handleFriendSearch}>
+              Search
             </Button>
           </Col>
         </Row>
@@ -75,10 +123,10 @@ export class FriendFinderView extends Component {
 FriendFinderView.need = [(params) => {
   if (params.captain_id) {
     console.log('params.captain_id not empty!');
-    return Actions.fetchQuery(params.captain_id);
+    return Actions.fetchFriendFinderResults(params.captain_id, 'global');
   } else {
     console.log('params.captain_id is empty!');
-    return Actions.fetchQuery('-1');
+    return Actions.fetchFriendFinderResults('-1', 'global');
   }
 }];
 

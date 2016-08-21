@@ -19,6 +19,7 @@ describe('FriendFinder', () => {
 
   it('should return empty data for invalid captain ids', (done) => {
     req.setParams({ captain_id: -1 });
+    req.setQuery({ region: 'global' });
     FriendFinder.search(req, res, () => {
       expect(res.getJson()).to.have.lengthOf(0);
       done();
@@ -131,8 +132,14 @@ describe('FriendFinder', () => {
     expect(actual_user._id.toString().valueOf()).to.equal(user_id.toString().valueOf());
     expectAccountsEqual(actual_user._accounts[0], account0);
     expectAccountsEqual(actual_user._accounts[1], account1);
-    // expect(actual_user._accounts[0].toString().valueOf()).to.equal(account0._id.toString().valueOf());
-    // expect(actual_user._accounts[1].toString().valueOf()).to.equal(account1._id.toString().valueOf());
+    // Sensitive data should be stripped.
+    expect(actual_user.password).to.equal('');
+    expect(actual_user.salt).to.equal('');
+  }
+
+  function expectedPopulatedUserWithAccount(actual_user, account) {
+    expect(actual_user._id.toString().valueOf()).to.equal(user_id.toString().valueOf());
+    expectAccountsEqual(actual_user._accounts[0], account);
     // Sensitive data should be stripped.
     expect(actual_user.password).to.equal('');
     expect(actual_user.salt).to.equal('');
@@ -149,7 +156,8 @@ describe('FriendFinder', () => {
     expect(actual_captain.current_hp_ccs).to.equal(expected_captain.current_hp_ccs);
     expect(actual_captain.current_atk_ccs).to.equal(expected_captain.current_atk_ccs);
     expect(actual_captain.current_rcv_ccs).to.equal(expected_captain.current_rcv_ccs);
-    expectPopulatedUser(actual_captain._user);
+    // expectPopulatedUser(actual_captain._user);
+    expectedPopulatedUserWithAccount(actual_captain._user, actual_captain._user._accounts[0]);
     expectPopulatedUnit(actual_captain._unit);
     expect(actual_captain.current_sockets).to.have.lengthOf(expected_captain.current_sockets.length);
     for (const i in expected_captain.current_sockets) {  // eslint-disable-line guard-for-in
@@ -186,6 +194,7 @@ describe('FriendFinder', () => {
 
   it('should succeed', (done) => {
     req.setParams({ captain_id: 15 });
+    req.setQuery({ region: 'global' });
     FriendFinder.search(req, res, () => {
       const results = res.getJson();
       expect(results).to.have.lengthOf(2);
