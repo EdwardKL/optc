@@ -88,6 +88,7 @@ getGlobbedFiles('./server/routes/*.routes.js').forEach((route) => {
 });
 
 import Header from '../shared/components/Header/Header';
+import Footer from '../shared/components/Footer/Footer';
 // Render Initial HTML
 /* istanbul ignore next */
 const renderFullPage = (body_html, initialState) => {
@@ -191,6 +192,7 @@ app.use((req, res) => {
             <div>
               <Header />
               <RouterContext {...renderProps} />
+              <Footer />
             </div>
           </Provider>
         );
