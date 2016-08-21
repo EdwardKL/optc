@@ -350,3 +350,19 @@
 #accountHeaderRow {
   position: relative;
 }
+
+.footer {
+	margin-top: 10px;
+	text-align: center;
+	padding-top: 20px;
+	padding-bottom: 20px;
+}
+
+.adsbygoogle {
+	border: 1px solid black;
+	box-shadow: 0 0 2rem rgba(0, 0, 0, 0.5);
+	text-decoration: initial;
+	text-align: center;
+	background: white;
+	vertical-align: middle;
+}
