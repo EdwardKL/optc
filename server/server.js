@@ -12,10 +12,10 @@ import webpackHotMiddleware from 'webpack-hot-middleware';
 // Initialize the Express App
 const app = new Express();
 console.log('App initialized.');
-let disable_ads = false;
+let production = true;
 if (process.env.NODE_ENV !== 'production') {
   console.log('Not running production, disabling ads. Environment: ', process.env.NODE_ENV);
-  disable_ads = true;
+  production = false;
   const compiler = webpack(config);
   app.use(webpackDevMiddleware(compiler, { noInfo: true, publicPath: config.output.publicPath }));
   app.use(webpackHotMiddleware(compiler));
@@ -95,9 +95,10 @@ import Footer from '../shared/components/Footer/Footer';
 // Render Initial HTML
 /* istanbul ignore next */
 const renderFullPage = (body_html, initialState) => {
-  const cssHeaderPath = process.env.NODE_ENV === 'production' ? '/css/header.min.css' : '/css/header.css';
-  const cssMainPath = process.env.NODE_ENV === 'production' ? '/css/main.min.css' : '/css/main.css';
-  const ads = disable_ads ? '' : '<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>';
+  const css = production ? '<link rel="stylesheet" href="/css/app.min.css" />' :
+      `<link rel="stylesheet" href="/css/header.css" />
+    <link rel="stylesheet" href="/css/main.css" />`;
+  const ads = production ? '<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>' : '';
   return `
     <!doctype html>
     <html>
@@ -106,8 +107,7 @@ const renderFullPage = (body_html, initialState) => {
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Ohara</title>
-        <link rel="stylesheet" href=${cssHeaderPath} />
-        <link rel="stylesheet" href=${cssMainPath} />
+        ${css}
         <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-social/4.12.0/bootstrap-social.min.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css" />
