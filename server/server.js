@@ -11,8 +11,10 @@ import webpackHotMiddleware from 'webpack-hot-middleware';
 
 // Initialize the Express App
 const app = new Express();
+console.log('App initialized.');
 let disable_ads = false;
 if (process.env.NODE_ENV !== 'production') {
+  console.log('Not running production, disabling ads. Environment: ', process.env.NODE_ENV);
   disable_ads = true;
   const compiler = webpack(config);
   app.use(webpackDevMiddleware(compiler, { noInfo: true, publicPath: config.output.publicPath }));
@@ -98,6 +100,7 @@ const renderFullPage = (body_html, initialState) => {
   const ads = disable_ads ? '' : `
     <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
     <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>`;
+  console.log('disable_ads: ', disable_ads, ', ads: ', ads);
   return `
     <!doctype html>
     <html>
