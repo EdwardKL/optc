@@ -8,6 +8,10 @@ export class Footer extends React.Component {
     this.adStyle = { display: 'inline-block', width: '728px', height: '90px', 'line-height': '90px' };
   }
 
+  componentDidMount() {
+    (window.adsbygoogle = window.adsbygoogle || []).push({});
+  }
+
   render() {
     return (
       <Grid className="footer">
