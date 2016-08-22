@@ -97,10 +97,7 @@ import Footer from '../shared/components/Footer/Footer';
 const renderFullPage = (body_html, initialState) => {
   const cssHeaderPath = process.env.NODE_ENV === 'production' ? '/css/header.min.css' : '/css/header.css';
   const cssMainPath = process.env.NODE_ENV === 'production' ? '/css/main.min.css' : '/css/main.css';
-  const ads = disable_ads ? '' : `
-    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>`;
-  console.log('disable_ads: ', disable_ads, ', ads: ', ads);
+  const ads = disable_ads ? '' : '<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>';
   return `
     <!doctype html>
     <html>

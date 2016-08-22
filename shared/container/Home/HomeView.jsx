@@ -7,6 +7,10 @@ class Home extends React.Component {
     this.adStyle = { display: 'inline-block', width: '336px', height: '280px', 'lineHeight': '280px' };
   }
 
+  componentDidMount() {
+    (window.adsbygoogle = window.adsbygoogle || []).push({});
+  }
+
   render() {
     return (
       <Grid id="content">
