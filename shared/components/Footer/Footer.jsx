@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 export class Footer extends React.Component {
   constructor(props, context) {
     super(props, context);
-    this.adStyle = { display: 'inline-block', width: '728px', height: '90px', 'line-height': '90px' };
+    this.adStyle = { display: 'inline-block', width: '730px', height: '92px', 'line-height': '92px' };
   }
 
   componentDidMount() {
