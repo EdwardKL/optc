@@ -164,6 +164,7 @@ function expectCaptainStored(expected_captain, callback) {
     expect(captain.current_hp_ccs).to.equal(expected_captain.current_hp_ccs);
     expect(captain.current_atk_ccs).to.equal(expected_captain.current_atk_ccs);
     expect(captain.current_rcv_ccs).to.equal(expected_captain.current_rcv_ccs);
+    expect(captain._account.toString().valueOf()).to.equal(expected_captain._account.toString().valueOf());
     expect(getSimpleSockets(captain)).to.deep.equal(getSimpleSockets(expected_captain));
     callback();
   });
@@ -298,6 +299,7 @@ describe('CaptainsController.add', () => {
       current_special_level: 9,
       _unit: 98,
       _user: user_id,
+      _account: account1_id,
       current_hp_ccs: 90,
       current_atk_ccs: 10,
       current_rcv_ccs: 80,
@@ -324,6 +326,7 @@ describe('CaptainsController.add', () => {
       current_special_level: 9,
       _unit: 98,
       _user: user_id,
+      _account: account0_id,
       current_hp_ccs: 90,
       current_atk_ccs: 10,
       current_rcv_ccs: 80,
@@ -358,6 +361,7 @@ describe('CaptainsController.add', () => {
       current_special_level: 9,
       _unit: 98,
       _user: user_id,
+      _account: account0_id,
       current_hp_ccs: 90,
       current_atk_ccs: 10,
       current_rcv_ccs: 80,
@@ -380,6 +384,7 @@ describe('CaptainsController.add', () => {
       current_special_level: 9,
       _unit: 98,
       _user: user_id,
+      _account: account1_id,
       current_hp_ccs: 90,
       current_atk_ccs: 10,
       current_rcv_ccs: 80,
@@ -404,6 +409,7 @@ describe('CaptainsController.add', () => {
       current_special_level: 10,
       _unit: 94,
       _user: user_id,
+      _account: account1_id,
       current_hp_ccs: 32,
       current_atk_ccs: 40,
       current_rcv_ccs: 0,
@@ -439,6 +445,7 @@ describe('CaptainsController.delete', () => {
     current_special_level: 9,
     _unit: 98,
     _user: user_id,
+    _account: account1_id,
     current_hp_ccs: 90,
     current_atk_ccs: 10,
     current_rcv_ccs: 80,

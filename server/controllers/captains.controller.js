@@ -38,6 +38,7 @@ function getCaptainFromRequest(req) {
     current_special_level: req.body.current_special_level,
     _unit: req.body.unit_id,
     _user: req.user._id,
+    _account: req.body.account_id,
     current_hp_ccs: getNumber(req.body.current_hp_ccs),
     current_atk_ccs: getNumber(req.body.current_atk_ccs),
     current_rcv_ccs: getNumber(req.body.current_rcv_ccs),
