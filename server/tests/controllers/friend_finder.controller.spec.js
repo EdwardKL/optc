@@ -19,13 +19,16 @@ describe('FriendFinder', () => {
 
   it('should return empty data for invalid captain ids', (done) => {
     req.setParams({ captain_id: -1 });
-    req.setQuery({ region: 'global' });
+    req.setQuery({ region: 'global', page: 1 });
     FriendFinder.search(req, res, () => {
       expect(res.getJson()).to.have.lengthOf(0);
       done();
     });
   });
 
+  const account0_id = new mongoose.Types.ObjectId();
+  const account1_id = new mongoose.Types.ObjectId();
+  const account2_id = new mongoose.Types.ObjectId();
   const user_id = new mongoose.Types.ObjectId();
   const captain0 = {
     _id: new mongoose.Types.ObjectId(),
@@ -37,6 +40,7 @@ describe('FriendFinder', () => {
     current_rcv_ccs: 14,
     _unit: 15,
     _user: user_id,
+    _account: account0_id
   };
   const captain1 = {
     _id: new mongoose.Types.ObjectId(),
@@ -48,6 +52,7 @@ describe('FriendFinder', () => {
     current_rcv_ccs: 1,
     _unit: 17,
     _user: user_id,
+    _account: account1_id
   };
   const captain2 = {
     _id: new mongoose.Types.ObjectId(),
@@ -59,9 +64,22 @@ describe('FriendFinder', () => {
     current_rcv_ccs: 10,
     _unit: 15,
     _user: user_id,
+    _account: account1_id
+  };
+  const captain3 = {
+    _id: new mongoose.Types.ObjectId(),
+    current_level: 5,
+    current_sockets: [],
+    current_special_level: 1,
+    current_hp_ccs: 1,
+    current_atk_ccs: 2,
+    current_rcv_ccs: 1,
+    _unit: 200,
+    _user: user_id,
+    _account: account2_id
   };
   const account0 = {
-    _id: new mongoose.Types.ObjectId(),
+    _id: account0_id,
     region: 'global',
     crew_name: 'testcrew0',
     friend_id: 100000000,
@@ -69,17 +87,25 @@ describe('FriendFinder', () => {
     _captains: [captain0._id],
   };
   const account1 = {
-    _id: new mongoose.Types.ObjectId(),
+    _id: account1_id,
     region: 'japan',
     crew_name: 'testcrew1',
     friend_id: 999999999,
     pirate_level: 7,
     _captains: [captain1._id, captain2._id],
   };
+  const account2 = {
+    _id: account2_id,
+    region: 'japan',
+    crew_name: 'testcrew2',
+    friend_id: 999999998,
+    pirate_level: 70,
+    _captains: [captain3._id],
+  };
 
   const user = {
     _id: user_id,
-    _accounts: [account0._id, account1._id],
+    _accounts: [account0_id, account1_id, account2_id],
     password: 'asdf',
   };
 
@@ -89,9 +115,12 @@ describe('FriendFinder', () => {
       db_user.updateCredentials();
       const db_account0 = new AccountModel(account0);
       const db_account1 = new AccountModel(account1);
+      const db_account2 = new AccountModel(account2);
       const db_captain0 = new CaptainModel(captain0);
       const db_captain1 = new CaptainModel(captain1);
       const db_captain2 = new CaptainModel(captain2);
+      const db_captain3 = new CaptainModel(captain3);
+
       const db_unit0 = new UnitModel({
         _id: 15,
         name: 'Golden Pound Usopp',
@@ -108,15 +137,21 @@ describe('FriendFinder', () => {
             if (e2) throw e2;
             db_captain2.save((e3) => {
               if (e3) throw e3;
-              db_account0.save((e4) => {
+              db_captain3.save((e4) => {
                 if (e4) throw e4;
-                db_account1.save((e5) => {
+                db_account0.save((e5) => {
                   if (e5) throw e5;
-                  db_unit0.save((e6) => {
+                  db_account1.save((e6) => {
                     if (e6) throw e6;
-                    db_unit1.save((e7) => {
+                    db_account2.save((e7) => {
                       if (e7) throw e7;
-                      done();
+                      db_unit0.save((e8) => {
+                        if (e8) throw e8;
+                        db_unit1.save((e9) => {
+                          if (e9) throw e9;
+                          done();
+                        });
+                      });
                     });
                   });
                 });
@@ -194,7 +229,7 @@ describe('FriendFinder', () => {
 
   it('should succeed', (done) => {
     req.setParams({ captain_id: 15 });
-    req.setQuery({ region: 'global' });
+    req.setQuery({ region: 'global', page: 1 });
     FriendFinder.search(req, res, () => {
       const results = res.getJson();
       expect(results).to.have.lengthOf(2);
@@ -202,6 +237,31 @@ describe('FriendFinder', () => {
       const result1 = getCaptainFromResult(captain2._id, results);
       expectCaptainsEqual(result0, captain0);
       expectCaptainsEqual(result1, captain2);
+      done();
+    });
+  });
+
+  it('should return captains sorted by current level', (done) => {
+    req.setParams({ captain_id: 17 });
+    req.setQuery({ region: 'japan', page: 1 });
+    FriendFinder.search(req, res, () => {
+      const results = res.getJson();
+      expect(results).to.have.lengthOf(2);
+      console.log('results: ', results);
+      // ensure captain1 (with higher level) is returned first
+      expect(results[0].current_level).to.equal(captain1.current_level);
+      expect(results[1].current_level).to.equal(captain3.current_level);
+      done();
+    });
+  });
+
+  it('wtf would happen here', (done) => {
+    req.setParams({ captain_id: 200 });
+    req.setQuery({ region: 'global', page: 1 });
+    FriendFinder.search(req, res, () => {
+      const results = res.getJson();
+      expect(results).to.have.lengthOf(0);
+      console.log('results: ', results);
       done();
     });
   });

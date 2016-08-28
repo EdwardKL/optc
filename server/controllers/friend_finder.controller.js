@@ -1,5 +1,6 @@
 import CaptainModel from '../models/captain';
 import { getNumber } from './utils';
+import { FRIEND_FINDER_RESULTS_PAGE_SIZE } from '../../constants/common';
 require('../models/unit');
 require('../models/user');
 
@@ -7,7 +8,9 @@ require('../models/user');
 exports.search = function search(req, res, next) {
   const captain_id = getNumber(req.params.captain_id);
   const region = req.query.region;
+  const page = getNumber(req.query.page);
   console.log('friend_finder controller searching for captain: ', captain_id, ' with region: ', region);
+  console.log('and page: ', page);
   if (captain_id <= 0) {
     res.json([]);
     next();
@@ -15,31 +18,62 @@ exports.search = function search(req, res, next) {
   }
 
   CaptainModel
-    .find({ _unit: captain_id, _user: { $ne: null } })
-    .sort('current_level current_special_level')
+    .find({ _unit: captain_id })
+    .sort('-current_level -current_special_level')
     .populate('_user')
+    .populate('_account')
     .populate({
-      path: '_user',
+      path: '_account',
       populate: {
-        path: '_accounts',
-        model: 'Account',
-        match: { region : region },
-        populate: {
-          path: '_captains',
-          model: 'Captain'
-      }}})
+        path: '_captains',
+        model: 'Captain'
+      },
+      match: { region : region }
+    })
     // TODO: we shouldn't do it this way because we'd get a lot of repeated data. Call the unit model separately.
     .populate('_unit')
-    .select('current_level current_sockets current_special_level current_hp_ccs current_atk_ccs current_rcv_ccs _user _unit')
+    .select('current_level current_sockets current_special_level current_hp_ccs current_atk_ccs current_rcv_ccs _user _unit _account')
+    .limit(FRIEND_FINDER_RESULTS_PAGE_SIZE)
+    .skip(FRIEND_FINDER_RESULTS_PAGE_SIZE * (page - 1))
     .exec((err, captains) => {
       if (err) throw err;
-      console.log("friend_finder controller returning captains: ", captains);
       captains.map((captain) => {
         if (captain._user) {
           captain._user.clearSensitiveData();
         }
       });
+
+      // it's ridiculous that mongoose doesn't allow for querying nested documents after a populate, but such is life.
+      // filters out captains with null accounts (that previously didn't match the region in the initial populate)
+      captains.filter((captain) => {
+        return captain._account == null;
+      });
       res.json(captains);
+      next();
+    });
+};
+
+// Fetches the number of pages for a search result for a given captain.
+exports.fetchNumPages = function search(req, res, next) {
+  const captain_id = getNumber(req.params.captain_id);
+  const region = req.query.region;
+
+  CaptainModel
+    .find({ _unit: captain_id })
+    // dont think these populates are even needed
+    .populate('_user')
+    .populate('_account')
+    .populate({
+      path: '_account',
+      populate: {
+        path: '_captains',
+        model: 'Captain'
+      }
+    })
+    .count({})
+    .exec((err, total) => {
+      console.log("friend_finder controller fetched num results: ", total);
+      res.json(Math.ceil(total / FRIEND_FINDER_RESULTS_PAGE_SIZE));
       next();
     });
 };

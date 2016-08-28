@@ -29,7 +29,7 @@ function getSocketsFromRequest(req) {
 }
 
 // Returns a captain model constructed from data in the given request.
-function getCaptainFromRequest(req) {
+function getCaptainFromRequest(req, account) {
   const id = req.body.captain_id ?
       new mongoose.Types.ObjectId(req.body.captain_id) : new mongoose.Types.ObjectId();
   const captain = new CaptainModel({
@@ -38,7 +38,8 @@ function getCaptainFromRequest(req) {
     current_special_level: req.body.current_special_level,
     _unit: req.body.unit_id,
     _user: req.user._id,
-    _account: req.body.account_id,
+    _account: account._id,
+    region: account.region,
     current_hp_ccs: getNumber(req.body.current_hp_ccs),
     current_atk_ccs: getNumber(req.body.current_atk_ccs),
     current_rcv_ccs: getNumber(req.body.current_rcv_ccs),
@@ -70,8 +71,6 @@ function validateCCs(captain, req, res, next) {
 // Adds (or edits) a captain.
 exports.add = function add(req, res, next) {
   if (redirectIfLoggedOut(req, res, next)) return;
-  const captain = getCaptainFromRequest(req);
-  if (!validateCCs(captain, req, res, next)) return;
   AccountModel.findById(req.body.account_id, (account_err, account) => {
     // In case of any error return
     if (account_err) {
@@ -89,6 +88,24 @@ exports.add = function add(req, res, next) {
       next();
       return;
     }
+
+    const captain = getCaptainFromRequest(req, account);
+    const hp_ccs = captain.current_hp_ccs;
+    const atk_ccs = captain.current_atk_ccs;
+    const rcv_ccs = captain.current_rcv_ccs;
+    if ((hp_ccs + atk_ccs + rcv_ccs) > 200) {
+      req.flash('error_message', 'You can only have at most 200 cotton candies per unit.');
+      res.redirect('/account');
+      next();
+      return;
+    }
+    if (hp_ccs > 100 || atk_ccs > 100 || rcv_ccs > 100) {
+      req.flash('error_message', 'You can only have at most 100 cotton candies per stat.');
+      res.redirect('/account');
+      next();
+      return;
+    }
+
     // Check if the captain already exists.
     const edit = hasId(account._captains, captain._id);
     const callback = (err) => {
