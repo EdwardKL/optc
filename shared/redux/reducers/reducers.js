@@ -12,6 +12,7 @@ const friendFinder = (state = {}, action) => {
           current_level: action.friend_search_results[i].current_level,
           current_special_level: action.friend_search_results[i].current_special_level,
           user: action.friend_search_results[i]._user,
+          account: action.friend_search_results[i]._account
         });
       }
       return {

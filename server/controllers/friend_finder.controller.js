@@ -42,6 +42,7 @@ exports.search = function search(req, res, next) {
           captain._user.clearSensitiveData();
         }
       });
+      console.log('captains found: ', captains);
       res.json(captains);
       next();
     });

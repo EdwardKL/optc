@@ -111,18 +111,10 @@ export class FriendFinderView extends Component {
         <Row>
           {console.log('search results:', this.state.friend_search_results)}
           {this.state.friend_search_results.map( (result) => {
-            if (result.user) {
-              {return result.user._accounts.map((account) => {
-                // prevent displaying the same account multiple times (when the accounts have same captains)
-                if (!accountSet.has(account._id)) {
-                  accountSet.add(account._id);
-                  for (var i = 0; i < account._captains.length; i++) {
-                    if (account._captains[i]._unit == this.state.unit._id) {
-                      return <Account edit={false} account_data={account} key={account._id}/>;
-                    }
-                  }
-                }
-              })}
+            let account = result.account;
+            if (!accountSet.has(account._id)) {
+              accountSet.add(account._id);
+              return <Account edit={false} account_data={account} key={account._id}/>;
             }
           })}
         </Row>
@@ -165,6 +157,7 @@ FriendFinderView.propTypes = {
   friend_search_results: PropTypes.arrayOf(PropTypes.shape({
     current_level: PropTypes.number.isRequired,
     current_special_level: PropTypes.number.isRequired,
+    account: PropTypes.object,
     user: PropTypes.shape({
       accounts: PropTypes.arrayOf(PropTypes.object),
       display_name: PropTypes.string
