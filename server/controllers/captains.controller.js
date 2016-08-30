@@ -80,7 +80,7 @@ exports.add = function add(req, res, next) {
       next();
       return;
     }
-    // Did not find account. No idea how that could happen... Bad request?
+    // Did not find account, e.g. missing account_id in request body...but that should never happen.
     /* istanbul ignore if */
     if (!account) {
       req.flash('error_message', getErrorMessage(ERROR_CODES.CAPTAINS_ADD_ERROR_2));
@@ -88,7 +88,6 @@ exports.add = function add(req, res, next) {
       next();
       return;
     }
-
     const captain = getCaptainFromRequest(req, account);
     const hp_ccs = captain.current_hp_ccs;
     const atk_ccs = captain.current_atk_ccs;
