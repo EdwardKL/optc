@@ -154,6 +154,7 @@ describe('AccountsController db tests', () => {
     current_rcv_ccs: 14,
     _unit: 15,
     _user: user_id,
+    region: 'global'
   };
   const captain1 = {
     _id: new mongoose.Types.ObjectId(),
@@ -165,6 +166,7 @@ describe('AccountsController db tests', () => {
     current_rcv_ccs: 1,
     _unit: 17,
     _user: user_id,
+    region: 'global'
   };
   const account0 = {
     _id: new mongoose.Types.ObjectId(),

@@ -19,6 +19,7 @@ exports.search = function search(req, res, next) {
 
   CaptainModel
     .find({ _unit: captain_id })
+    .where('region', region)
     .sort('-current_level -current_special_level')
     .populate('_user')
     .populate('_account')
@@ -28,11 +29,10 @@ exports.search = function search(req, res, next) {
         path: '_captains',
         model: 'Captain'
       },
-      match: { region : region }
     })
     // TODO: we shouldn't do it this way because we'd get a lot of repeated data. Call the unit model separately.
     .populate('_unit')
-    .select('current_level current_sockets current_special_level current_hp_ccs current_atk_ccs current_rcv_ccs _user _unit _account')
+    .select('current_level current_sockets current_special_level current_hp_ccs current_atk_ccs current_rcv_ccs _user _unit _account region')
     .limit(FRIEND_FINDER_RESULTS_PAGE_SIZE)
     .skip(FRIEND_FINDER_RESULTS_PAGE_SIZE * (page - 1))
     .exec((err, captains) => {
@@ -41,12 +41,6 @@ exports.search = function search(req, res, next) {
         if (captain._user) {
           captain._user.clearSensitiveData();
         }
-      });
-
-      // it's ridiculous that mongoose doesn't allow for querying nested documents after a populate, but such is life.
-      // filters out captains with null accounts (that previously didn't match the region in the initial populate)
-      captains.filter((captain) => {
-        return captain._account == null;
       });
       res.json(captains);
       next();

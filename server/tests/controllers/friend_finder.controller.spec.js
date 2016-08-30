@@ -40,7 +40,8 @@ describe('FriendFinder', () => {
     current_rcv_ccs: 14,
     _unit: 15,
     _user: user_id,
-    _account: account0_id
+    _account: account0_id,
+    region: 'global'
   };
   const captain1 = {
     _id: new mongoose.Types.ObjectId(),
@@ -52,7 +53,8 @@ describe('FriendFinder', () => {
     current_rcv_ccs: 1,
     _unit: 17,
     _user: user_id,
-    _account: account1_id
+    _account: account1_id,
+    region: 'japan'
   };
   const captain2 = {
     _id: new mongoose.Types.ObjectId(),
@@ -64,7 +66,8 @@ describe('FriendFinder', () => {
     current_rcv_ccs: 10,
     _unit: 15,
     _user: user_id,
-    _account: account1_id
+    _account: account1_id,
+    region: 'japan'
   };
   const captain3 = {
     _id: new mongoose.Types.ObjectId(),
@@ -76,7 +79,21 @@ describe('FriendFinder', () => {
     current_rcv_ccs: 1,
     _unit: 200,
     _user: user_id,
-    _account: account2_id
+    _account: account2_id,
+    region: 'japan'
+  };
+  const captain4 = {
+    _id: new mongoose.Types.ObjectId(),
+    current_level: 4,
+    current_sockets: [],
+    current_special_level: 1,
+    current_hp_ccs: 100,
+    current_atk_ccs: 99,
+    current_rcv_ccs: 1,
+    _unit: 17,
+    _user: user_id,
+    _account: account1_id,
+    region: 'japan'
   };
   const account0 = {
     _id: account0_id,
@@ -92,7 +109,7 @@ describe('FriendFinder', () => {
     crew_name: 'testcrew1',
     friend_id: 999999999,
     pirate_level: 7,
-    _captains: [captain1._id, captain2._id],
+    _captains: [captain1._id, captain2._id, captain4._id],
   };
   const account2 = {
     _id: account2_id,
@@ -120,6 +137,7 @@ describe('FriendFinder', () => {
       const db_captain1 = new CaptainModel(captain1);
       const db_captain2 = new CaptainModel(captain2);
       const db_captain3 = new CaptainModel(captain3);
+      const db_captain4 = new CaptainModel(captain4);
 
       const db_unit0 = new UnitModel({
         _id: 15,
@@ -139,17 +157,20 @@ describe('FriendFinder', () => {
               if (e3) throw e3;
               db_captain3.save((e4) => {
                 if (e4) throw e4;
-                db_account0.save((e5) => {
+                db_captain4.save((e5) => {
                   if (e5) throw e5;
-                  db_account1.save((e6) => {
+                  db_account0.save((e6) => {
                     if (e6) throw e6;
-                    db_account2.save((e7) => {
+                    db_account1.save((e7) => {
                       if (e7) throw e7;
-                      db_unit0.save((e8) => {
+                      db_account2.save((e8) => {
                         if (e8) throw e8;
-                        db_unit1.save((e9) => {
+                        db_unit0.save((e9) => {
                           if (e9) throw e9;
-                          done();
+                          db_unit1.save((e10) => {
+                            if (e10) throw e10;
+                            done();
+                          });
                         });
                       });
                     });
@@ -165,16 +186,6 @@ describe('FriendFinder', () => {
 
   function expectPopulatedUser(actual_user) {
     expect(actual_user._id.toString().valueOf()).to.equal(user_id.toString().valueOf());
-    expectAccountsEqual(actual_user._accounts[0], account0);
-    expectAccountsEqual(actual_user._accounts[1], account1);
-    // Sensitive data should be stripped.
-    expect(actual_user.password).to.equal('');
-    expect(actual_user.salt).to.equal('');
-  }
-
-  function expectedPopulatedUserWithAccount(actual_user, account) {
-    expect(actual_user._id.toString().valueOf()).to.equal(user_id.toString().valueOf());
-    expectAccountsEqual(actual_user._accounts[0], account);
     // Sensitive data should be stripped.
     expect(actual_user.password).to.equal('');
     expect(actual_user.salt).to.equal('');
@@ -191,8 +202,9 @@ describe('FriendFinder', () => {
     expect(actual_captain.current_hp_ccs).to.equal(expected_captain.current_hp_ccs);
     expect(actual_captain.current_atk_ccs).to.equal(expected_captain.current_atk_ccs);
     expect(actual_captain.current_rcv_ccs).to.equal(expected_captain.current_rcv_ccs);
-    // expectPopulatedUser(actual_captain._user);
-    expectedPopulatedUserWithAccount(actual_captain._user, actual_captain._user._accounts[0]);
+    expect(actual_captain.region).to.equal(expected_captain.region);
+    expectPopulatedUser(actual_captain._user);
+    expectAccountsEqual(actual_captain._account, account0);
     expectPopulatedUnit(actual_captain._unit);
     expect(actual_captain.current_sockets).to.have.lengthOf(expected_captain.current_sockets.length);
     for (const i in expected_captain.current_sockets) {  // eslint-disable-line guard-for-in
@@ -220,6 +232,7 @@ describe('FriendFinder', () => {
   }
 
   function getCaptainFromResult(id, results) {
+    console.log('results: ', results);
     for (const result of results) {
       if (result._id.toString().valueOf() === id.toString().valueOf()) {
         return result;
@@ -232,11 +245,9 @@ describe('FriendFinder', () => {
     req.setQuery({ region: 'global', page: 1 });
     FriendFinder.search(req, res, () => {
       const results = res.getJson();
-      expect(results).to.have.lengthOf(2);
-      const result0 = getCaptainFromResult(captain0._id, results);
-      const result1 = getCaptainFromResult(captain2._id, results);
-      expectCaptainsEqual(result0, captain0);
-      expectCaptainsEqual(result1, captain2);
+      expect(results).to.have.lengthOf(1);
+      const foundCaptain = getCaptainFromResult(captain0._id, results);
+      expectCaptainsEqual(foundCaptain, captain0);
       done();
     });
   });
@@ -247,21 +258,19 @@ describe('FriendFinder', () => {
     FriendFinder.search(req, res, () => {
       const results = res.getJson();
       expect(results).to.have.lengthOf(2);
-      console.log('results: ', results);
       // ensure captain1 (with higher level) is returned first
       expect(results[0].current_level).to.equal(captain1.current_level);
-      expect(results[1].current_level).to.equal(captain3.current_level);
+      expect(results[1].current_level).to.equal(captain4.current_level);
       done();
     });
   });
 
-  it('wtf would happen here', (done) => {
+  it('should not find captain in a different region', (done) => {
     req.setParams({ captain_id: 200 });
     req.setQuery({ region: 'global', page: 1 });
     FriendFinder.search(req, res, () => {
       const results = res.getJson();
       expect(results).to.have.lengthOf(0);
-      console.log('results: ', results);
       done();
     });
   });
