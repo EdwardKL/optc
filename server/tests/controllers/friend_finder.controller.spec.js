@@ -13,7 +13,7 @@ import { connectToTestDB, dropTestDB } from '../test_utils';
 
 const expect = chai.expect;
 
-describe('FriendFinder', () => {
+describe('FriendFinder tests', () => {
   const req = new RequestMock();
   const res = new ResponseMock();
 
@@ -126,6 +126,30 @@ describe('FriendFinder', () => {
     password: 'asdf',
   };
 
+  // helper function to recursively add a captain with a particular unit id/region many times.
+  const add_captains_with_region = function add_captains(num_times, unit_id, region, done) {
+    const captain = new CaptainModel({
+      _id: new mongoose.Types.ObjectId(),
+      current_level: Math.floor(Math.random() * 99) + 1,
+      current_sockets: [],
+      current_special_level: 1,
+      current_hp_ccs: 5,
+      current_atk_ccs: 2,
+      current_rcv_ccs: 3,
+      _unit: unit_id,
+      _user: user_id,
+      _account: account2_id,
+      region: region
+    });
+    captain.save(() => {
+      if (num_times === 1) {
+        done();
+        return;
+      }
+      add_captains(num_times - 1, unit_id, region, done);
+    });
+  };
+
   before('Store a user', function before(done) {  // eslint-disable-line prefer-arrow-callback
     connectToTestDB(() => {
       const db_user = new UserModel(user);
@@ -146,6 +170,10 @@ describe('FriendFinder', () => {
       const db_unit1 = new UnitModel({
         _id: 17,
         name: 'Sanji',
+      });
+      const db_unit101 = new UnitModel({
+        _id: 101,
+        name: 'Blue Striped Dragon'
       });
       db_user.save((e0) => {
         if (e0) throw e0;
@@ -169,7 +197,12 @@ describe('FriendFinder', () => {
                           if (e9) throw e9;
                           db_unit1.save((e10) => {
                             if (e10) throw e10;
-                            done();
+                            db_unit101.save((e11) => {
+                              if (e11) throw e11;
+
+                              // lol
+                              add_captains_with_region(20, 101, 'global', done);
+                            });
                           });
                         });
                       });
@@ -271,6 +304,20 @@ describe('FriendFinder', () => {
     FriendFinder.search(req, res, () => {
       const results = res.getJson();
       expect(results).to.have.lengthOf(0);
+      done();
+    });
+  });
+
+  it('should find second page of captains (for page size = 10)', (done) => {
+    req.setParams({captain_id: 101});
+    req.setQuery({region: 'global', page: 2});
+    FriendFinder.search(req, res, () => {
+      const results = res.getJson();
+      expect(results).to.have.lengthOf(10);
+      for (const result of results) {
+        expectPopulatedUser(result._user);
+        expect(result.current_special_level).to.equal(1);
+      }
       done();
     });
   });
