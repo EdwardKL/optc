@@ -16,7 +16,8 @@ const captainSchema = new Schema({
   current_rcv_ccs: { type: Number, min: 0, max: 100 },
   _unit: { type: Number, min: 0, ref: 'Unit' },
   _user: { type: Schema.Types.ObjectId, ref: 'User' },
-  _account: { type: Schema.Types.ObjectId, ref: 'Account' }
+  _account: { type: Schema.Types.ObjectId, ref: 'Account' },
+  region: { type: String, enum: ['global', 'japan'], required: true },
 });
 
 export default mongoose.model('Captain', captainSchema);
