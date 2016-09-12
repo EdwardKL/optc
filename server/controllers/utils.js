@@ -25,7 +25,7 @@ exports.areIdsEqual = function areIdsEqual(id1, id2) {
 // Returns true if array has id.
 exports.hasId = function hasId(array, id) {
   for (const item of array) {
-    if (exports.hasEqualIds(item, id)) {
+    if (exports.areIdsEqual(item, id)) {
       return true;
     }
   }
