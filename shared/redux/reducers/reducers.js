@@ -12,11 +12,17 @@ const friendFinder = (state = {}, action) => {
           current_level: action.friend_search_results[i].current_level,
           current_special_level: action.friend_search_results[i].current_special_level,
           user: action.friend_search_results[i]._user,
+          account: action.friend_search_results[i]._account
         });
       }
       return {
         ...state,
         friend_search_results: results,
+      };
+    case ActionTypes.ADD_NUM_FRIEND_FINDER_RESULTS:
+      return {
+        ...state,
+        num_pages: action.results,
       };
     default:
       return state;

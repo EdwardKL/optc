@@ -10,15 +10,34 @@ export function addFriendFinderResults(friend_search_results) {
   };
 }
 
-export function fetchFriendFinderResults(captain_id, region) {
+export function addNumFriendFinderResultPages(results) {
+  return {
+    type: ActionTypes.ADD_NUM_FRIEND_FINDER_RESULTS,
+    results,
+  };
+}
+
+export function fetchFriendFinderResults(captain_id, region, page) {
   return (dispatch) => {
-    return fetch(`${baseURL}/friend_finder/api/${captain_id}?region=${region}`, {
+    return fetch(`${baseURL}/friend_finder/api/${captain_id}?region=${region}&page=${page}`, {
       method: 'get',
       headers: new Headers({
         'Content-Type': 'application/json',
       }),
     }).then((response) => response.json())
       .then(results => dispatch(addFriendFinderResults(results)));
+  };
+}
+
+export function fetchNumFriendFinderResultPages(captain_id, region) {
+  return (dispatch) => {
+    return fetch(`${baseURL}/friend_finder/api/num_pages/${captain_id}?region=${region}`, {
+      method: 'get',
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
+    }).then((response) => response.json())
+      .then(results => dispatch(addNumFriendFinderResultPages(results)));
   };
 }
 
