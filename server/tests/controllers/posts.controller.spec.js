@@ -4,6 +4,7 @@ import chai from 'chai';
 import mongoose from 'mongoose';
 import PostsController from '../../controllers/posts.controller';
 import PostModel from '../../models/post';
+import PostVoteModel from '../../models/post_vote';
 import UserModel from '../../models/user';
 import RequestMock from '../mocks/request.mock';
 import ResponseMock from '../mocks/response.mock';
@@ -30,6 +31,10 @@ describe('PostsController when logged out', () => {
 
   it('should redirect to /signup for .deletePost', (done) => {
     PostsController.deletePost(req, res, expectRedirect(done));
+  });
+
+  it('should redirect to /signup for .toggleVote', (done) => {
+    PostsController.toggleVote(req, res, expectRedirect(done));
   });
 });
 
@@ -365,6 +370,184 @@ describe('PostsController.deletePost', () => {
   });
 
   after(function after(done) {  // eslint-disable-line prefer-arrow-callback
+    dropTestDB(done);
+  });
+});
+
+
+describe('PostsController.toggleVote', () => {
+  const req = new RequestMock();
+  const res = new ResponseMock();
+  const user1_id = new mongoose.Types.ObjectId();
+  const user2_id = new mongoose.Types.ObjectId();
+  const post_id = new mongoose.Types.ObjectId();
+  const username = 'test-user';
+  const username2 = 'test-user-2';
+  const user = new UserModel({ _id: user1_id, username });
+  const user2 = new UserModel({ _id: user2_id, username2 });
+  req.login(user);
+
+  beforeEach(function beforeEach(done) { // eslint-disable-line prefer-arrow-callback
+    const post1 = new PostModel({
+      _id: post_id,
+      content: 'post1',
+      location: '/page/loc',
+      _user: user1_id,
+      score: 10,
+    });
+
+    const post2 = new PostModel({
+      content: 'post2',
+      location: '/page/loc',
+      _user: user2_id,
+    });
+
+    connectToTestDB(() => {
+      post1.save(() => {
+        post2.save(() => {
+          done();
+        });
+      });
+    });
+  });
+
+  it('should upvote previously unvoted posts', (done) => {
+    const upvote = true;
+    req.setBody({ post_id, upvote });
+    PostsController.toggleVote(req, res, () => {
+      PostModel.findById(post_id).exec((err, post) => {
+        // Score should go up one.
+        expect(post.score).to.equal(11);
+        PostVoteModel.find({ _user: user1_id, _post: post_id }).exec((err, post_vote) => {
+          // Should be a post vote stored.
+          expect(post_vote[0].upvote).to.be.true;
+          done();
+        });
+      });
+    });
+  });
+
+  it('should downvote previously unvoted posts', (done) => {
+    const upvote = false;
+    req.setBody({ post_id, upvote });
+    PostsController.toggleVote(req, res, () => {
+      PostModel.findById(post_id).exec((err, post) => {
+        // Score should go down one.
+        expect(post.score).to.equal(9);
+        PostVoteModel.find({ _user: user1_id, _post: post_id }).exec((err, post_vote) => {
+          // Should be a post vote stored.
+          expect(post_vote[0].upvote).to.be.false;
+          done();
+        });
+      });
+    });
+  });
+
+  it('should upvote toggle', (done) => {
+    const upvote = true;
+    req.setBody({ post_id, upvote });
+    PostsController.toggleVote(req, res, () => {
+      // Toggle it away.
+      PostsController.toggleVote(req, res, () => {
+        PostModel.findById(post_id).exec((err, post) => {
+          // Score should not change.
+          expect(post.score).to.equal(10);
+          PostVoteModel.find({ _user: user1_id, _post: post_id }).exec((err, post_vote) => {
+            // Post vote should not exist.
+            expect(post_vote[0]).to.not.exist;
+            done();
+          });
+        });
+      });
+    });
+  });
+
+  it('should downvote toggle', (done) => {
+    const upvote = false;
+    req.setBody({ post_id, upvote });
+    PostsController.toggleVote(req, res, () => {
+      // Toggle it away.
+      PostsController.toggleVote(req, res, () => {
+        PostModel.findById(post_id).exec((err, post) => {
+          // Score should not change.
+          expect(post.score).to.equal(10);
+          PostVoteModel.find({ _user: user1_id, _post: post_id }).exec((err, post_vote) => {
+            // Post vote should not exist.
+            expect(post_vote[0]).to.not.exist;
+            done();
+          });
+        });
+      });
+    });
+  });
+
+  it('should go from upvote to downvote', (done) => {
+    const upvote = true;
+    req.setBody({ post_id, upvote });
+    const req2 = new RequestMock();
+    req2.login(user);
+    req2.setBody({ post_id, upvote: false });
+    PostsController.toggleVote(req, res, () => {
+      // Change mind, downvote instead.
+      PostsController.toggleVote(req2, res, () => {
+        PostModel.findById(post_id).exec((err, post) => {
+          // Score should be down 1.
+          expect(post.score).to.equal(9);
+          PostVoteModel.find({ _user: user1_id, _post: post_id }).exec((err, post_vote) => {
+            // Should be a post vote stored.
+            expect(post_vote[0].upvote).to.be.false;
+            done();
+          });
+        });
+      });
+    });
+  });
+
+  it('should go from downvote to upvote', (done) => {
+    const upvote = false;
+    req.setBody({ post_id, upvote });
+    const req2 = new RequestMock();
+    req2.login(user);
+    req2.setBody({ post_id, upvote: true });
+    PostsController.toggleVote(req, res, () => {
+      // Change mind, upvote instead.
+      PostsController.toggleVote(req2, res, () => {
+        PostModel.findById(post_id).exec((err, post) => {
+          // Score should be up 1.
+          expect(post.score).to.equal(11);
+          PostVoteModel.find({ _user: user1_id, _post: post_id }).exec((err, post_vote) => {
+            // Should be a post vote stored.
+            expect(post_vote[0].upvote).to.be.true;
+            done();
+          });
+        });
+      });
+    });
+  });
+
+  it('should store multiple user votes', (done) => {
+    const upvote = false;
+    req.setBody({ post_id, upvote });
+    const req2 = new RequestMock();
+    req2.login(user2);
+    req2.setBody({ post_id, upvote: true });
+    PostsController.toggleVote(req, res, () => {
+      // Other user upvotes.
+      PostsController.toggleVote(req2, res, () => {
+        PostModel.findById(post_id).exec((err, post) => {
+          // Score should be the same.
+          expect(post.score).to.equal(10);
+          PostVoteModel.find({ _post: post_id }).exec((err, post_votes) => {
+            // Should be 2 post votes stored.
+            expect(post_votes).to.have.lengthOf(2);
+            done();
+          });
+        });
+      });
+    });
+  });
+
+  afterEach(function afterEach(done) {  // eslint-disable-line prefer-arrow-callback
     dropTestDB(done);
   });
 });

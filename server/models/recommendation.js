@@ -2,7 +2,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-// Create the socket schema.
+// Create the schema.
 const recommendationSchema = new Schema({
   _unit: { type: Number, min: 0, ref: 'Unit' },
   _user: { type: Schema.Types.ObjectId, ref: 'User' },
