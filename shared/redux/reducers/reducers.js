@@ -78,9 +78,21 @@ const unit = (state = {}, action) => {
   }
 };
 
+const post = (state = {}, action) => {
+  switch (action.type) {
+    case ActionTypes.GET_POSTS:
+      return {
+        ...state,
+        posts: action.results
+      };
+    default:
+      return state;
+  }
+};
+
 const identity = (state = {}, action) => {
   return state;
 };
 
-const reducers = combineReducers({ friendFinder, account, unit, identity });
+const reducers = combineReducers({ friendFinder, account, unit, identity, post });
 export default reducers;

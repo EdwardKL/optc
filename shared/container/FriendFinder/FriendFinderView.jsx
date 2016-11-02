@@ -3,7 +3,6 @@ import * as Actions from '../../redux/actions/actions';
 import { connect } from 'react-redux';
 import Account from '../../components/Account/Account';
 import UnitSelector from '../../components/Captain/UnitSelector';
-import { FRIEND_FINDER_RESULTS_PAGE_SIZE } from '../../../constants/common';
 import { Grid, Row, Col, Button, FormGroup, Radio, Pagination } from 'react-bootstrap';
 
 export class FriendFinderView extends Component {
@@ -57,7 +56,7 @@ export class FriendFinderView extends Component {
   handleRegionOptionChange(e) {
     this.setState({
       selected_region: e.target.value,
-      update: false
+      update: true
     });
   }
 

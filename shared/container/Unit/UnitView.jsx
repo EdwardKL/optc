@@ -5,6 +5,7 @@ import { Grid, Row, Col, Table, Button, Panel } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { formatNumber, getUnitPortraitUrl } from '../../utils';
 import RECOMMENDATION from '../../../constants/recommendation';
+import Posts from '../../components/Posts/Posts';
 
 export class UnitView extends React.Component {
   constructor(props, context) {
@@ -16,6 +17,7 @@ export class UnitView extends React.Component {
     this.state.recommendation = props.recommendation;
     this.state.total_recommendations =
       props.global_recommendations.not_recommended + props.global_recommendations.recommended;
+    this.state.location = props.location;
 
     this.getSpecialJSXRows = () => {
       if (!this.state.unit.special_ability) return [];
@@ -65,6 +67,7 @@ export class UnitView extends React.Component {
   }
 
   render() {
+    console.log('rendering!', this.state.location.pathname);
     if (!this.state.has_unit) {
       return (
         <Grid id="content">
@@ -181,6 +184,9 @@ export class UnitView extends React.Component {
               Data source: <a href={`http://optc-db.github.io/characters/#/view/${this.state.unit._id}`}>optc-db</a>.
             </span>
           </Row>
+        <Row>
+          <Posts location={this.state.location.pathname}/>
+        </Row>
       </Grid>
     );
   }

@@ -4,12 +4,16 @@ import sanitizeHtml from 'sanitize-html';
 import { redirectIfLoggedOut, areIdsEqual } from './utils';
 
 exports.addPost = function (req, res, next) {
-  if (redirectIfLoggedOut(req, res, next)) return;
+  if (redirectIfLoggedOut(req, res, next)) {
+    console.log('POSTS_CONTROLLER user not logged in, redirecting');
+    return;
+  }
+  console.log('POSTS_CONTROLLER checking req body: ', req.body);
   if (!req.body.post_content) {
     next();
     return;
   }
-
+  console.log('POSTS_CONTROLLER adding post: ', req.body.post_content, ' to location: ', req.body.location);
   const post = new Post();
   post.content = sanitizeHtml(req.body.post_content);
   post.location = req.body.location;
@@ -23,6 +27,7 @@ exports.addPost = function (req, res, next) {
     if (err) {
       req.flash('error_message', 'There was an error saving this post. Try again later.');
     }
+    console.log('post successfully saved');
     next();
     return;
   });
@@ -35,11 +40,12 @@ const getNode = function (post) {
   return node;
 };
 
-// Returns a hierachy of posts, ordered first by score, then by date added.
+// Returns a hierarchy of posts, ordered first by score, then by date added.
 // These are formatted as nodes, objects as follows:
 // { post, children: [nodes] }
 exports.getPosts = function (req, res, next) {
-  Post.find({ location: req.body.location }).sort('-score -date_added').exec((err, raw_posts) => {
+  console.log('finding posts for location: ', req.params.location);
+  Post.find({ location: req.params.location }).sort('-score -date_added').exec((err, raw_posts) => {
     if (err) {
       return res.status(500).send(err);
     }
@@ -57,6 +63,7 @@ exports.getPosts = function (req, res, next) {
         posts.push(node);
       }
     });
+    console.log('returning posts: ', posts);
     res.json({ posts });
     next();
     return;

@@ -102,6 +102,13 @@ export function addRecommendation(results) {
   };
 }
 
+export function addPosts(results) {
+  return {
+    type: ActionTypes.GET_POSTS,
+    results
+  };
+}
+
 export function fetchUnit(id) {
   return (dispatch) => {
     return fetch(`${baseURL}/units/api/fetch/${id}`, {
@@ -160,4 +167,44 @@ export function fetchRecommendation(id, user_id) {
     }).then((response) => response.json())
       .then(results => dispatch(addRecommendation(results)));
   };
+}
+
+export function fetchPosts(location) {
+  console.log("fetching posts with location: ", location);
+  return (dispatch) => {
+    return fetch(`${baseURL}/posts/api/get/${location}`, {
+      method: 'get',
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      })
+    }).then((response) => response.json())
+      .then(results => dispatch(addPosts(results)));
+  };
+}
+
+export function addPost(location, post_body) {
+  console.log("adding post: ", post_body, " to location: ", location);
+  return (dispatch) => {
+    return fetch(`${baseURL}/posts/api/post`, {
+      method: 'post',
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
+      body: JSON.stringify({
+        post_content: post_body,
+        location: location
+      }),
+      credentials: 'same-origin'
+    }).then(response => {
+      console.log('add post response: ', response);
+      if (response.ok) {
+        return response.json()
+      } else {
+        throw Error(response.statusText);
+      }
+    }).then(results => {
+      console.log('add post results: ', results);
+      dispatch(fetchPosts(location));
+    });
+  }
 }

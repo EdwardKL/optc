@@ -4,7 +4,7 @@ import thunk from 'redux-thunk';
 import rootReducer from '../reducers/reducers';
 import DevTools from '../../container/DevTools/DevTools';
 
-export function configureStore(initialState = { friendFinder: {}, accounts: {} }) {
+export function configureStore(initialState = { friendFinder: {}, accounts: {}, post: {} }) {
   let finalCreateStore;
 
   if (process.env.CLIENT) {
