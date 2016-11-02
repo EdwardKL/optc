@@ -8,7 +8,7 @@ export class Posts extends Component {
     super(props, context);
     this.state = {};
     this.state.active_comment = '';
-    this.state.location = props.location.split('/').join('!');
+    this.state.location = props.location.split('/').join('!'); // todo refactor this
     this.state.posts = props.posts ? props.posts : [];
     this.state.user = props.user;
 
@@ -24,22 +24,6 @@ export class Posts extends Component {
       });
     };
 
-    this.getPostsJsx = () => {
-      let postsJsx = [];
-      if (this.state.posts) {
-        console.log('posts not undefined: ', this.state.posts);
-        for (let i = 0; i < this.state.posts.length; i++) {
-          postsJsx.push(
-            <Panel header={this.state.posts[i]._user.username}>
-              Test Post
-            </Panel>
-          )
-        }
-        return postsJsx;
-      } else {
-        return [];
-      }
-    }
   }
 
   componentWillMount() {
