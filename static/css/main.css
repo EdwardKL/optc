@@ -33,6 +33,11 @@
   border-left: 0.5px solid lightgrey;
 }
 
+#posts {
+  position: relative;
+  width: inherit;
+}
+
 .removeLeftPadding {
   padding-left: 0px!important;
 }
@@ -311,6 +316,12 @@
 
 .abilityRow {
 	position: relative;
+}
+
+.post {
+  border: 1px solid #ccc;
+  padding: 20px;
+  width: initial
 }
 
 .credits {

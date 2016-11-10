@@ -83,7 +83,7 @@ const post = (state = {}, action) => {
     case ActionTypes.GET_POSTS:
       return {
         ...state,
-        posts: action.results
+        posts: action.results.posts
       };
     default:
       return state;

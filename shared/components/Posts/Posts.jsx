@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import * as Actions from '../../redux/actions/actions';
-import { Grid, FormGroup, ControlLabel, FormControl, Button, ListGroup, ListGroupItem } from 'react-bootstrap';
+import { Grid, FormGroup, ControlLabel, FormControl, Button, Row } from 'react-bootstrap';
 
 export class Posts extends Component {
   constructor(props, context) {
@@ -45,15 +45,26 @@ export class Posts extends Component {
 
   render() {
     return (
-      <FormGroup controlId="formControlsTextarea">
-        <FormControl componentClass="textarea"
-                     placeholder="Post a comment here!"
-                     value={this.state.active_comment}
-                     onChange={this.handleChange}/>
-        <Button type="submit" onClick={this.handlePostComment}>
-          Post Comment
-        </Button>
-      </FormGroup>
+      <Grid id="posts">
+        <h4>Comments</h4>
+        <Row>
+          {this.state.posts.map((post) => {
+            console.log('boom post: ', post);
+            return <div className="post" key={post.id}>
+              {post.post.content}
+            </div>;
+          })}
+        </Row>
+        <FormGroup controlId="formControlsTextarea">
+          <FormControl componentClass="textarea"
+                       placeholder="Post a comment here!"
+                       value={this.state.active_comment}
+                       onChange={this.handleChange}/>
+          <Button type="submit" onClick={this.handlePostComment}>
+            Post Comment
+          </Button>
+        </FormGroup>
+      </Grid>
     );
   }
 }
@@ -66,7 +77,16 @@ function mapStateToProps(store) {
 }
 
 Posts.propTypes = {
-  posts: PropTypes.arrayOf(PropTypes.object)
+  posts: PropTypes.arrayOf(PropTypes.shape({
+    _id: PropTypes.object,
+    _user: PropTypes.object,
+    location: PropTypes.string,
+    content: PropTypes.string,
+    _v: PropTypes.number,
+    score: PropTypes.number,
+    date_added: PropTypes.instanceOf(Date),
+    children: PropTypes.array
+  }))
 };
 
 
