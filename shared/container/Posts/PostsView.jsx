@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import * as Actions from '../../redux/actions/actions';
 import { Grid, FormGroup, FormControl, Button, Row } from 'react-bootstrap';
+import Post from '../../components/Post/Post';
 
 export class PostsView extends Component {
   constructor(props, context) {
@@ -50,9 +51,7 @@ export class PostsView extends Component {
         <Row>
           {this.state.posts.map((post) => {
             console.log('boom post: ', post);
-            return <div className="post" key={post.id}>
-              {post.post.content}
-            </div>;
+            return <Post post_data={post}/>;
           })}
         </Row>
         <FormGroup controlId="formControlsTextarea" className="postCommentBox">
