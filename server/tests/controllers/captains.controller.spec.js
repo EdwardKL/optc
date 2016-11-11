@@ -28,12 +28,54 @@ describe('captains.add logged out failure', () => {
 });
 
 describe('captains.add cotton candy validation tests', () => {
-  const req = new RequestMock();
-  req.login({});
-  const res = new ResponseMock();
+  const user_id = new mongoose.Types.ObjectId();
+  const account0_id = new mongoose.Types.ObjectId();
+  const account1_id = new mongoose.Types.ObjectId();
+  var req;  // eslint-disable-line no-var
+  var res;  // eslint-disable-line no-var
+
+  beforeEach('Store a user', function beforeEach(done) {
+    this.timeout(20 * 1e3);
+    const user = new UserModel({
+      _id: user_id,
+      _accounts: [account0_id, account1_id],
+    });
+    // Setup fake user.
+    req = new RequestMock();
+    req.login({ _id: user_id });
+    res = new ResponseMock();
+
+    connectToTestDB(() => {
+      // Store the fake user into the DB.
+      user.save((err) => {
+        if (err) throw err;
+        const account0 = new AccountModel({
+          _id: account0_id,
+          region: 'global',
+          pirate_level: 1,
+          friend_id: 1e8,
+        });
+        account0.save((err0) => {
+          if (err0) throw err0;
+          const account1 = new AccountModel({
+            _id: account1_id,
+            region: 'japan',
+            pirate_level: 2,
+            friend_id: 2e8,
+          });
+          account1.save(done);
+        });
+      });
+    });
+  });
+
+  afterEach(function afterEach(done) {
+    this.timeout(20 * 1e3);
+    dropTestDB(done);
+  });
 
   it('should reject > 100 hp CCs and redirect to /account', (done) => {
-    req.setBody({ current_hp_ccs: 101 });
+    req.setBody({ current_hp_ccs: 101, account_id: account0_id });
     CaptainsController.add(req, res, () => {
       expect(req.getFlash('error_message')).to.equal('You can only have at most 100 cotton candies per stat.');
       expect(res.getRedirectPath()).to.equal('/account');
@@ -42,7 +84,7 @@ describe('captains.add cotton candy validation tests', () => {
   });
 
   it('should reject > 100 atk CCs and redirect to /account', (done) => {
-    req.setBody({ current_atk_ccs: 101 });
+    req.setBody({ current_atk_ccs: 101, account_id: account0_id });
     CaptainsController.add(req, res, () => {
       expect(req.getFlash('error_message')).to.equal('You can only have at most 100 cotton candies per stat.');
       expect(res.getRedirectPath()).to.equal('/account');
@@ -51,7 +93,7 @@ describe('captains.add cotton candy validation tests', () => {
   });
 
   it('should reject > 100 rcv CCs and redirect to /account', (done) => {
-    req.setBody({ current_rcv_ccs: 101 });
+    req.setBody({ current_rcv_ccs: 101, account_id: account0_id });
     CaptainsController.add(req, res, () => {
       expect(req.getFlash('error_message')).to.equal('You can only have at most 100 cotton candies per stat.');
       expect(res.getRedirectPath()).to.equal('/account');
@@ -60,7 +102,7 @@ describe('captains.add cotton candy validation tests', () => {
   });
 
   it('should reject > 200 CCs (in one stat) and redirect to /account', (done) => {
-    req.setBody({ current_rcv_ccs: 201 });
+    req.setBody({ current_rcv_ccs: 201, account_id: account0_id });
     CaptainsController.add(req, res, () => {
       expect(req.getFlash('error_message')).to.equal('You can only have at most 200 cotton candies per unit.');
       expect(res.getRedirectPath()).to.equal('/account');
@@ -73,6 +115,7 @@ describe('captains.add cotton candy validation tests', () => {
       current_hp_ccs: 100,
       current_atk_ccs: 100,
       current_rcv_ccs: 1,
+      account_id: account0_id
     });
     CaptainsController.add(req, res, () => {
       expect(req.getFlash('error_message')).to.equal('You can only have at most 200 cotton candies per unit.');

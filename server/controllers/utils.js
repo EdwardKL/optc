@@ -16,12 +16,16 @@ exports.getNumber = function getNumber(num) {
   return num ? Number(num) : 0;
 };
 
+exports.areIdsEqual = function areIdsEqual(id1, id2) {
+  return id1.toString().valueOf() === id2.toString().valueOf();
+};
+
 // Array should be an array of object ids, and id should be either an object id
 // or its string representation.
 // Returns true if array has id.
 exports.hasId = function hasId(array, id) {
   for (const item of array) {
-    if (item.toString().valueOf() === id.toString().valueOf()) {
+    if (exports.areIdsEqual(item, id)) {
       return true;
     }
   }
