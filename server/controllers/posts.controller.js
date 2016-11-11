@@ -45,7 +45,10 @@ const getNode = function (post) {
 // { post, children: [nodes] }
 exports.getPosts = function (req, res, next) {
   console.log('finding posts for location: ', req.params.location);
-  Post.find({ location: req.params.location }).sort('-score -date_added').exec((err, raw_posts) => {
+  Post.find({ location: req.params.location })
+    .populate('_user')
+    .sort('-score -date_added')
+    .exec((err, raw_posts) => {
     if (err) {
       return res.status(500).send(err);
     }

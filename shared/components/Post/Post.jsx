@@ -1,21 +1,25 @@
 import React, { Component, PropTypes } from 'react';
+import { Panel } from 'react-bootstrap';
 
 class Post extends Component {
   constructor(props, context) {
     super(props, context);
     this.state = {};
-    this.state.post = props.post_data;
+    this.state.post = props.post_data.post;
+    this.state.children = props.post_data.children;
   }
 
   render() {
-    return <div className="post" key={this.state.post.id}>
-      {this.state.post.post.content}
-    </div>;
+    return <Panel header={this.state.post._user.username}>
+      {this.state.post.content}
+    </Panel>;
+
   }
 }
 
 Post.propTypes = {
-  post_data: PropTypes.object.isRequired
+  post: PropTypes.object.isRequired,
+  children: PropTypes.array
 };
 
 export default Post;

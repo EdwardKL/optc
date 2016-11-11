@@ -51,7 +51,7 @@ export class PostsView extends Component {
         <Row>
           {this.state.posts.map((post) => {
             console.log('boom post: ', post);
-            return <Post post_data={post}/>;
+            return <Post post_data={post} key={post._id}/>;
           })}
         </Row>
         <FormGroup controlId="formControlsTextarea" className="postCommentBox">
@@ -89,6 +89,5 @@ PostsView.propTypes = {
     children: PropTypes.array
   }))
 };
-
 
 export default connect(mapStateToProps)(PostsView);
