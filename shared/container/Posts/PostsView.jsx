@@ -1,9 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import * as Actions from '../../redux/actions/actions';
-import { Grid, FormGroup, ControlLabel, FormControl, Button, Row } from 'react-bootstrap';
+import { Grid, FormGroup, FormControl, Button, Row } from 'react-bootstrap';
 
-export class Posts extends Component {
+export class PostsView extends Component {
   constructor(props, context) {
     super(props, context);
     this.state = {};
@@ -55,12 +55,14 @@ export class Posts extends Component {
             </div>;
           })}
         </Row>
-        <FormGroup controlId="formControlsTextarea">
+        <FormGroup controlId="formControlsTextarea" className="postCommentBox">
           <FormControl componentClass="textarea"
                        placeholder="Post a comment here!"
                        value={this.state.active_comment}
                        onChange={this.handleChange}/>
-          <Button type="submit" onClick={this.handlePostComment}>
+          <Button type="submit"
+                  className="postButton"
+                  onClick={this.handlePostComment}>
             Post Comment
           </Button>
         </FormGroup>
@@ -76,7 +78,7 @@ function mapStateToProps(store) {
   };
 }
 
-Posts.propTypes = {
+PostsView.propTypes = {
   posts: PropTypes.arrayOf(PropTypes.shape({
     _id: PropTypes.object,
     _user: PropTypes.object,
@@ -90,4 +92,4 @@ Posts.propTypes = {
 };
 
 
-export default connect(mapStateToProps)(Posts);
+export default connect(mapStateToProps)(PostsView);

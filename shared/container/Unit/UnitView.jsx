@@ -5,7 +5,7 @@ import { Grid, Row, Col, Table, Button, Panel } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { formatNumber, getUnitPortraitUrl } from '../../utils';
 import RECOMMENDATION from '../../../constants/recommendation';
-import Posts from '../../components/Posts/Posts';
+import PostsView from '../Posts/PostsView';
 
 export class UnitView extends React.Component {
   constructor(props, context) {
@@ -185,7 +185,7 @@ export class UnitView extends React.Component {
             </span>
           </Row>
         <Row>
-          <Posts location={this.state.location.pathname}/>
+          <PostsView location={this.state.location.pathname}/>
         </Row>
       </Grid>
     );

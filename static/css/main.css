@@ -321,7 +321,16 @@
 .post {
   border: 1px solid #ccc;
   padding: 20px;
-  width: initial
+  width: initial;
+  margin-top: 10px;
+}
+
+.postCommentBox {
+  margin-top: 10px;
+}
+
+.postButton {
+  margin-top: 10px;
 }
 
 .credits {
