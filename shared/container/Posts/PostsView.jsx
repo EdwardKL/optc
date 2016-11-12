@@ -24,11 +24,10 @@ export class PostsView extends Component {
         active_comment: e.target.value,
       });
     };
-
   }
 
   componentWillMount() {
-    console.log("calling dispatch to fetch posts");
+    console.log('calling dispatch to fetch posts');
     this.dispatch(Actions.fetchPosts(this.state.location));
   }
 
@@ -36,7 +35,7 @@ export class PostsView extends Component {
     console.log('posts component receiving nextprop.posts:', nextProps.posts);
     this.setState({
       posts: nextProps.posts,
-      update: true
+      update: true,
     });
   }
 
@@ -51,17 +50,19 @@ export class PostsView extends Component {
         <Row>
           {this.state.posts.map((post) => {
             console.log('boom post: ', post);
-            return <Post post_data={post} key={post._id}/>;
+            return <Post post_data={post} key={post.post._id} />;
           })}
         </Row>
         <FormGroup controlId="formControlsTextarea" className="postCommentBox">
           <FormControl componentClass="textarea"
-                       placeholder="Post a comment here!"
-                       value={this.state.active_comment}
-                       onChange={this.handleChange}/>
+            placeholder="Post a comment here!"
+            value={this.state.active_comment}
+            onChange={this.handleChange}
+          />
           <Button type="submit"
-                  className="postButton"
-                  onClick={this.handlePostComment}>
+            className="postButton"
+            onClick={this.handlePostComment}
+          >
             Post Comment
           </Button>
         </FormGroup>
@@ -73,7 +74,7 @@ export class PostsView extends Component {
 function mapStateToProps(store) {
   return {
     posts: store.post.posts,
-    user: store.account.user
+    user: store.account.user,
   };
 }
 
@@ -86,8 +87,8 @@ PostsView.propTypes = {
     _v: PropTypes.number,
     score: PropTypes.number,
     date_added: PropTypes.instanceOf(Date),
-    children: PropTypes.array
-  }))
+    children: PropTypes.array,
+  })),
 };
 
 export default connect(mapStateToProps)(PostsView);

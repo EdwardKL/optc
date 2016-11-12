@@ -10,16 +10,15 @@ class Post extends Component {
   }
 
   render() {
-    return <Panel header={this.state.post._user.username}>
+    return (<Panel header={this.state.post._user.username}>
       {this.state.post.content}
-    </Panel>;
-
+    </Panel>);
   }
 }
 
 Post.propTypes = {
-  post: PropTypes.object.isRequired,
-  children: PropTypes.array
+  post_data: PropTypes.object.isRequired,
+  children: PropTypes.array,
 };
 
 export default Post;
