@@ -8,6 +8,7 @@ import { Alert, Grid, Row, Col, Button, Input, Nav, Navbar, NavItem, NavDropdown
 
 expect.extend(expectJSX);
 
+const adStyle = { display: 'inline-block', width: '730px', height: '92px', lineHeight: '92px' };
 describe('header component signed out test', () => {
   var getExpectedJSX = function (alerts) {
     // Just FYI, if you put <Grid> on the next line, this will crash. = =
@@ -18,13 +19,13 @@ describe('header component signed out test', () => {
                   <Navbar.Brand>
                     <a href="/"><div className="nav navbar-nav" id="navbar-image"></div><span id="brand">Ohara</span></a>
                   </Navbar.Brand>
-                  <Navbar.Toggle/>
+                  <Navbar.Toggle />
                 </Navbar.Header>
                 <Navbar.Collapse>
                   <Nav>
-                    <NavItem href="/friend_finder" key='0'>Friend Finder</NavItem>
-                    <NavItem href="/units" key='5'>Units</NavItem>
-                    <NavItem href='/signup' key='1'>Sign Up</NavItem>
+                    <NavItem href="/friend_finder" key="0">Friend Finder</NavItem>
+                    <NavItem href="/units" key="5">Units</NavItem>
+                    <NavItem href="/signup" key="1">Sign Up</NavItem>
                   </Nav>
                   <Navbar.Form pullRight id="login-bar">
                     <form action="/login" method="POST">
@@ -32,12 +33,14 @@ describe('header component signed out test', () => {
                         placeholder="User Name"
                         bsSize="small"
                         name="username"
-                        type="text"/>
+                        type="text"
+                      />
                       <Input
                         placeholder="Password"
                         bsSize="small"
                         name="password"
-                        type="password" />
+                        type="password"
+                      />
                       <Button bsStyle="primary" bsSize="small" type="submit">Login</Button>
                     </form>
                   </Navbar.Form>
@@ -45,6 +48,14 @@ describe('header component signed out test', () => {
               </Navbar>
             </Row>
             {alerts}
+            <Row><div id="grejvg34598fj34789fju">Please consider supporting Ohara by disabling adblock.</div></Row>
+            <Row id="gjeofh28348f32">
+              <ins className="adsbygoogle"
+                style={adStyle}
+                data-ad-client="ca-pub-3382549750623853"
+                data-ad-slot="6299615170"
+              ></ins>
+            </Row>
           </Grid>);
   };
 
@@ -113,17 +124,17 @@ describe('header component signed in test', () => {
               <Navbar.Brand>
                 <a href="/"><div className="nav navbar-nav" id="navbar-image"></div><span id="brand">Ohara</span></a>
               </Navbar.Brand>
-              <Navbar.Toggle/>
+              <Navbar.Toggle />
             </Navbar.Header>
             <Navbar.Collapse>
               <Nav>
-                <NavItem href="/friend_finder" key='0'>Friend Finder</NavItem>
-                <NavItem href="/units" key='5'>Units</NavItem>
-                <NavItem href='/account' key='2'>Accounts</NavItem>
-                <NavItem href='/logout' key='3'>Logout</NavItem>
+                <NavItem href="/friend_finder" key="0">Friend Finder</NavItem>
+                <NavItem href="/units" key="5">Units</NavItem>
+                <NavItem href="/account" key="2">Accounts</NavItem>
+                <NavItem href="/logout" key="3">Logout</NavItem>
               </Nav>
               <Nav pullRight>
-                <NavItem href='/account' key='4'>{user.display_name}</NavItem>
+                <NavItem href="/account" key="4">{user.display_name}</NavItem>
               </Nav>
             </Navbar.Collapse>
           </Navbar>
@@ -131,6 +142,14 @@ describe('header component signed in test', () => {
         <Row>
           <div />
           <div />
+        </Row>
+        <Row><div id="grejvg34598fj34789fju">Please consider supporting Ohara by disabling adblock.</div></Row>
+        <Row id="gjeofh28348f32">
+          <ins className="adsbygoogle"
+            style={adStyle}
+            data-ad-client="ca-pub-3382549750623853"
+            data-ad-slot="6299615170"
+          ></ins>
         </Row>
       </Grid>
     );

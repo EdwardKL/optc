@@ -32,7 +32,7 @@ export class UnitView extends React.Component {
         result.push(<tr>
               <td className="abilityCell">Special {region_disclaimer}</td>
               <td>
-                <span className="specialName">{subspecial.name}</span><br/>
+                <span className="specialName">{subspecial.name}</span><br />
                 {subspecial.stages.map((stage, index) => {
                   return (<div className="stage">
                         <span className="stageLabel">
@@ -40,7 +40,7 @@ export class UnitView extends React.Component {
                         </span>
                         <span className="stageDescription">
                           {stage.description}
-                        </span><br/>
+                        </span><br />
                         <span className="stageCooldown">
                           {stage.base_cd === stage.max_cd ? `Cooldown: ${stage.base_cd} turns` : `Cooldown: ${stage.base_cd} → ${stage.max_cd} turns`}
                         </span>
@@ -67,13 +67,12 @@ export class UnitView extends React.Component {
   }
 
   render() {
-    console.log('rendering!', this.state.location.pathname);
     if (!this.state.has_unit) {
       return (
         <Grid id="content">
             <Row>
               <h2>Unit not found.</h2>
-              <hr/>
+              <hr />
             </Row>
         </Grid>
       );
@@ -126,7 +125,7 @@ export class UnitView extends React.Component {
               {`${this.state.global_recommendations.recommended} ${this.state.global_recommendations.recommended === 1 ? 'user' : 'users'} out of ${this.state.total_recommendations} think this unit is useful.`}
               {recommend_buttons}
             </div>
-            <hr/>
+            <hr />
           </Row>
           <Row>
             <Col xs={7} sm={6} md={5} lg={4}>
@@ -185,7 +184,7 @@ export class UnitView extends React.Component {
             </span>
           </Row>
         <Row>
-          <PostsView location={this.state.location.pathname}/>
+          <PostsView location={this.state.location.pathname} />
         </Row>
       </Grid>
     );

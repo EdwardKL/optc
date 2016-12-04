@@ -64,7 +64,7 @@ describe('PostsController.getPosts when logged out', () => {
   });
 
   it('should show relevant posts', (done) => {
-    req.setBody({ location: '/page/loc' });
+    req.setParams({ location: '/page/loc' });
     PostsController.getPosts(req, res, () => {
       expect(res.getJson().posts).to.have.lengthOf(1);
       const expected_post = res.getJson().posts[0];
@@ -139,7 +139,7 @@ describe('PostsController.getPosts when logged out', () => {
   // 4. post_low_score_newer
   // 5. post_low_score_older
   it('should sort posts properly', (done) => {
-    req.setBody({ location: '/page/loc' });
+    req.setParams({ location: '/page/loc' });
     PostsController.getPosts(req, res, () => {
       expect(res.getJson().posts).to.have.lengthOf(5);
       expect(res.getJson().posts[0].post.content).to.equal('post high score newer');
@@ -225,7 +225,7 @@ describe('PostsController.getPosts when logged out', () => {
   });
 
   it('should calculate hierarchies properly', (done) => {
-    req.setBody({ location: '/page/loc' });
+    req.setParams({ location: '/page/loc' });
     PostsController.getPosts(req, res, () => {
       expect(res.getJson().posts).to.have.lengthOf(3);
 

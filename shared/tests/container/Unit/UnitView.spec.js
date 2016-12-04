@@ -5,9 +5,11 @@ import React from 'react';
 import expectJSX from 'expect-jsx';
 import { Grid, Row, Col, Table, Button } from 'react-bootstrap';
 import RECOMMENDATION from '../../../../constants/recommendation';
+import PostsView from '../../../container/Posts/PostsView';
 
 expect.extend(expectJSX);
 
+const test_location = { pathname: 'this_is_a_test' };
 const global_recommendations = { recommended: 4, not_recommended: 8 };
 const getExpectedJSX = function (recommendation) {
   return (<Grid id="content">
@@ -29,10 +31,10 @@ const getExpectedJSX = function (recommendation) {
             <span className="unitId">#5</span>
           </h2>
           <div id="recommendation">
-            {`4 users out of 12 think this unit is useful.`}
+            {"4 users out of 12 think this unit is useful."}
             {recommendation}
           </div>
-          <hr/>
+          <hr />
         </Row>
         <Row>
           <Col xs={7} sm={6} md={5} lg={4}>
@@ -91,15 +93,15 @@ const getExpectedJSX = function (recommendation) {
                 <tr>
                   <td className="abilityCell">Special (global only)</td>
                   <td>
-                    <span className="specialName">subspecial1</span><br/>
+                    <span className="specialName">subspecial1</span><br />
                     <div className="stage">
                       <span className="stageLabel">Stage 1: </span>
-                      <span className="stageDescription">subspecial1, stage1 descript</span><br/>
+                      <span className="stageDescription">subspecial1, stage1 descript</span><br />
                       <span className="stageCooldown">Cooldown: 10 → 15 turns</span>
                     </div>
                     <div className="stage">
                       <span className="stageLabel">Stage 2: </span>
-                      <span className="stageDescription">subspecial1, stage2 descript</span><br/>
+                      <span className="stageDescription">subspecial1, stage2 descript</span><br />
                       <span className="stageCooldown">Cooldown: 20 → 25 turns</span>
                     </div>
                     <span className="specialNotes">Notes: test note</span>
@@ -108,10 +110,10 @@ const getExpectedJSX = function (recommendation) {
                 <tr>
                   <td className="abilityCell">Special (japan only)</td>
                   <td>
-                    <span className="specialName">subspecial2</span><br/>
+                    <span className="specialName">subspecial2</span><br />
                     <div className="stage">
                       <span className="stageLabel"></span>
-                      <span className="stageDescription">subspecial2 descript</span><br/>
+                      <span className="stageDescription">subspecial2 descript</span><br />
                       <span className="stageCooldown">Cooldown: 10 turns</span>
                     </div>
                     <span className="specialNotes">Notes: test note</span>
@@ -124,6 +126,9 @@ const getExpectedJSX = function (recommendation) {
             Image source: <a href="http://onepiece-treasurecruise.com/">onepiece-treasurecruise.com</a>.
             Data source: <a href="http://optc-db.github.io/characters/#/view/5">optc-db</a>.
           </span>
+        </Row>
+        <Row>
+          <PostsView location="this_is_a_test" />
         </Row>
     </Grid>);
 };
@@ -182,27 +187,27 @@ describe('UnitView ', () => {
 
   it('should render the unit when found with no recommend buttons', () => {
     const renderer = TestUtils.createRenderer();
-    renderer.render(<UnitView unit={unit} global_recommendations={global_recommendations} recommendation={RECOMMENDATION.UNABLE} />);
+    renderer.render(<UnitView unit={unit} global_recommendations={global_recommendations} recommendation={RECOMMENDATION.UNABLE} location={test_location} />);
     const output = renderer.getRenderOutput();
     expect(output).toEqualJSX(getExpectedJSX());
   });
 
   it('should render the unit when found with default recommend buttons', () => {
     const renderer = TestUtils.createRenderer();
-    renderer.render(<UnitView unit={unit} global_recommendations={global_recommendations} recommendation={RECOMMENDATION.NONE} />);
+    renderer.render(<UnitView unit={unit} global_recommendations={global_recommendations} recommendation={RECOMMENDATION.NONE} location={test_location} />);
     const output = renderer.getRenderOutput();
-    expect(output).toEqualJSX(getExpectedJSX(<div id ="recommend">
+    expect(output).toEqualJSX(getExpectedJSX(<div id="recommend">
       <Button
         bsStyle="default"
         bsSize="xsmall"
-        href={`/units/api/recommend/5/1`}
+        href={'/units/api/recommend/5/1'}
       >
         Useful!
       </Button> &nbsp;
       <Button
         bsStyle="default"
         bsSize="xsmall"
-        href={`/units/api/recommend/5/0`}
+        href={'/units/api/recommend/5/0'}
       >
         Not useful!
       </Button>
@@ -211,20 +216,20 @@ describe('UnitView ', () => {
 
   it('should render the unit when found with positive recommend buttons', () => {
     const renderer = TestUtils.createRenderer();
-    renderer.render(<UnitView unit={unit} global_recommendations={global_recommendations} recommendation={RECOMMENDATION.POSITIVE} />);
+    renderer.render(<UnitView unit={unit} global_recommendations={global_recommendations} recommendation={RECOMMENDATION.POSITIVE} location={test_location} />);
     const output = renderer.getRenderOutput();
-    expect(output).toEqualJSX(getExpectedJSX(<div id ="recommend">
+    expect(output).toEqualJSX(getExpectedJSX(<div id="recommend">
       <Button
         bsStyle="info"
         bsSize="xsmall"
-        href={`/units/api/recommend/5/1`}
+        href={'/units/api/recommend/5/1'}
       >
         Useful!
       </Button> &nbsp;
       <Button
         bsStyle="default"
         bsSize="xsmall"
-        href={`/units/api/recommend/5/0`}
+        href={'/units/api/recommend/5/0'}
       >
         Not useful!
       </Button>
@@ -233,20 +238,20 @@ describe('UnitView ', () => {
 
   it('should render the unit when found with negative recommend buttons', () => {
     const renderer = TestUtils.createRenderer();
-    renderer.render(<UnitView unit={unit} global_recommendations={global_recommendations} recommendation={RECOMMENDATION.NEGATIVE} />);
+    renderer.render(<UnitView unit={unit} global_recommendations={global_recommendations} recommendation={RECOMMENDATION.NEGATIVE} location={test_location} />);
     const output = renderer.getRenderOutput();
-    expect(output).toEqualJSX(getExpectedJSX(<div id ="recommend">
+    expect(output).toEqualJSX(getExpectedJSX(<div id="recommend">
       <Button
         bsStyle="default"
         bsSize="xsmall"
-        href={`/units/api/recommend/5/1`}
+        href={'/units/api/recommend/5/1'}
       >
         Useful!
       </Button> &nbsp;
       <Button
         bsStyle="danger"
         bsSize="xsmall"
-        href={`/units/api/recommend/5/0`}
+        href={'/units/api/recommend/5/0'}
       >
         Not useful!
       </Button>
@@ -256,8 +261,8 @@ describe('UnitView ', () => {
   it('should render an error message when unit is not found', () => {
     const renderer = TestUtils.createRenderer();
     // No unit.
-    renderer.render(<UnitView unit={{}} global_recommendations={{}} />);
+    renderer.render(<UnitView unit={{}} global_recommendations={{}} location={test_location} />);
     const output = renderer.getRenderOutput();
-    expect(output).toEqualJSX(<Grid id="content"><Row><h2>Unit not found.</h2><hr/></Row></Grid>);
+    expect(output).toEqualJSX(<Grid id="content"><Row><h2>Unit not found.</h2><hr /></Row></Grid>);
   });
 });

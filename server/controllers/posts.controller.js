@@ -44,33 +44,32 @@ const getNode = function (post) {
 // These are formatted as nodes, objects as follows:
 // { post, children: [nodes] }
 exports.getPosts = function (req, res, next) {
-  console.log('finding posts for location: ', req.params.location);
   Post.find({ location: req.params.location })
     .populate('_user')
     .sort('-score -date_added')
     .exec((err, raw_posts) => {
-    if (err) {
-      return res.status(500).send(err);
-    }
-    const posts = [];
-    const node_map = new Map();
-    raw_posts.map((post) => {
-      node_map.set(post._id.toString().valueOf(), getNode(post));
-    });
-    raw_posts.map((post) => {
-      const node = node_map.get(post._id.toString().valueOf());
-      if (post._parent && node_map.has(post._parent.toString().valueOf())) {
-        const parent = node_map.get(post._parent.toString().valueOf());
-        parent.children.push(node);
-      } else {
-        posts.push(node);
+      if (err) {
+        return res.status(500).send(err);
       }
+      const posts = [];
+      const node_map = new Map();
+      raw_posts.map((post) => {
+        node_map.set(post._id.toString().valueOf(), getNode(post));
+      });
+      raw_posts.map((post) => {
+        const node = node_map.get(post._id.toString().valueOf());
+        if (post._parent && node_map.has(post._parent.toString().valueOf())) {
+          const parent = node_map.get(post._parent.toString().valueOf());
+          parent.children.push(node);
+        } else {
+          posts.push(node);
+        }
+      });
+      console.log('returning posts: ', posts);
+      res.json({ posts });
+      next();
+      return;
     });
-    console.log('returning posts: ', posts);
-    res.json({ posts });
-    next();
-    return;
-  });
 };
 
 // Expects the post_id in the body of the request.
