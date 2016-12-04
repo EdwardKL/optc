@@ -122,7 +122,6 @@ const renderFullPage = (body_html, initialState) => {
 
           ga('create', 'UA-82810287-1', 'auto');
           ga('send', 'pageview');
-
         </script>
       </head>
       <body id="body">
@@ -132,6 +131,12 @@ const renderFullPage = (body_html, initialState) => {
         </script>
         <script src="/dist/bundle.js"></script>
       </body>
+      <script src="/js/ads.js" type="text/javascript"></script>
+      <script>
+        if (!document.getElementById('dfiehjff89e4rf348fj34f')) {
+          document.getElementById('grejvg34598fj34789fju').style.display='block';
+        }
+      </script>
     </html>
   `;
 };

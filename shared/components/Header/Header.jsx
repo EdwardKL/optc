@@ -9,11 +9,12 @@ export class Header extends React.Component {
     this.state.user = props.user;
     this.state.info_message = props.info_message ? props.info_message : '';
     this.state.error_message = props.error_message ? props.error_message : '';
+    this.adStyle = { display: 'inline-block', width: '730px', height: '92px', lineHeight: '92px' };
   }
 
   render() {
     var links = [];
-    links.push(<NavItem href='/signup' key='1'>Sign Up</NavItem>);
+    links.push(<NavItem href="/signup" key="1">Sign Up</NavItem>);
     var right_element =
       (<Navbar.Form pullRight id="login-bar">
         <form action="/login" method="POST">
@@ -21,20 +22,22 @@ export class Header extends React.Component {
             placeholder="User Name"
             bsSize="small"
             name="username"
-            type="text"/>
+            type="text"
+          />
           <Input
             placeholder="Password"
             bsSize="small"
             name="password"
-            type="password" />
+            type="password"
+          />
           <Button bsStyle="primary" bsSize="small" type="submit">Login</Button>
         </form>
       </Navbar.Form>);
     if (typeof this.state.user !== 'undefined') {
       links = [];
-      links.push(<NavItem href='/account' key='2'>Accounts</NavItem>);
-      links.push(<NavItem href='/logout' key='3'>Logout</NavItem>);
-      right_element = <Nav pullRight><NavItem href='/account' key='4'>{this.state.user.display_name}</NavItem></Nav>;
+      links.push(<NavItem href="/account" key="2">Accounts</NavItem>);
+      links.push(<NavItem href="/logout" key="3">Logout</NavItem>);
+      right_element = <Nav pullRight><NavItem href="/account" key="4">{this.state.user.display_name}</NavItem></Nav>;
     }
     return (
       <Grid>
@@ -48,8 +51,8 @@ export class Header extends React.Component {
             </Navbar.Header>
             <Navbar.Collapse>
               <Nav>
-                <NavItem href="/friend_finder" key='0'>Friend Finder</NavItem>
-                <NavItem href="/units" key='5'>Units</NavItem>
+                <NavItem href="/friend_finder" key="0">Friend Finder</NavItem>
+                <NavItem href="/units" key="5">Units</NavItem>
                 {links}
               </Nav>
               {right_element}
@@ -59,6 +62,14 @@ export class Header extends React.Component {
         <Row>
           {this.state.info_message.length > 0 ? <Alert bsStyle="info" id="info-alert">{this.state.info_message}</Alert> : <div />}
           {this.state.error_message.length > 0 ? <Alert bsStyle="danger" id="error-alert">{this.state.error_message}</Alert> : <div />}
+        </Row>
+        <Row><div id="grejvg34598fj34789fju">Please consider supporting Ohara by disabling adblock.</div></Row>
+        <Row id="gjeofh28348f32">
+          <ins className="adsbygoogle"
+            style={this.adStyle}
+            data-ad-client="ca-pub-3382549750623853"
+            data-ad-slot="6299615170"
+          ></ins>
         </Row>
       </Grid>
     );

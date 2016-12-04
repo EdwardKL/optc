@@ -19,7 +19,7 @@ export class Footer extends React.Component {
           style={this.adStyle}
           data-ad-client="ca-pub-3382549750623853"
           data-ad-slot="9148140371"
-        >Please help support Ohara by disabling adblock.</ins>
+        ></ins>
       </Grid>
     );
   }
