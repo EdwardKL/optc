@@ -86,7 +86,9 @@
     "sinon": "^1.17.3",
     "slug": "^0.9.1",
     "source-map": "^0.5.2",
-    "vinyl-source-stream": "^1.1.0"
+    "vinyl-source-stream": "^1.1.0",
+    "webpack": "^1.12.12",
+    "webpack-hot-middleware": "^2.6.4"
   },
   "devDependencies": {
     "babel-eslint": "^6.1.2",
@@ -115,9 +117,7 @@
     "redux-devtools-log-monitor": "^1.0.4",
     "style-loader": "^0.13.0",
     "supertest": "^1.1.0",
-    "webpack": "^1.12.12",
-    "webpack-dev-middleware": "^1.5.1",
-    "webpack-hot-middleware": "^2.6.4"
+    "webpack-dev-middleware": "^1.5.1"
   },
   "engines": {
     "node": ">=4"
