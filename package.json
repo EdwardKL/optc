@@ -117,7 +117,7 @@
     "react-addons-test-utils": "^15.2.1",
     "react-transform-hmr": "^1.0.1",
     "style-loader": "^0.13.0",
-    "supertest": "^1.1.0",
+    "supertest": "^1.1.0"
   },
   "engines": {
     "node": ">=4"
