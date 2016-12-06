@@ -95,6 +95,7 @@
     "source-map": "^0.5.2",
     "vinyl-source-stream": "^1.1.0",
     "webpack": "^1.12.12",
+    "webpack-dev-middleware": "^1.5.1",
     "webpack-hot-middleware": "^2.6.4"
   },
   "devDependencies": {
@@ -117,7 +118,6 @@
     "react-transform-hmr": "^1.0.1",
     "style-loader": "^0.13.0",
     "supertest": "^1.1.0",
-    "webpack-dev-middleware": "^1.5.1"
   },
   "engines": {
     "node": ">=4"
