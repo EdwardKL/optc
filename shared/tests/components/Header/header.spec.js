@@ -26,6 +26,7 @@ describe('header component signed out test', () => {
                     <NavItem href="/friend_finder" key="0">Friend Finder</NavItem>
                     <NavItem href="/units" key="5">Units</NavItem>
                     <NavItem href="/signup" key="1">Sign Up</NavItem>
+                    <NavItem href="https://github.com/EdwardKL/optc/issues" key="6">Report Bugs</NavItem>
                   </Nav>
                   <Navbar.Form pullRight id="login-bar">
                     <form action="/login" method="POST">
@@ -131,6 +132,7 @@ describe('header component signed in test', () => {
                 <NavItem href="/friend_finder" key="0">Friend Finder</NavItem>
                 <NavItem href="/units" key="5">Units</NavItem>
                 <NavItem href="/account" key="2">Accounts</NavItem>
+                <NavItem href="https://github.com/EdwardKL/optc/issues" key="6">Report Bugs</NavItem>
                 <NavItem href="/logout" key="3">Logout</NavItem>
               </Nav>
               <Nav pullRight>

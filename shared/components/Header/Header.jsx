@@ -19,6 +19,7 @@ export class Header extends React.Component {
   render() {
     var links = [];
     links.push(<NavItem href="/signup" key="1">Sign Up</NavItem>);
+    links.push(<NavItem href="https://github.com/EdwardKL/optc/issues" key="6">Report Bugs</NavItem>);
     var right_element =
       (<Navbar.Form pullRight id="login-bar">
         <form action="/login" method="POST">
@@ -40,6 +41,7 @@ export class Header extends React.Component {
     if (typeof this.state.user !== 'undefined') {
       links = [];
       links.push(<NavItem href="/account" key="2">Accounts</NavItem>);
+      links.push(<NavItem href="https://github.com/EdwardKL/optc/issues" key="6">Report Bugs</NavItem>);
       links.push(<NavItem href="/logout" key="3">Logout</NavItem>);
       right_element = <Nav pullRight><NavItem href="/account" key="4">{this.state.user.display_name}</NavItem></Nav>;
     }
