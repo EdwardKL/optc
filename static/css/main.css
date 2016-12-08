@@ -405,6 +405,10 @@
 }
 
 .homeAd {
+	display: inline-block;
+	width: 336px;
+	height: 280px;
+	line-height: 280px;
 	z-index: 1;
 	position: absolute;
 	right: 0;
@@ -426,7 +430,7 @@
 	background-image: url('/img/home.png');
 	width: 510px;
 	margin-bottom: 30px;
-	z-index: 1;
+	z-index: 2;
 	position: relative;
 }
 

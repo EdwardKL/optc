@@ -46,7 +46,7 @@ class Home extends React.Component {
                 <ins
                   className="adsbygoogle homeAd"
                   data-ad-client="ca-pub-3382549750623853"
-                  data-ad-slot="9253081570"
+                  data-ad-slot="1624873575"
                 >
                 </ins>
               </div>
