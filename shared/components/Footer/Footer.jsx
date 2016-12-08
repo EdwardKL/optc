@@ -15,7 +15,8 @@ export class Footer extends React.Component {
   render() {
     return (
       <Grid className="footer">
-        <ins className="adsbygoogle"
+        <ins
+          className="adsbygoogle"
           style={this.adStyle}
           data-ad-client="ca-pub-3382549750623853"
           data-ad-slot="9148140371"

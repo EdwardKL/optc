@@ -12,6 +12,10 @@ export class Header extends React.Component {
     this.adStyle = { display: 'inline-block', width: '730px', height: '92px', lineHeight: '92px' };
   }
 
+  componentDidMount() {
+    (window.adsbygoogle = window.adsbygoogle || []).push({});
+  }
+
   render() {
     var links = [];
     links.push(<NavItem href="/signup" key="1">Sign Up</NavItem>);
@@ -65,7 +69,8 @@ export class Header extends React.Component {
         </Row>
         <Row><div id="grejvg34598fj34789fju">Please consider supporting Ohara by disabling adblock.</div></Row>
         <Row id="gjeofh28348f32">
-          <ins className="adsbygoogle"
+          <ins
+            className="adsbygoogle"
             style={this.adStyle}
             data-ad-client="ca-pub-3382549750623853"
             data-ad-slot="6299615170"
