@@ -3,6 +3,8 @@ import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import path from 'path';
 
+import { SE_PARAM } from '../constants/common';
+
 // Webpack Requirements
 import webpack from 'webpack';
 import config from '../webpack.config.dev';
@@ -189,7 +191,7 @@ app.use((req, res) => {
     const info_message = req.flash('info_message')[0];
     let error_message = req.flash('error_message')[0];
     // Find the optional error param if present.
-    if (!error_message && req.url.indexOf('?se') !== -1) {
+    if (!error_message && req.url.indexOf(SE_PARAM) !== -1) {
       error_message = 'You must sign in to do that.';
     }
     if (info_message) {
