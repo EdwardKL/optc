@@ -187,7 +187,11 @@ app.use((req, res) => {
     }
     initialState.identity.user = user;
     const info_message = req.flash('info_message')[0];
-    const error_message = req.flash('error_message')[0];
+    let error_message = req.flash('error_message')[0];
+    // Find the optional error param if present.
+    if (!error_message && req.url.indexOf('?se') !== -1) {
+      error_message = 'You must sign in to do that.';
+    }
     if (info_message) {
       initialState.identity.info_message = info_message;
     }
