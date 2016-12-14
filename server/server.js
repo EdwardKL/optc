@@ -55,28 +55,28 @@ app.use(bodyParser.json({ limit: '20mb' }));
 app.use(bodyParser.urlencoded({ limit: '20mb', extended: false }));
 app.use(Express.static(path.resolve(__dirname, '../static')));
 
-var flash = require('connect-flash');
+const flash = require('connect-flash');
 app.use(flash());
 
 // passport stuff
-var cookieParser = require('cookie-parser');
-var session = require('express-session');
-var passport = require('passport');
+const cookieParser = require('cookie-parser');
+const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
+const passport = require('passport');
 
-passport.serializeUser(function (user, done) {
+passport.serializeUser((user, done) => {
   done(null, user._id);
 });
 
-passport.deserializeUser(function (id, done) {
+passport.deserializeUser((id, done) => {
   /* istanbul ignore next */
   User.findById(id).exec(done);
 });
 
 app.use(cookieParser());
 app.use(session({
-  secret: 'secret',
-  resave: true,
-  saveUninitialized: true,
+  store: new MongoStore({ mongooseConnection: mongoose.connection }),
+  secret: process.env.COOKIE_SECRET,
 }));
 app.use(passport.initialize());
 app.use(passport.session());
@@ -181,8 +181,8 @@ app.use((req, res) => {
       }
     }
 
-    var user = req.user;
-    var initialState = { identity: { unit_selections, socket_selections } };
+    const user = req.user;
+    const initialState = { identity: { unit_selections, socket_selections } };
     if (typeof user !== 'undefined') {
         // Clear out sensitive data first.
       user.clearSensitiveData();
