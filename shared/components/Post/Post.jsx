@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 import * as Actions from '../../redux/actions/actions';
 import { browserHistory } from 'react-router';
-import POST_VOTE from '../../../constants/POST_VOTE';
+import POST_VOTE from '../../../constants/post_vote';
 
 class Post extends Component {
   constructor(props, context) {
