@@ -18,7 +18,7 @@ module.exports = function user_routes(app) {
   /* istanbul ignore next can't seem to fake a login properly to have this not crash in test */
   app.route('/logout').get((req, res) => {
     const display_name = req.user.display_name ? `, ${req.user.display_name}` : '';
-    req.flash('info_message', `Bye${display_name}!`);
+    req.flash('info_message', `Bye ${display_name}!`);
     req.logout();
     res.redirect('/');
   });

@@ -20,6 +20,15 @@ exports.areIdsEqual = function areIdsEqual(id1, id2) {
   return id1.toString().valueOf() === id2.toString().valueOf();
 };
 
+exports.convertLocationString = function convertLocationString(location_string) {
+  if (location_string.indexOf('/') > 0) {
+    // the location string needs to be converted to be storable in the DB, replace with '!'
+    return location_string.split('/').join('!');
+  } else {
+    return location_string.split('!').join('/');
+  }
+};
+
 // Array should be an array of object ids, and id should be either an object id
 // or its string representation.
 // Returns true if array has id.

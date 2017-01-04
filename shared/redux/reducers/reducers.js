@@ -85,6 +85,17 @@ const post = (state = {}, action) => {
         ...state,
         posts: action.results.posts
       };
+    case ActionTypes.GET_POST:
+      return {
+        ...state,
+        post_data: action.results.redirectLocation ? {} : action.results,
+        redirect_location: action.results.redirectLocation ? action.results.redirectLocation : null
+      };
+    case ActionTypes.GET_POST_VOTE:
+      return {
+        ...state,
+        post_vote: action.results
+      };
     default:
       return state;
   }

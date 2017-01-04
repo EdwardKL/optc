@@ -109,6 +109,20 @@ export function addPosts(results) {
   };
 }
 
+export function addPost(results) {
+  return {
+    type: ActionTypes.GET_POST,
+    results
+  };
+}
+
+export function addPostVote(results) {
+  return {
+    type: ActionTypes.GET_POST_VOTE,
+    results
+  };
+}
+
 export function fetchUnit(id) {
   return (dispatch) => {
     return fetch(`${baseURL}/units/api/fetch/${id}`, {
@@ -182,29 +196,35 @@ export function fetchPosts(location) {
   };
 }
 
-export function addPost(location, post_body) {
-  console.log("adding post: ", post_body, " to location: ", location);
+export function togglePostVote(post_id, upvote) {
   return (dispatch) => {
-    return fetch(`${baseURL}/posts/api/post`, {
+    return fetch(`${baseURL}/posts/api/vote`, {
       method: 'post',
       headers: new Headers({
         'Content-Type': 'application/json',
       }),
       body: JSON.stringify({
-        post_content: post_body,
-        location: location
+        post_id: post_id,
+        upvote: upvote
       }),
       credentials: 'same-origin'
-    }).then(response => {
-      console.log('add post response: ', response);
-      if (response.ok) {
-        return response.json()
-      } else {
-        throw Error(response.statusText);
-      }
-    }).then(results => {
-      console.log('add post results: ', results);
-      dispatch(fetchPosts(location));
-    });
-  }
+    }).then((response) => response.json())
+      .then(results => {
+        dispatch(addPost(results));
+        dispatch(fetchPostVote(results._id, results._user._id));
+      });
+  };
+
+}
+
+export function fetchPostVote(post_id, user_id) {
+  return (dispatch) => {
+    return fetch(`${baseURL}/posts/api/post_vote/${post_id}/${user_id}`, {
+      method: 'get',
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      })
+    }).then((response) => response.json())
+      .then(results => dispatch(addPostVote(results)));
+  };
 }

@@ -9,6 +9,7 @@ import UserModel from '../../models/user';
 import RequestMock from '../mocks/request.mock';
 import ResponseMock from '../mocks/response.mock';
 import { connectToTestDB, dropTestDB } from '../test_utils';
+import POST_VOTE from '../../../constants/post_vote';
 
 const expect = chai.expect;
 
@@ -548,6 +549,88 @@ describe('PostsController.toggleVote', () => {
   });
 
   afterEach(function afterEach(done) {  // eslint-disable-line prefer-arrow-callback
+    dropTestDB(done);
+  });
+});
+
+
+describe('PostsController.fetchPostVotes', () => {
+  const req = new RequestMock();
+  const res = new ResponseMock();
+  const user_id = new mongoose.Types.ObjectId();
+  const username = 'test-user-vc';
+  const user = new UserModel({ user_id, username });
+  const post_id1 = new mongoose.Types.ObjectId();
+  const post_id2 = new mongoose.Types.ObjectId();
+
+  req.login(user);
+
+  const post_vote1 = new PostVoteModel({
+    _user: user_id,
+    _post: post_id1,
+    upvote: false,
+  });
+
+  const post_vote2 = new PostVoteModel({
+    _user: user_id,
+    _post: post_id2,
+    upvote: true,
+  });
+
+  before('Store post votes', function before(done) {
+    connectToTestDB(() => {
+      post_vote1.save((err) => {
+        post_vote2.save(done);
+      });
+    });
+  });
+
+  it('return NONE for null string user', (done) => {
+    req.setParams({ user_id: 'null'});
+    PostsController.fetchPostVotes(req, res, () => {
+      const postVoteResponse = res.getJson();
+      expect(postVoteResponse.vote).to.equal(POST_VOTE.NONE);
+      done();
+    });
+  });
+
+  it('return NONE for no user_id passed in at all', (done) => {
+    req.setParams({ post_id: post_id1 });
+    PostsController.fetchPostVotes(req, res, () => {
+      const postVoteResponse = res.getJson();
+      expect(postVoteResponse.vote).to.equal(POST_VOTE.NONE);
+      done();
+    });
+  });
+
+  it('return UPVOTE for an upvoted post', (done) => {
+    req.setParams({ post_id: post_id2, user_id: user_id });
+    PostsController.fetchPostVotes(req, res, () => {
+      const postVoteResponse = res.getJson();
+      expect(postVoteResponse.vote).to.equal(POST_VOTE.UPVOTE);
+      done();
+    });
+  });
+
+  it('return DOWNVOTE for a downvoted post', (done) => {
+    req.setParams({ post_id: post_id1, user_id: user_id });
+    PostsController.fetchPostVotes(req, res, () => {
+      const postVoteResponse = res.getJson();
+      expect(postVoteResponse.vote).to.equal(POST_VOTE.DOWNVOTE);
+      done();
+    });
+  });
+
+  it('return NONE for no post_id', (done) => {
+    req.setParams({ user_id: user_id });
+    PostsController.fetchPostVotes(req, res, () => {
+      const postVoteResponse = res.getJson();
+      expect(postVoteResponse.vote).to.equal(POST_VOTE.NONE);
+      done();
+    });
+  });
+
+  after(function after(done) {  // eslint-disable-line prefer-arrow-callback
     dropTestDB(done);
   });
 });

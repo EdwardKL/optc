@@ -9,4 +9,6 @@ const postVoteSchema = new Schema({
   upvote: { type: Boolean, default: false },
 });
 
-export default mongoose.model('PostVote', postVoteSchema);
+const PostVote = mongoose.model('PostVote', postVoteSchema);
+
+module.exports = PostVote;

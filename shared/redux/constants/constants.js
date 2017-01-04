@@ -8,3 +8,5 @@ export const GET_RECOMMENDATION = 'GET_RECOMMENDATION';
 export const ADD_UNITS = 'ADD_UNITS';
 export const ADD_NUM_UNIT_PAGES = 'ADD_NUM_UNIT_PAGES';
 export const GET_POSTS = 'GET_POSTS';
+export const GET_POST = 'GET_POST';
+export const GET_POST_VOTE = 'GET_POST_VOTE';

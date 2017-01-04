@@ -55,28 +55,28 @@ app.use(bodyParser.json({ limit: '20mb' }));
 app.use(bodyParser.urlencoded({ limit: '20mb', extended: false }));
 app.use(Express.static(path.resolve(__dirname, '../static')));
 
-const flash = require('connect-flash');
+var flash = require('connect-flash');
 app.use(flash());
 
 // passport stuff
-const cookieParser = require('cookie-parser');
-const session = require('express-session');
-const MongoStore = require('connect-mongo')(session);
-const passport = require('passport');
+var cookieParser = require('cookie-parser');
+var session = require('express-session');
+var passport = require('passport');
 
-passport.serializeUser((user, done) => {
+passport.serializeUser(function (user, done) {
   done(null, user._id);
 });
 
-passport.deserializeUser((id, done) => {
+passport.deserializeUser(function (id, done) {
   /* istanbul ignore next */
   User.findById(id).exec(done);
 });
 
 app.use(cookieParser());
 app.use(session({
-  store: new MongoStore({ mongooseConnection: mongoose.connection }),
-  secret: process.env.COOKIE_SECRET,
+  secret: 'secret',
+  resave: true,
+  saveUninitialized: true,
 }));
 app.use(passport.initialize());
 app.use(passport.session());
@@ -143,7 +143,7 @@ const renderFullPage = (body_html, initialState) => {
   `;
 };
 
-const protected_paths = ['/account'];
+const protected_paths = ['/account', '/posts/api/post'];
 
 import unit_selections from '../data/unit_selections.json';
 import socket_selections from '../data/socket_selections.json';
@@ -153,10 +153,6 @@ app.use((req, res) => {
   match({ routes, location: req.url }, (err, redirectLocation, renderProps) => {
     if (err) {
       return res.status(500).end('Internal server error');
-    }
-
-    if (!renderProps) {
-      return res.status(404).end('Not found!');
     }
 
     if (req.url === '/auth/oauth-signup') {
@@ -179,6 +175,10 @@ app.use((req, res) => {
         req.flash('info_message', 'You need a username to proceed.');
         return res.redirect('/auth/oauth-signup');
       }
+    }
+
+    if (!renderProps) {
+      return res.status(404).end('Not found!');
     }
 
     const user = req.user;
