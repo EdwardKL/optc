@@ -1,0 +1,62 @@
+.postHeader div {
+  display: inline-block;
+  padding: 0px 5px;
+}
+
+.postAuthor {
+  font-size: small;
+}
+
+.postAuthor a:hover {
+	text-decoration: none;
+}
+
+.postScore {
+  font-weight: bold;
+  font-size: small;
+  padding-left: 25px !important;
+}
+
+.postTimestamp {
+  font-style: italic;
+  color: grey;
+  right: 0px;
+  font-size: small;
+}
+
+#content .postDownvote {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  padding: 0px 10px;
+  color: #a9a9a9;
+}
+
+#content .postDownvote.active, .postDownvote:hover {
+  color: red !important;
+}
+
+#content .postDownvote[disabled]:hover {
+  color: #a9a9a9 !important;
+}
+
+#content .postUpvote {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 0px 10px;
+  color: #a9a9a9;
+}
+
+#content .postUpvote.active, .postUpvote:hover {
+  color: #1faf38 !important;
+}
+
+#content .postUpvote[disabled]:hover {
+  color: #a9a9a9 !important;
+}
+
+.panel-heading {
+  position: relative;
+  padding-left: 0px !important;
+}

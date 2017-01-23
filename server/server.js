@@ -55,19 +55,19 @@ app.use(bodyParser.json({ limit: '20mb' }));
 app.use(bodyParser.urlencoded({ limit: '20mb', extended: false }));
 app.use(Express.static(path.resolve(__dirname, '../static')));
 
-var flash = require('connect-flash');
+const flash = require('connect-flash');
 app.use(flash());
 
 // passport stuff
-var cookieParser = require('cookie-parser');
-var session = require('express-session');
-var passport = require('passport');
+const cookieParser = require('cookie-parser');
+const session = require('express-session');
+const passport = require('passport');
 
-passport.serializeUser(function (user, done) {
+passport.serializeUser((user, done) => {
   done(null, user._id);
 });
 
-passport.deserializeUser(function (id, done) {
+passport.deserializeUser((id, done) => {
   /* istanbul ignore next */
   User.findById(id).exec(done);
 });
@@ -99,7 +99,8 @@ import Footer from '../shared/components/Footer/Footer';
 const renderFullPage = (body_html, initialState) => {
   const css = production ? '<link rel="stylesheet" href="/css/app.min.css" />' :
       `<link rel="stylesheet" href="/css/header.css" />
-    <link rel="stylesheet" href="/css/main.css" />`;
+       <link rel="stylesheet" href="/css/post.css" />
+       <link rel="stylesheet" href="/css/main.css" />`;
   const ads = production ? '<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>' : '';
   return `
     <!doctype html>

@@ -1,10 +1,11 @@
 import React, { Component, PropTypes } from 'react';
 import { Panel, Col, Button, Input } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import moment from 'moment';
 import * as Actions from '../../redux/actions/actions';
 import { browserHistory } from 'react-router';
 import POST_VOTE from '../../../constants/post_vote';
+
+const timeAgo = require('node-time-ago');
 
 class Post extends Component {
   constructor(props, context) {
@@ -15,9 +16,6 @@ class Post extends Component {
     this.state.redirect_location = props.redirect_location ? props.redirect_location : '';
     this.state.user = props.user;
     this.state.post_vote = props.post_vote;
-
-    this.state.date_format = "MMMM Do YYYY, h:mm:ss a";
-    this.state.post_date = moment(this.state.post.date_added);
 
     this.dispatch = props.dispatch;
 
@@ -37,16 +35,16 @@ class Post extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.redirect_location) {
-      browserHistory.push('/' + nextProps.redirect_location + '?se');
+      browserHistory.push(`/${nextProps.redirect_location}?se`);
     } else {
       if (nextProps.post_vote && nextProps.post_vote.post_id == this.state.post._id) {
         this.setState({
-          post_vote: nextProps.post_vote
+          post_vote: nextProps.post_vote,
         });
       }
       if (nextProps.updated_post && nextProps.updated_post._id == this.state.post._id) {
         this.setState({
-          post: nextProps.updated_post
+          post: nextProps.updated_post,
         });
       }
     }
@@ -55,32 +53,37 @@ class Post extends Component {
 
   render() {
     const commentHeader = (
-      <div>
-        <Col xs={2} md={1}>{this.state.post._user.username}</Col>
-        <Col md={2}>
-
-          <Button onClick={this.handleUpvote}
-                  active={this.state.post_vote && this.state.post_vote.vote == POST_VOTE.UPVOTE}
-                  disabled={!this.state.user}>
-            <i className="fa fa-arrow-up"/>
+      <div className="postHeader">
+        <div>
+          <Button
+            onClick={this.handleUpvote}
+            active={this.state.post_vote && this.state.post_vote.vote === POST_VOTE.UPVOTE}
+            disabled={!this.state.user}
+            bsStyle="link"
+            className="postUpvote"
+          >
+            <i className="fa fa-arrow-up" />
           </Button>
 
-          <Button onClick={this.handleDownvote}
-                  active={this.state.post_vote && this.state.post_vote.vote == POST_VOTE.DOWNVOTE}
-                  disabled={!this.state.user}>
-            <i className="fa fa-arrow-down"/>
+          <Button
+            onClick={this.handleDownvote}
+            active={this.state.post_vote && this.state.post_vote.vote === POST_VOTE.DOWNVOTE}
+            disabled={!this.state.user}
+            bsStyle="link"
+            className="postDownvote"
+          >
+            <i className="fa fa-arrow-down" />
           </Button>
-
-        </Col>
-        <Col xs={2} md={1}>{this.state.post.score} points</Col>
-        <Col>{this.state.post_date.format(this.state.date_format)}</Col>
+        </div>
+        <div className="postScore">{this.state.post.score} points</div>
+        <div className="postAuthor"><a href={`/account/${this.state.post._user.username}`}>{this.state.post._user.username}</a></div>
+        <div className="postTimestamp">{timeAgo(this.state.post.date_added)}</div>
       </div>
     );
 
-    return <Panel header={commentHeader}>
+    return (<Panel header={commentHeader}>
       {this.state.post.content}
-    </Panel>;
-
+    </Panel>);
   }
 }
 
