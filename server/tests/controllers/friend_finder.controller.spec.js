@@ -322,6 +322,15 @@ describe('FriendFinder tests', () => {
     });
   });
 
+  it('should fetch the right amount of pages (for page size = 10)', (done) => {
+    req.setParams({captain_id: 101});
+    FriendFinder.fetchNumPages(req, res, () => {
+      const results = res.getJson();
+      expect(results).to.equal(2);
+      done();
+    })
+  });
+
   after(function after(done) {  // eslint-disable-line prefer-arrow-callback
     dropTestDB(done);
   });

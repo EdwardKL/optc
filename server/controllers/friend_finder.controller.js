@@ -42,7 +42,6 @@ exports.search = function search(req, res, next) {
           captain._user.clearSensitiveData();
         }
       });
-      console.log('captains found: ', captains);
       res.json(captains);
       next();
     });
@@ -51,7 +50,6 @@ exports.search = function search(req, res, next) {
 // Fetches the number of pages for a search result for a given captain.
 exports.fetchNumPages = function search(req, res, next) {
   const captain_id = getNumber(req.params.captain_id);
-  const region = req.query.region;
 
   CaptainModel
     .find({ _unit: captain_id })
