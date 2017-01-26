@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { Panel, Col, Button, Input } from 'react-bootstrap';
+import { Panel, Button} from 'react-bootstrap';
 import { connect } from 'react-redux';
 import * as Actions from '../../redux/actions/actions';
 import { browserHistory } from 'react-router';
@@ -7,7 +7,7 @@ import POST_VOTE from '../../../constants/post_vote';
 
 const timeAgo = require('node-time-ago');
 
-class Post extends Component {
+export class Post extends Component {
   constructor(props, context) {
     super(props, context);
     this.state = {};
