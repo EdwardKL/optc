@@ -23,6 +23,14 @@ describe('Post', () => {
     }
   };
 
+  const upvotePostVote = {
+    vote: POST_VOTE.UPVOTE
+  };
+
+  const downvotePostVote = {
+    vote: POST_VOTE.DOWNVOTE
+  };
+
   const getExpectedHeaderJSX = (score, post_vote, author, date, logged_in) => {
     return (
       <div className="postHeader">
@@ -65,6 +73,30 @@ describe('Post', () => {
     expect(resultOutput).toEqualJSX(
       <Panel header={getExpectedHeaderJSX(testPost.score, POST_VOTE.NONE, testPost._user.username, Date.now, true)}>
       {testPost.content}
+      </Panel>
+    );
+  });
+
+  it('render upvoted post', () => {
+    const renderer = TestUtils.createRenderer();
+    renderer.render(<Post post_data={testPost} post_vote={upvotePostVote}/>);
+    const resultOutput = renderer.getRenderOutput();
+
+    expect(resultOutput).toEqualJSX(
+      <Panel header={getExpectedHeaderJSX(testPost.score, POST_VOTE.UPVOTE, testPost._user.username, Date.now, true)}>
+        {testPost.content}
+      </Panel>
+    );
+  });
+
+  it('render downvoted post', () => {
+    const renderer = TestUtils.createRenderer();
+    renderer.render(<Post post_data={testPost} post_vote={downvotePostVote}/>);
+    const resultOutput = renderer.getRenderOutput();
+
+    expect(resultOutput).toEqualJSX(
+      <Panel header={getExpectedHeaderJSX(testPost.score, POST_VOTE.DOWNVOTE, testPost._user.username, Date.now, true)}>
+        {testPost.content}
       </Panel>
     );
   });
