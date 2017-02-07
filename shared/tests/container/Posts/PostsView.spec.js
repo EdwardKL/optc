@@ -1,6 +1,6 @@
 import expect from 'expect';
 import expectJSX from 'expect-jsx';
-import { FriendFinderView } from '../../../container/FriendFinder/FriendFinderView';
+import { PostsView } from '../../../container/Posts/PostsView';
 import React from 'react';
 import TestUtils from 'react-addons-test-utils';
 import { Grid, Row, Col, Button, Well, Label, Input } from 'react-bootstrap';
@@ -8,17 +8,16 @@ import unit_selections from '../../../../data/unit_selections.json';
 
 expect.extend(expectJSX);
 
-describe('FriendFinderView ', () => {
+describe('PostsView ', () => {
 
-
-  it('basic friend finder view header test', () => {
+  it('basic PostsView header test', () => {
     const renderer = TestUtils.createRenderer();
-    renderer.render(<FriendFinderView friend_search_results={[]} params={{}} unit_selections={unit_selections}/>);
+    renderer.render(<PostsView location='test_location' dispatch={() => {}}/>);
     const resultOutput = renderer.getRenderOutput();
     expect(resultOutput).toIncludeJSX(
-      <h2>
-        Find Friends
-      </h2>
+      <Row>
+        <h4>Comments</h4>
+      </Row>
     )
   });
 });

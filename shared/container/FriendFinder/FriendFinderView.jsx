@@ -34,7 +34,6 @@ export class FriendFinderView extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log('component receiving nextprops.friendsearchresults:', nextProps.friend_search_results);
     this.setState({
       friend_search_results: nextProps.friend_search_results,
       num_pages: nextProps.num_pages,
@@ -61,7 +60,6 @@ export class FriendFinderView extends Component {
   }
 
   render() {
-    console.log('rendering friend finder view');
     let accountSet = new Set();
 
     return (
@@ -108,7 +106,6 @@ export class FriendFinderView extends Component {
           </Col>
         </Row>
         <Row>
-          {console.log('search results:', this.state.friend_search_results)}
           {this.state.friend_search_results.map( (result) => {
             let account = result.account;
             if (!accountSet.has(account._id)) {
@@ -144,10 +141,8 @@ export class FriendFinderView extends Component {
 
 FriendFinderView.need = [(params) => {
   if (params.captain_id) {
-    console.log('params.captain_id not empty!');
     return Actions.fetchFriendFinderResults(params.captain_id, 'global', 1);
   } else {
-    console.log('params.captain_id is empty!');
     return Actions.fetchFriendFinderResults('-1', 'global', 1);
   }
 }];
