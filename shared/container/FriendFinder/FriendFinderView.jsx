@@ -115,9 +115,6 @@ export class FriendFinderView extends Component {
           })}
         </Row>
         <Row className="unitPagination">
-          {console.log('account set:', accountSet)}
-          {console.log('num items:', this.state.num_pages)}
-          {console.log('active page:', this.state.activePage)}
           <Pagination
             className={accountSet.size === 0? 'hidden':'shown'}
             prev
