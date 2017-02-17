@@ -19,7 +19,7 @@ const valid_friend_id = 2.34 * 1e8;
 const valid_pirate_level = 12;
 const valid_region = 'global';
 const valid_account_add_request = { friend_id: valid_friend_id, pirate_level: valid_pirate_level, region: valid_region };
-mongoose.Promise = global.Promise;
+mongoose.Promise = Promise;
 
 describe('AccountsController when logged out', () => {
   // Req has no user. This is to simulate the user being logged out.
