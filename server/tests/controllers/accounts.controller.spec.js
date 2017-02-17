@@ -200,14 +200,6 @@ describe('AccountsController db tests', () => {
   const req = new RequestMock();
   const res = new ResponseMock();
 
-  function onInsert(err, docs) {
-    if (err) {
-      // TODO: handle error
-    } else {
-      console.log('%d docs were successfully stored.', docs.length);
-    }
-  }
-
   beforeEach('Store a user', function beforeEach(done) {  // eslint-disable-line prefer-arrow-callback
     connectToTestDB(() => {
       const db_user = new UserModel(user);
@@ -215,33 +207,22 @@ describe('AccountsController db tests', () => {
       const db_account1 = new AccountModel(account1);
       const db_captain0 = new CaptainModel(captain0);
       const db_captain1 = new CaptainModel(captain1);
-
-      UserModel.create(user, (err) => {
-        if (err) console.log('error saving user');
-        done();
+      db_user.save((e0) => {
+        if (e0) throw e0;
+        db_captain0.save((e1) => {
+          if (e1) throw e1;
+          db_captain1.save((e2) => {
+            if (e2) throw e2;
+            db_account0.save((e3) => {
+              if (e3) throw e3;
+              db_account1.save((e4) => {
+                if (e4) throw e4;
+                done();
+              });
+            });
+          });
+        });
       });
-
-      let accounts = [db_account0, db_account1];
-      AccountModel.insertMany(accounts, onInsert);
-      let captains = [db_captain0, db_captain1];
-      CaptainModel.insertMany(captains, onInsert);
-
-      // db_user.save((e0) => {
-      //   if (e0) throw e0;
-      //   db_captain0.save((e1) => {
-      //     if (e1) throw e1;
-      //     db_captain1.save((e2) => {
-      //       if (e2) throw e2;
-      //       db_account0.save((e3) => {
-      //         if (e3) throw e3;
-      //         db_account1.save((e4) => {
-      //           if (e4) throw e4;
-      //           done();
-      //         });
-      //       });
-      //     });
-      //   });
-      // });
     });
   });
 
