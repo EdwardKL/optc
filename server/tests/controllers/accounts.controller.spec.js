@@ -2,6 +2,7 @@
 
 import chai from 'chai';
 import mongoose from 'mongoose';
+import async from 'async';
 import AccountsController from '../../controllers/accounts.controller';
 import AccountModel from '../../models/account';
 import CaptainModel from '../../models/captain';
@@ -19,7 +20,6 @@ const valid_friend_id = 2.34 * 1e8;
 const valid_pirate_level = 12;
 const valid_region = 'global';
 const valid_account_add_request = { friend_id: valid_friend_id, pirate_level: valid_pirate_level, region: valid_region };
-mongoose.Promise = Promise;
 
 describe('AccountsController when logged out', () => {
   // Req has no user. This is to simulate the user being logged out.
@@ -203,27 +203,36 @@ describe('AccountsController db tests', () => {
 
   beforeEach('Store a user', function beforeEach(done) {  // eslint-disable-line prefer-arrow-callback
     connectToTestDB(() => {
+      mongoose.Promise = Promise;
       const db_user = new UserModel(user);
       const db_account0 = new AccountModel(account0);
       const db_account1 = new AccountModel(account1);
       const db_captain0 = new CaptainModel(captain0);
       const db_captain1 = new CaptainModel(captain1);
-      db_user.save((e0) => {
-        if (e0) throw e0;
-        db_captain0.save((e1) => {
-          if (e1) throw e1;
-          db_captain1.save((e2) => {
-            if (e2) throw e2;
-            db_account0.save((e3) => {
-              if (e3) throw e3;
-              db_account1.save((e4) => {
-                if (e4) throw e4;
-                done();
-              });
-            });
-          });
-        });
+      let models = [db_user, db_account0, db_account1, db_captain0, db_captain1];
+      async.eachSeries(models, function(model, asyncdone) {
+        model.save(asyncdone);
+      }, function(err) {
+        if (err) return console.log(err);
+        done(); // or `done(err)` if you want the pass the error up
       });
+      
+      // db_user.save((e0) => {
+      //   if (e0) throw e0;
+      //   db_captain0.save((e1) => {
+      //     if (e1) throw e1;
+      //     db_captain1.save((e2) => {
+      //       if (e2) throw e2;
+      //       db_account0.save((e3) => {
+      //         if (e3) throw e3;
+      //         db_account1.save((e4) => {
+      //           if (e4) throw e4;
+      //           done();
+      //         });
+      //       });
+      //     });
+      //   });
+      // });
     });
   });
 
