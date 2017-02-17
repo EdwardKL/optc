@@ -2,7 +2,6 @@
 
 import chai from 'chai';
 import mongoose from 'mongoose';
-import async from 'async';
 import AccountsController from '../../controllers/accounts.controller';
 import AccountModel from '../../models/account';
 import CaptainModel from '../../models/captain';
@@ -201,22 +200,32 @@ describe('AccountsController db tests', () => {
   const req = new RequestMock();
   const res = new ResponseMock();
 
+  function onInsert(err, docs) {
+    if (err) {
+      // TODO: handle error
+    } else {
+      console.log('%d docs were successfully stored.', docs.length);
+    }
+  }
+
   beforeEach('Store a user', function beforeEach(done) {  // eslint-disable-line prefer-arrow-callback
     connectToTestDB(() => {
-      mongoose.Promise = Promise;
       const db_user = new UserModel(user);
       const db_account0 = new AccountModel(account0);
       const db_account1 = new AccountModel(account1);
       const db_captain0 = new CaptainModel(captain0);
       const db_captain1 = new CaptainModel(captain1);
-      let models = [db_user, db_account0, db_account1, db_captain0, db_captain1];
-      async.eachSeries(models, function(model, asyncdone) {
-        model.save(asyncdone);
-      }, function(err) {
-        if (err) return console.log(err);
-        done(); // or `done(err)` if you want the pass the error up
+
+      UserModel.create(user, (err) => {
+        if (err) console.log('error saving user');
+        done();
       });
-      
+
+      let accounts = [db_account0, db_account1];
+      AccountModel.insertMany(accounts, onInsert);
+      let captains = [db_captain0, db_captain1];
+      CaptainModel.insertMany(captains, onInsert);
+
       // db_user.save((e0) => {
       //   if (e0) throw e0;
       //   db_captain0.save((e1) => {
