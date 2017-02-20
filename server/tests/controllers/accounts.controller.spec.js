@@ -154,7 +154,7 @@ describe('AccountsController db tests', () => {
     current_rcv_ccs: 14,
     _unit: 15,
     _user: user_id,
-    region: 'global'
+    region: 'global',
   };
   const captain1 = {
     _id: new mongoose.Types.ObjectId(),
@@ -166,7 +166,7 @@ describe('AccountsController db tests', () => {
     current_rcv_ccs: 1,
     _unit: 17,
     _user: user_id,
-    region: 'global'
+    region: 'global',
   };
   const account0 = {
     _id: new mongoose.Types.ObjectId(),
@@ -202,20 +202,31 @@ describe('AccountsController db tests', () => {
 
   beforeEach('Store a user', function beforeEach(done) {  // eslint-disable-line prefer-arrow-callback
     connectToTestDB(() => {
+      console.log('1');
       const db_user = new UserModel(user);
+      console.log('2');
       const db_account0 = new AccountModel(account0);
+      console.log('3');
       const db_account1 = new AccountModel(account1);
+      console.log('4');
       const db_captain0 = new CaptainModel(captain0);
+      console.log('5');
       const db_captain1 = new CaptainModel(captain1);
+      console.log('6');
       db_user.save((e0) => {
+        console.log('7');
         if (e0) throw e0;
         db_captain0.save((e1) => {
+          console.log('8');
           if (e1) throw e1;
           db_captain1.save((e2) => {
+            console.log('9');
             if (e2) throw e2;
             db_account0.save((e3) => {
+              console.log('10');
               if (e3) throw e3;
               db_account1.save((e4) => {
+                console.log('11');
                 if (e4) throw e4;
                 done();
               });
@@ -248,9 +259,9 @@ describe('AccountsController db tests', () => {
     UserModel
       .find({})
       .populate({ path: '_accounts',
-                  populate: {
-                    path: '_captains',
-                    model: 'Captain' } })
+        populate: {
+          path: '_captains',
+          model: 'Captain' } })
       .exec((err, users) => {
         if (err) throw err;
         expect(users).to.have.lengthOf(1);
@@ -311,9 +322,9 @@ describe('AccountsController db tests', () => {
     UserModel
       .find({})
       .populate({ path: '_accounts',
-                  populate: {
-                    path: '_captains',
-                    model: 'Captain' } })
+        populate: {
+          path: '_captains',
+          model: 'Captain' } })
       .exec((err, users) => {
         if (err) throw err;
         expect(users).to.have.lengthOf(1);
@@ -360,9 +371,9 @@ describe('AccountsController db tests', () => {
       UserModel
         .find()
         .populate({ path: '_accounts',
-                    populate: {
-                      path: '_captains',
-                      model: 'Captain' } })
+          populate: {
+            path: '_captains',
+            model: 'Captain' } })
         .exec((err, users) => {
           if (err) throw err;
           expect(users).to.have.lengthOf(1);
@@ -406,9 +417,9 @@ describe('AccountsController db tests', () => {
       UserModel
         .find()
         .populate({ path: '_accounts',
-                    populate: {
-                      path: '_captains',
-                      model: 'Captain' } })
+          populate: {
+            path: '_captains',
+            model: 'Captain' } })
         .exec((err, users) => {
           if (err) throw err;
           // Account reference should be removed from the user.
