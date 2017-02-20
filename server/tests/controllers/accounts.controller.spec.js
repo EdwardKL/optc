@@ -202,32 +202,20 @@ describe('AccountsController db tests', () => {
 
   beforeEach('Store a user', function beforeEach(done) {  // eslint-disable-line prefer-arrow-callback
     connectToTestDB(() => {
-      console.log('1');
       const db_user = new UserModel(user);
-      console.log('2');
       const db_account0 = new AccountModel(account0);
-      console.log('3');
       const db_account1 = new AccountModel(account1);
-      console.log('4');
       const db_captain0 = new CaptainModel(captain0);
-      console.log('5');
       const db_captain1 = new CaptainModel(captain1);
-      console.log('6');
       db_user.save((e0) => {
-        console.log('7');
         if (e0) throw e0;
-        console.log('7.5');
         db_captain0.save((e1) => {
-          console.log('8');
           if (e1) throw e1;
           db_captain1.save((e2) => {
-            console.log('9');
             if (e2) throw e2;
             db_account0.save((e3) => {
-              console.log('10');
               if (e3) throw e3;
               db_account1.save((e4) => {
-                console.log('11');
                 if (e4) throw e4;
                 done();
               });
