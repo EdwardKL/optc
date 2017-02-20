@@ -64,7 +64,7 @@
     "jsdom": "^9.4.1",
     "jsdom-global": "^2.0.0",
     "lodash": "^4.13.1",
-    "mongoose": "4.5.0-4.7.10",
+    "mongoose": "4.5.0-4.7.9",
     "node-jsx": "^0.13.3",
     "nodemailer": "^2.5.0",
     "node-time-ago": "^1.0.0",
