@@ -216,6 +216,7 @@ describe('AccountsController db tests', () => {
       db_user.save((e0) => {
         console.log('7');
         if (e0) throw e0;
+        console.log('7.5');
         db_captain0.save((e1) => {
           console.log('8');
           if (e1) throw e1;
