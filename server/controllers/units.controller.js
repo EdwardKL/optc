@@ -4,20 +4,19 @@ import RECOMMENDATION from '../../constants/recommendation';
 import { redirectIfLoggedOut } from './utils';
 import { UNITS_PAGE_SIZE } from '../../constants/common';
 
-/* For internal uses only.
+// getAll is for internal use only.
 exports.getAll = function (req, res) {
-  console.log('getting all units');
-  var callback = function (err, units) {
+  const callback = function (err, units) {
     // In case of any error return
     if (err) {
-      console.log('Error retrieving units: ' + err);
+      console.log(`Error retrieving units: ${err}`);
       req.flash('error_message', 'There was an error. Please contact the owner.');
       res.redirect('/');
       return;
     }
     // Found units
     if (units) {
-      res.json({ units: units });
+      res.json({ units });
     } else {
       console.log('Could not find any units!');
       req.flash('error_message', 'For some reason this website thinks there are no units in the game. Please contact the owner.');
@@ -31,7 +30,7 @@ exports.getAll = function (req, res) {
     .populate('special_ability')
     .select('slots name max_level special_ability')
     .exec(callback);
-};*/
+};
 
 exports.fetchUnits = function fetch_units(req, res, next) {
   const page = Number(req.params.page);
