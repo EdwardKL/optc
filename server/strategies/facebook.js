@@ -17,7 +17,7 @@ module.exports = function () {
           }
           if (!user) {
             user = new User({ _facebook_id: profile.id });
-            user.save(function (err) {
+            user.save((err) => {
               if (err) console.log(err);
               return done(err, user);
             });

@@ -1,68 +1,70 @@
 import React from 'react';
 import { Link } from 'react-router';
-import {Grid, Row, Col, Panel, Pagination,Button, Well, Label, Input, ButtonInput, MenuItem} from 'react-bootstrap';
-import {LinkContainer} from 'react-router-bootstrap';
+import { Grid, Row, Col, Panel, Pagination, Button, Well, Label, Input, ButtonInput, MenuItem } from 'react-bootstrap';
+import { LinkContainer } from 'react-router-bootstrap';
 
 class Signup extends React.Component {
-  constructor(props, context){
+  constructor(props, context) {
     super(props, context);
     this.state = {};
     this.state.username = '';
     this.state.password = '';
     this.state.password_confirmation = '';
     this.handleInputUserName = this.handleInputUserName.bind(this);
-    this.handleInputPassword =  this.handleInputPassword.bind(this);
-    this.handleInputConfirmation =  this.handleInputConfirmation.bind(this);
+    this.handleInputPassword = this.handleInputPassword.bind(this);
+    this.handleInputConfirmation = this.handleInputConfirmation.bind(this);
   }
 
-  handleInputUserName(e){
-    this.setState({username: e.target.value});
+  handleInputUserName(e) {
+    this.setState({ username: e.target.value });
   }
   validateUserName() {
-    var length = this.state.username.length;
+    const length = this.state.username.length;
     if (this.state.username.length > 0) {
       if (length > 1 && /^[a-zA-Z\-_0-9]+$/.test(this.state.username)) return 'success';
       return 'error';
     }
   }
 
-  handleInputPassword(e){
-    this.setState({password: e.target.value});
+  handleInputPassword(e) {
+    this.setState({ password: e.target.value });
   }
   validatePassword() {
-    var length = this.state.password.length;
+    const length = this.state.password.length;
     if (length > 8) return 'success';
     if (length > 3) return 'warning';
     if (length > 0) return 'error';
   }
-  
-  handleInputConfirmation(e){
-    this.setState({password_confirmation: e.target.value});
+
+  handleInputConfirmation(e) {
+    this.setState({ password_confirmation: e.target.value });
   }
   validateConfirmation() {
-    var length = this.state.password_confirmation.length;
+    const length = this.state.password_confirmation.length;
     if (length == 0) return;
     if (this.state.password == this.state.password_confirmation) return 'success';
     if (length > 0) return 'error';
   }
-  
+
   render() {
-    return(
+    /* Disable oauth for now
+      <Col xs={6} id="oauth-selection">
+        <a className="btn btn-block btn-social btn-facebook" href="/auth/facebook"><span className="fa fa-facebook" />Login with Facebook</a><br /><br />
+        <a className="btn btn-block btn-social btn-google" href="/auth/google"><span className="fa fa-google" />Login with Google</a><br /><br />
+        <a className="btn btn-block btn-social btn-reddit" href="/auth/reddit"><span className="fa fa-reddit" />Login with Reddit</a><br /><br />
+        <a className="btn btn-block btn-social btn-twitter" href="/auth/twitter"><span className="fa fa-twitter" />Login with Twitter</a><br /><br />
+      </Col>
+    */
+    return (
       <Grid id="content">
         <Row>
           <h2>
             Sign Up
           </h2>
-          <hr/>
+          <hr />
         </Row>
         <Row>
-          <Col xs={6} id="oauth-selection">
-            <a className="btn btn-block btn-social btn-facebook" href="/auth/facebook"><span className="fa fa-facebook"></span>Login with Facebook</a><br /><br />
-            <a className="btn btn-block btn-social btn-google" href="/auth/google"><span className="fa fa-google"></span>Login with Google</a><br /><br />
-            <a className="btn btn-block btn-social btn-reddit" href="/auth/reddit"><span className="fa fa-reddit"></span>Login with Reddit</a><br /><br />
-            <a className="btn btn-block btn-social btn-twitter" href="/auth/twitter"><span className="fa fa-twitter"></span>Login with Twitter</a><br /><br />
-          </Col>
-          <Col xs={6} id="signup-right">
+          <Col xs={6}>
             <form action="/signup" method="POST">
               <Input
                 placeholder="User Name"
@@ -72,8 +74,9 @@ class Signup extends React.Component {
                 label="User Name"
                 name="username"
                 help="This name will be displayed to other users."
-                type="text"/>
-              <br/>
+                type="text"
+              />
+              <br />
               <Input
                 placeholder="Enter Password"
                 onChange={this.handleInputPassword}
@@ -82,8 +85,9 @@ class Signup extends React.Component {
                 label="Password"
                 name="password"
                 help="Must be more than 3 characters."
-                type="password" />
-              <br/>
+                type="password"
+              />
+              <br />
               <Input
                 placeholder="Confirm Password"
                 label="Confirm Password"
@@ -91,8 +95,9 @@ class Signup extends React.Component {
                 bsStyle={this.validateConfirmation()}
                 hasFeedback
                 name="password_confirmation"
-                type="password" />
-              <br/>
+                type="password"
+              />
+              <br />
               <Button bsStyle="primary" type="submit">
                 Sign up
               </Button>
@@ -100,7 +105,7 @@ class Signup extends React.Component {
           </Col>
         </Row>
       </Grid>
-    )
+    );
   }
 }
 
