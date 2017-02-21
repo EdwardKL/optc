@@ -164,18 +164,18 @@ app.use((req, res) => {
       }
     }
 
+    // This is an OAuth user with no username set yet. Redirect to get a username.
+    if (req.user && (!req.user.username || req.user.username.length === 0)) {
+      req.flash('info_message', 'You need a username to proceed.');
+      return res.redirect('/auth/oauth-signup');
+    }
+
     if (protected_paths.indexOf(req.url) !== -1) {
       console.log('Accessing protected path. Checking authentication status...');
       if (!req.isAuthenticated()) {
         // TODO: Maybe redirect to login instead?
         req.flash('error_message', 'Please sign in.');
         return res.redirect('/signup');
-      }
-
-      // This is an OAuth user with no username set yet. Redirect to get a username.
-      if (req.user && (!req.user.username || req.user.username.length === 0)) {
-        req.flash('info_message', 'You need a username to proceed.');
-        return res.redirect('/auth/oauth-signup');
       }
     }
 

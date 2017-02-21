@@ -47,14 +47,6 @@ class Signup extends React.Component {
   }
 
   render() {
-    /* Disable oauth for now
-      <Col xs={6} id="oauth-selection">
-        <a className="btn btn-block btn-social btn-facebook" href="/auth/facebook"><span className="fa fa-facebook" />Login with Facebook</a><br /><br />
-        <a className="btn btn-block btn-social btn-google" href="/auth/google"><span className="fa fa-google" />Login with Google</a><br /><br />
-        <a className="btn btn-block btn-social btn-reddit" href="/auth/reddit"><span className="fa fa-reddit" />Login with Reddit</a><br /><br />
-        <a className="btn btn-block btn-social btn-twitter" href="/auth/twitter"><span className="fa fa-twitter" />Login with Twitter</a><br /><br />
-      </Col>
-    */
     return (
       <Grid id="content">
         <Row>
@@ -64,7 +56,13 @@ class Signup extends React.Component {
           <hr />
         </Row>
         <Row>
-          <Col xs={6}>
+          <Col xs={6} id="oauth-selection">
+            <a className="btn btn-block btn-social btn-facebook" href="/auth/facebook"><span className="fa fa-facebook" />Login with Facebook</a><br /><br />
+            <a className="btn btn-block btn-social btn-google" href="/auth/google"><span className="fa fa-google" />Login with Google</a><br /><br />
+            <a className="btn btn-block btn-social btn-reddit" href="/auth/reddit"><span className="fa fa-reddit" />Login with Reddit</a><br /><br />
+            <a className="btn btn-block btn-social btn-twitter" href="/auth/twitter"><span className="fa fa-twitter" />Login with Twitter</a><br /><br />
+          </Col>
+          <Col xs={6} id="signup-right">
             <form action="/signup" method="POST">
               <Input
                 placeholder="User Name"
