@@ -8,7 +8,8 @@ class SocketSelector extends Component {
     super(props, context);
     this.state = {};
     this.state.key = props.key_prop;
-    this.state.onChange = props.onChange;
+    this.state.onTypeChange = props.onTypeChange;
+    this.state.onLevelChange = props.onLevelChange;
     this.state.socket_selections = props.socket_selections;
     this.state.default_level = props.default_level;
     this.state.default_value = props.default_value;
@@ -24,12 +25,12 @@ class SocketSelector extends Component {
             name="socket_types"
             type="select"
             defaultValue={this.state.default_value}
-            onChange={this.state.onChange}
+            onChange={this.state.onTypeChange}
           >
             {this.state.socket_selections.map((socket) => {
               return (<option value={socket._id} key={socket._id}>
-                        {socket.name}
-                      </option>);
+                {socket.name}
+              </option>);
             })}
           </Input>
         </Col>
@@ -40,6 +41,7 @@ class SocketSelector extends Component {
             name="socket_levels"
             type="number"
             defaultValue={this.state.default_level}
+            onChange={this.state.onLevelChange}
             min="1"
             max="5"
           />
@@ -52,7 +54,8 @@ class SocketSelector extends Component {
 SocketSelector.propTypes = {
   key_prop: PropTypes.number.isRequired,
   socket_selections: PropTypes.arrayOf(PropTypes.object).isRequired,
-  onChange: PropTypes.func.isRequired,
+  onLevelChange: PropTypes.func.isRequired,
+  onTypeChange: PropTypes.func.isRequired,
   default_level: PropTypes.number.isRequired,
   default_value: PropTypes.number.isRequired,
 };

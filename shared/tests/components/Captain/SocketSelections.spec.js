@@ -30,9 +30,9 @@ describe('SocketSelections', () => {
       />);
     const output = renderer.getRenderOutput();
     expect(output).toEqualJSX(<div className="socketSelections">
-        <Button className="addSocket" onClick={dummy}>Add Socket</Button>&nbsp;
-        <Button className="removeSocket" onClick={dummy} disabled>Remove Socket</Button>
-      </div>);
+      <Button className="addSocket" onClick={dummy}>Add Socket</Button>&nbsp;
+      <Button className="removeSocket" onClick={dummy} disabled>Remove Socket</Button>
+    </div>);
   });
 
   it('should render a default socket', () => {
@@ -45,17 +45,18 @@ describe('SocketSelections', () => {
       />);
     const output = renderer.getRenderOutput();
     expect(output).toEqualJSX(<div className="socketSelections">
-        <SocketSelector
-          key={0}
-          key_prop={0}
-          default_level={3}
-          default_value={4}
-          socket_selections={socket_selections}
-          onChange={dummy}
-        />
-        <Button className="addSocket" onClick={dummy}>Add Socket</Button>&nbsp;
-        <Button className="removeSocket" onClick={dummy}>Remove Socket</Button>
-      </div>);
+      <SocketSelector
+        key={0}
+        key_prop={0}
+        default_level={3}
+        default_value={4}
+        socket_selections={socket_selections}
+        onTypeChange={dummy}
+        onLevelChange={dummy}
+      />
+      <Button className="addSocket" onClick={dummy}>Add Socket</Button>&nbsp;
+      <Button className="removeSocket" onClick={dummy}>Remove Socket</Button>
+    </div>);
   });
 
   it('should render multiple default sockets', () => {
@@ -68,33 +69,35 @@ describe('SocketSelections', () => {
       />);
     const output = renderer.getRenderOutput();
     expect(output).toEqualJSX(<div className="socketSelections">
-        <SocketSelector
-          key={0}
-          key_prop={0}
-          default_level={3}
-          default_value={4}
-          socket_selections={[
+      <SocketSelector
+        key={0}
+        key_prop={0}
+        default_level={3}
+        default_value={4}
+        socket_selections={[
             { _id: 1, name: 'A' },
             { _id: 3, name: 'C' },
             { _id: 4, name: 'D' },
             { _id: 5, name: 'E' }]}
-          onChange={dummy}
-        />
-        <SocketSelector
-          key={1}
-          key_prop={1}
-          default_level={5}
-          default_value={2}
-          socket_selections={[
+        onTypeChange={dummy}
+        onLevelChange={dummy}
+      />
+      <SocketSelector
+        key={1}
+        key_prop={1}
+        default_level={5}
+        default_value={2}
+        socket_selections={[
             { _id: 1, name: 'A' },
             { _id: 2, name: 'B' },
             { _id: 3, name: 'C' },
             { _id: 5, name: 'E' }]}
-          onChange={dummy}
-        />
-        <Button className="addSocket" onClick={dummy}>Add Socket</Button>&nbsp;
-        <Button className="removeSocket" onClick={dummy}>Remove Socket</Button>
-      </div>);
+        onTypeChange={dummy}
+        onLevelChange={dummy}
+      />
+      <Button className="addSocket" onClick={dummy}>Add Socket</Button>&nbsp;
+      <Button className="removeSocket" onClick={dummy}>Remove Socket</Button>
+    </div>);
   });
 
   it('should disable add sockets when we have max sockets', () => {
@@ -107,37 +110,39 @@ describe('SocketSelections', () => {
       />);
     const output = renderer.getRenderOutput();
     expect(output).toEqualJSX(<div className="socketSelections">
-        <SocketSelector
-          key={0}
-          key_prop={0}
-          default_level={3}
-          default_value={4}
-          socket_selections={[
+      <SocketSelector
+        key={0}
+        key_prop={0}
+        default_level={3}
+        default_value={4}
+        socket_selections={[
             { _id: 1, name: 'A' },
             { _id: 3, name: 'C' },
             { _id: 4, name: 'D' },
             { _id: 5, name: 'E' }]}
-          onChange={dummy}
-        />
-        <SocketSelector
-          key={1}
-          key_prop={1}
-          default_level={5}
-          default_value={2}
-          socket_selections={[
+        onTypeChange={dummy}
+        onLevelChange={dummy}
+      />
+      <SocketSelector
+        key={1}
+        key_prop={1}
+        default_level={5}
+        default_value={2}
+        socket_selections={[
             { _id: 1, name: 'A' },
             { _id: 2, name: 'B' },
             { _id: 3, name: 'C' },
             { _id: 5, name: 'E' }]}
-          onChange={dummy}
-        />
-        <Button className="addSocket" onClick={dummy} disabled>Add Socket</Button>&nbsp;
-        <Button className="removeSocket" onClick={dummy}>Remove Socket</Button>
-      </div>);
+        onTypeChange={dummy}
+        onLevelChange={dummy}
+      />
+      <Button className="addSocket" onClick={dummy} disabled>Add Socket</Button>&nbsp;
+      <Button className="removeSocket" onClick={dummy}>Remove Socket</Button>
+    </div>);
   });
 
   function shouldHaveOption(option_key, selected, type_input) {
-    const option = type_input.find('option[value=' + option_key + ']');
+    const option = type_input.find(`option[value=${option_key}]`);
     chai.expect(option.html()).to.equal(
       `<option value="${option_key}">${socket_selections[option_key - 1].name}</option>`);
   }
@@ -150,7 +155,7 @@ describe('SocketSelections', () => {
       return expected_option_keys.indexOf(option_key) === -1;
     });
     unexpected_option_keys.map((option_key) => {
-      chai.expect(type_input.find('option[value=' + option_key + ']')).to.have.length(0);
+      chai.expect(type_input.find(`option[value=${option_key}]`)).to.have.length(0);
     });
   }
 

@@ -37,7 +37,7 @@ export class SocketSelections extends Component {
       return this.getNumSockets() <= 0;
     };
 
-    for (var index in props.default_sockets) {
+    for (const index in props.default_sockets) {
       if (this.isAddSocketDisabled()) break;
       this.state.current_sockets.push(props.default_sockets[index]._socket);
       this.state.default_socket_levels.push(props.default_sockets[index].socket_level);
@@ -100,6 +100,11 @@ export class SocketSelections extends Component {
       this.state.current_sockets[key] = Number(e.target.value);
       this.setState({});
     };
+
+    this.socketLevelChanged = (key, e) => {
+      this.state.default_socket_levels[key] = Number(e.target.value);
+      this.setState({});
+    };
   }
 
   render() {
@@ -115,7 +120,8 @@ export class SocketSelections extends Component {
             default_level={this.getSocketLevel(i)}
             default_value={this.getSelectedSocket(i)}
             socket_selections={this.getSocketSelections(i)}
-            onChange={this.socketChanged.bind(this, i)}
+            onTypeChange={this.socketChanged.bind(this, i)}
+            onLevelChange={this.socketLevelChanged.bind(this, i)}
           />
         )}
         <Button

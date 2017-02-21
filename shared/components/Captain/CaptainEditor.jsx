@@ -83,91 +83,97 @@ export class CaptainEditor extends Component {
       <div className="captainEditor">
         {React.cloneElement(this.state.children, { onClick: this.open })}
         <Modal show={this.state.showModal} onHide={this.close}>
-            <form action="/captains/add" method="POST">
-              <Modal.Header closeButton>
-                  <Modal.Title>{this.state.title}</Modal.Title>
-              </Modal.Header>
-              <Modal.Body>
-                    <Row>
-                        <Col md={12}>
-                          <UnitSelector
-                            key={this.getKey()}
-                            unit_selections={this.state.unit_selections}
-                            onChange={this.unitSelected}
-                            default_unit_id={this.state.unit._id} />
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col md={3}>
-                          <Input
-                            placeholder="Level"
-                            label="Level"
-                            name="current_level"
-                            type="number"
-                            onChange={this.handleLevelChange}
-                            value={this.getLevelValue()}
-                            min="1"
-                            max={this.getMaxLevel()}/>
-                        </Col>
-                        <Col md={3}>
-                          <Input
-                            placeholder="Special Level"
-                            label="Special Level"
-                            name="current_special_level"
-                            type="number"
-                            onChange={this.handleSpecialChange}
-                            value={this.getSpecialValue()}
-                            min={this.getMaxSpecial() > 0 ? "1" : "0"}
-                            max={this.getMaxSpecial()}/>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col md={3}>
-                          <Input
-                            placeholder="HP CCs"
-                            label="HP CCs"
-                            name="current_hp_ccs"
-                            type="number"
-                            defaultValue="0"
-                            min="0"
-                            max="100"/>
-                        </Col>
-                        <Col md={3}>
-                          <Input
-                            placeholder="ATK CCs"
-                            label="ATK CCs"
-                            name="current_atk_ccs"
-                            type="number"
-                            defaultValue="0"
-                            min="0"
-                            max="100"/>
-                        </Col>
-                        <Col md={3}>
-                          <Input
-                            placeholder="RCV CCs"
-                            label="RCV CCs"
-                            name="current_rcv_ccs"
-                            type="number"
-                            defaultValue="0"
-                            min="0"
-                            max="100"/>
-                        </Col>
-                    </Row>
-                    <SocketSelections
-                      key={this.getKey()}
-                      default_sockets={this.state.default_sockets}
-                      socket_selections={this.state.socket_selections}
-                      max_sockets={this.state.unit.max_sockets}
-                    />
-                    <input type="hidden" name="account_id" value={this.state.account_id} />
-                    <input type="hidden" name="captain_id" value={this.state.captain_id} />
-              </Modal.Body>
-              <Modal.Footer>
-                  {this.state.edit ? <Button bsStyle="danger" className="deleteCaptainButton" type="button" href={'/captains/delete/' + this.state.account_id + '/' + this.state.captain_id}>Delete</Button> : <div/>}
-                  <Button bsStyle="primary" type="submit">{this.state.action_name}</Button>
-                  <Button onClick={this.close}>Cancel</Button>
-              </Modal.Footer>
-            </form>
+          <form action="/captains/add" method="POST">
+            <Modal.Header closeButton>
+              <Modal.Title>{this.state.title}</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <Row>
+                <Col md={12}>
+                  <UnitSelector
+                    key={this.getKey()}
+                    unit_selections={this.state.unit_selections}
+                    onChange={this.unitSelected}
+                    default_unit_id={this.state.unit._id}
+                  />
+                </Col>
+              </Row>
+              <Row>
+                <Col md={3}>
+                  <Input
+                    placeholder="Level"
+                    label="Level"
+                    name="current_level"
+                    type="number"
+                    onChange={this.handleLevelChange}
+                    value={this.getLevelValue()}
+                    min="1"
+                    max={this.getMaxLevel()}
+                  />
+                </Col>
+                <Col md={3}>
+                  <Input
+                    placeholder="Special Level"
+                    label="Special Level"
+                    name="current_special_level"
+                    type="number"
+                    onChange={this.handleSpecialChange}
+                    value={this.getSpecialValue()}
+                    min={this.getMaxSpecial() > 0 ? '1' : '0'}
+                    max={this.getMaxSpecial()}
+                  />
+                </Col>
+              </Row>
+              <Row>
+                <Col md={3}>
+                  <Input
+                    placeholder="HP CCs"
+                    label="HP CCs"
+                    name="current_hp_ccs"
+                    type="number"
+                    defaultValue="0"
+                    min="0"
+                    max="100"
+                  />
+                </Col>
+                <Col md={3}>
+                  <Input
+                    placeholder="ATK CCs"
+                    label="ATK CCs"
+                    name="current_atk_ccs"
+                    type="number"
+                    defaultValue="0"
+                    min="0"
+                    max="100"
+                  />
+                </Col>
+                <Col md={3}>
+                  <Input
+                    placeholder="RCV CCs"
+                    label="RCV CCs"
+                    name="current_rcv_ccs"
+                    type="number"
+                    defaultValue="0"
+                    min="0"
+                    max="100"
+                  />
+                </Col>
+              </Row>
+              <SocketSelections
+                key={this.getKey()}
+                default_sockets={this.state.default_sockets}
+                socket_selections={this.state.socket_selections}
+                max_sockets={this.state.unit.max_sockets}
+              />
+              <input type="hidden" name="account_id" value={this.state.account_id} />
+              <input type="hidden" name="captain_id" value={this.state.captain_id} />
+            </Modal.Body>
+            <Modal.Footer>
+              {this.state.edit ? <Button bsStyle="danger" className="deleteCaptainButton" type="button" href={`/captains/delete/${this.state.account_id}/${this.state.captain_id}`}>Delete</Button> : <div />}
+              <Button bsStyle="primary" type="submit">{this.state.action_name}</Button>
+              <Button onClick={this.close}>Cancel</Button>
+            </Modal.Footer>
+          </form>
         </Modal>
       </div>
     );
