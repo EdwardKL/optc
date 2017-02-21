@@ -44,7 +44,6 @@ class Home extends React.Component {
           <div id="news">
             <h3>News</h3>
             2017/02/20 - Open for Beta! There might be a few bugs left, but for the most part things should be stable.
-            2016/09/01 - Open for Alpha!
           </div>
         </div>
       </Grid>);
