@@ -12,7 +12,7 @@ class Unit extends Component {
   }
 
   render() {
-    return (<Button bsStyle="link" href={`/unit/${this.state.id}`}>
+    return (<Button bsStyle="link" href={`/unit/${this.state.id}/${this.state.name.replace(/[/.]/g, '').replace(/[ ]/g, '_').trim()}`}>
       <div className="unitThumb">
         <span className="unitThumbName">{wrapText(this.state.name)}</span>
         <div className="unitThumbImage" style={this.state.backgroundStyle}>

@@ -8,3 +8,4 @@ public/*
 static/dist
 static/css/app.min.css
 coverage/
+newrelic_agent.log
