@@ -165,7 +165,7 @@ app.use((req, res) => {
     }
 
     // This is an OAuth user with no username set yet. Redirect to get a username.
-    if (req.user && (!req.user.username || req.user.username.length === 0) && req.url.indexOf('/auth/oauth-signup') !== -1) {
+    if (req.user && (!req.user.username || req.user.username.length === 0) && req.url.indexOf('/auth/oauth-signup') === -1) {
       req.flash('info_message', 'You need a username to proceed.');
       return res.redirect('/auth/oauth-signup');
     }
