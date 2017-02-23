@@ -1,29 +1,15 @@
 import React from 'react';
-import { Link } from 'react-router';
-import { Grid, Row, Col, Panel, Pagination, Button, Well, Label, Input, ButtonInput, MenuItem } from 'react-bootstrap';
-import { LinkContainer } from 'react-router-bootstrap';
+import { Grid, Row, Col, Input, Button } from 'react-bootstrap';
+import UsernameInput from '../../components/User/UsernameInput';
 
 class Signup extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {};
-    this.state.username = '';
     this.state.password = '';
     this.state.password_confirmation = '';
-    this.handleInputUserName = this.handleInputUserName.bind(this);
     this.handleInputPassword = this.handleInputPassword.bind(this);
     this.handleInputConfirmation = this.handleInputConfirmation.bind(this);
-  }
-
-  handleInputUserName(e) {
-    this.setState({ username: e.target.value });
-  }
-  validateUserName() {
-    const length = this.state.username.length;
-    if (this.state.username.length > 0) {
-      if (length > 1 && /^[a-zA-Z\-_0-9]+$/.test(this.state.username)) return 'success';
-      return 'error';
-    }
   }
 
   handleInputPassword(e) {
@@ -64,16 +50,7 @@ class Signup extends React.Component {
           </Col>
           <Col xs={6} id="signup-right">
             <form action="/signup" method="POST">
-              <Input
-                placeholder="User Name"
-                onChange={this.handleInputUserName}
-                bsStyle={this.validateUserName()}
-                hasFeedback
-                label="User Name"
-                name="username"
-                help="This name will be displayed to other users."
-                type="text"
-              />
+              <UsernameInput help="This name will be displayed to other users." />
               <br />
               <Input
                 placeholder="Enter Password"

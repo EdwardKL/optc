@@ -98,7 +98,7 @@ exports.delete = function delete_user(req, res, next) {
   UserModel.findByIdAndRemove(req.user._id, (err, user) => {
     // In case of any error return
     if (err) {
-      console.log('Error deleting user: ' + err);
+      console.log(`Error deleting user: ${err}`);
       req.flash('error_message', getErrorMessage(ERROR_CODES.USERS_DELETE_ERROR_1));
       res.redirect('/signup');
       next();
