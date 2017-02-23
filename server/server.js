@@ -1,4 +1,3 @@
-require('newrelic');
 import Express from 'express';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
@@ -62,6 +61,7 @@ app.use(flash());
 // passport stuff
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
 const passport = require('passport');
 
 passport.serializeUser((user, done) => {
@@ -75,9 +75,10 @@ passport.deserializeUser((id, done) => {
 
 app.use(cookieParser());
 app.use(session({
-  secret: 'secret',
-  resave: true,
-  saveUninitialized: true,
+  store: new MongoStore({ mongooseConnection: mongoose.connection }),
+  secret: process.env.COOKIE_SECRET,
+  resave: false,
+  saveUninitialized: false,
 }));
 app.use(passport.initialize());
 app.use(passport.session());
@@ -232,5 +233,9 @@ app.listen(process.env.PORT || serverConfig.port, (error) => {
     console.log(`OPTC Ohara is running on port: ${serverConfig.port}!`); // eslint-disable-line
   }
 });
+
+// Require this at the end. We just need the availability checks, we don't need
+// to instrument anything - that would take too long for boot.
+require('newrelic');
 
 export default app;
