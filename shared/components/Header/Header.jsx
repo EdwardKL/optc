@@ -17,10 +17,10 @@ export class Header extends React.Component {
   }
 
   render() {
-    var links = [];
+    let links = [];
     links.push(<NavItem href="/signup" key="1">Sign Up</NavItem>);
     links.push(<NavItem href="https://github.com/EdwardKL/optc/issues" key="6">Report Bugs</NavItem>);
-    var right_element =
+    let right_element =
       (<Navbar.Form pullRight id="login-bar">
         <form action="/login" method="POST">
           <Input
@@ -51,7 +51,7 @@ export class Header extends React.Component {
           <Navbar id="header-bar">
             <Navbar.Header>
               <Navbar.Brand>
-                <a href="/"><div className="nav navbar-nav" id="navbar-image"></div><span id="brand">Ohara</span></a>
+                <a href="/"><div className="nav navbar-nav" id="navbar-image" /><span id="brand">Ohara</span></a>
               </Navbar.Brand>
               <Navbar.Toggle />
             </Navbar.Header>
@@ -76,7 +76,7 @@ export class Header extends React.Component {
             style={this.adStyle}
             data-ad-client="ca-pub-3382549750623853"
             data-ad-slot="6299615170"
-          ></ins>
+          />
         </Row>
       </Grid>
     );

@@ -3,6 +3,8 @@ import { Panel, Row, Col, Button, Modal, OverlayTrigger, Tooltip } from 'react-b
 import AccountEditor from '../../components/Account/AccountEditor';
 import CaptainEditor from '../../components/Captain/CaptainEditor';
 import Captain from '../../components/Captain/Captain';
+import { padNumber } from '../../utils';
+
 
 // TODO: Maybe move this to a library.
 String.prototype.capitalizeFirstLetter = function () {
@@ -41,9 +43,11 @@ class Account extends Component {
     const editor = (<Col xs={1}>
       <CaptainEditor edit={false} account_id={this.state.account._id}>
         <OverlayTrigger placement="top" overlay={disabledAddAccountTooltip}>
-          <Button bsStyle="primary"
-                  className="addCaptainButton"
-                  disabled={this.accountHasMaxCaptains()}>
+          <Button
+            bsStyle="primary"
+            className="addCaptainButton"
+            disabled={this.accountHasMaxCaptains()}
+          >
             Add Captain
           </Button>
         </OverlayTrigger>
@@ -59,9 +63,11 @@ class Account extends Component {
         />
       </Row>
       <Row>
-        <Button bsStyle="danger"
-                className="deleteAccountButton"
-                onClick={this.open}>
+        <Button
+          bsStyle="danger"
+          className="deleteAccountButton"
+          onClick={this.open}
+        >
           Delete
         </Button>
         <Modal show={this.state.showModal} onHide={this.close}>
@@ -69,8 +75,10 @@ class Account extends Component {
             <h4> Are you sure you want to delete your account? </h4>
           </Modal.Body>
           <Modal.Footer>
-            <Button bsStyle="danger"
-                    href={'/accounts/delete/id'.replace('id', this.state.account._id)}>Yes</Button>
+            <Button
+              bsStyle="danger"
+              href={'/accounts/delete/id'.replace('id', this.state.account._id)}
+            >Yes</Button>
             <Button onClick={this.close}>No</Button>
           </Modal.Footer>
         </Modal>
@@ -82,16 +90,16 @@ class Account extends Component {
           <div className="accountInfo">
             <span className="crewName">{this.state.account.crew_name}</span>
             <span className="pirateLevel">Level {this.state.account.pirate_level}</span>
-            <span className="friendID">{this.state.account.friend_id}</span>
+            <span className="friendID">{padNumber(this.state.account.friend_id)}</span>
             <span className="region">{this.state.account.region.capitalizeFirstLetter()}</span>
           </div>
         </Col>
         <Col xs={this.state.edit ? 9 : 10}>
           {this.state.account._captains.map((captain) => {
-            return <Captain edit={this.state.edit} captain_data={captain} account_id={this.state.account._id} key={captain._id}/>;
+            return <Captain edit={this.state.edit} captain_data={captain} account_id={this.state.account._id} key={captain._id} />;
           })}
         </Col>
-        {this.state.edit ? editor : <div/>}
+        {this.state.edit ? editor : <div />}
       </Panel>
     );
   }

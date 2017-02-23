@@ -35,48 +35,51 @@ class AccountEditor extends Component {
         <Modal show={this.state.showModal} onHide={this.close}>
           <form action="/accounts/add" method="POST">
             <Modal.Header closeButton>
-                <Modal.Title>{this.state.title}</Modal.Title>
+              <Modal.Title>{this.state.title}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <Row>
-                  <Col xs={12}>
-                    <Input
-                      placeholder="Crew Name"
-                      label="Crew Name"
-                      name="crew_name"
-                      help="Helps others make sure they added the right account."
-                      defaultValue={this.state.default_crew_name}
-                      type="text"/>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col xs={3}>
-                    <Input
-                      placeholder="Friend ID"
-                      label="Friend ID"
-                      name="friend_id"
-                      type="number"
-                      defaultValue={this.state.default_friend_id}
-                      min="100000000"
-                      max="999999999"/>
-                  </Col>
-                  <Col xs={3}>
-                    <Input
-                      placeholder="Pirate Level"
-                      label="Pirate Level"
-                      name="pirate_level"
-                      type="number"
-                      defaultValue={this.state.default_pirate_level}
-                      min="1"/>
-                  </Col>
-                  <Col xs={3}>
-                    <Input type="select" label="Region" placeholder="global" defaultValue={this.state.default_region} name="region">
-                      <option value="global">Global</option>
-                      <option value="japan">Japan</option>
-                    </Input>
-                    <input type="hidden" name="account_id" value={this.state.account_id} />
-                  </Col>
-                </Row>
+              <Row>
+                <Col xs={12}>
+                  <Input
+                    placeholder="Crew Name"
+                    label="Crew Name"
+                    name="crew_name"
+                    help="Helps others make sure they added the right account."
+                    defaultValue={this.state.default_crew_name}
+                    type="text"
+                  />
+                </Col>
+              </Row>
+              <Row>
+                <Col xs={3}>
+                  <Input
+                    placeholder="Friend ID"
+                    label="Friend ID"
+                    name="friend_id"
+                    type="number"
+                    defaultValue={this.state.default_friend_id}
+                    min="000000000"
+                    max="999999999"
+                  />
+                </Col>
+                <Col xs={3}>
+                  <Input
+                    placeholder="Pirate Level"
+                    label="Pirate Level"
+                    name="pirate_level"
+                    type="number"
+                    defaultValue={this.state.default_pirate_level}
+                    min="1"
+                  />
+                </Col>
+                <Col xs={3}>
+                  <Input type="select" label="Region" placeholder="global" defaultValue={this.state.default_region} name="region">
+                    <option value="global">Global</option>
+                    <option value="japan">Japan</option>
+                  </Input>
+                  <input type="hidden" name="account_id" value={this.state.account_id} />
+                </Col>
+              </Row>
             </Modal.Body>
             <Modal.Footer>
               <Button bsStyle="primary" type="submit">{this.state.action_name}</Button>

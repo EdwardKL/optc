@@ -1,10 +1,11 @@
 import React from 'react';
 
+// Adds commas to the number.
 export function formatNumber(num) {
   const str_num = String(num);
-  var result = '';
-  var index = str_num.length - 1;
-  var count = 0;
+  let result = '';
+  let index = str_num.length - 1;
+  let count = 0;
   while (index >= 0) {
     count += 1;
     const char = str_num[index];
@@ -16,6 +17,14 @@ export function formatNumber(num) {
     index -= 1;
   }
   return result;
+}
+
+// Pads the given number to 9 digits.
+export function padNumber(num) {
+  const str_num = String(num);
+  if (str_num.length === 9) return str_num;
+  const num_leading_zeroes = 9 - str_num.length;
+  return '0'.repeat(num_leading_zeroes) + str_num;
 }
 
 export function getUnitThumbnailUrl(id) {

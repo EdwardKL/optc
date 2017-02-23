@@ -14,7 +14,7 @@ function validateRequest(req, res, next) {
     next();
     return false;
   }
-  if (req.body.friend_id < 100000000 || req.body.friend_id > 999999999) {
+  if (req.body.friend_id > 999999999) {
     req.flash('error_message', 'Invalid friend ID.');
     res.redirect('/account');
     next();
@@ -57,9 +57,9 @@ exports.get = function get(req, res, next) {
   UserModel
     .findOne({ username })
     .populate({ path: '_accounts',
-                populate: {
-                  path: '_captains',
-                  model: 'Captain' } })
+      populate: {
+        path: '_captains',
+        model: 'Captain' } })
     .exec((err, user) => {
       if (err) throw err;
       user.clearSensitiveData();
@@ -110,7 +110,15 @@ exports.add = function add(req, res, next) {
     if (edit) {
       callback();
     } else {
-      user.update({ $push: { _accounts: account._id } }, callback);
+      AccountModel.findOne({ friend_id: account.friend_id }, (err, found_account) => {
+        if (found_account) {
+          req.flash('error_message', 'There already is an account with that friend ID!');
+          res.redirect('/account');
+          next();
+          return;
+        }
+        user.update({ $push: { _accounts: account._id } }, callback);
+      });
     }
   });
 };

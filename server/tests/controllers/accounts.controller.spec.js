@@ -121,11 +121,6 @@ describe('AccountsController.add account validation', () => {
     AccountsController.add(req, res, expectRedirectWithMessage(done, 'Empty fields are not allowed.'));
   });
 
-  it('should reject < 1e8 friend ids', (done) => {
-    req.setBody({ friend_id: 1e8 - 1, pirate_level: valid_pirate_level, region: valid_region });
-    AccountsController.add(req, res, expectRedirectWithMessage(done, 'Invalid friend ID.'));
-  });
-
   it('should reject >= 1e9 friend ids', (done) => {
     req.setBody({ friend_id: 1e9, pirate_level: valid_pirate_level, region: valid_region });
     AccountsController.add(req, res, expectRedirectWithMessage(done, 'Invalid friend ID.'));
@@ -172,7 +167,7 @@ describe('AccountsController db tests', () => {
     _id: new mongoose.Types.ObjectId(),
     region: 'global',
     crew_name: 'testcrew0',
-    friend_id: 100000000,
+    friend_id: 1,
     pirate_level: 7,
     _captains: [],
   };
@@ -433,6 +428,97 @@ describe('AccountsController db tests', () => {
             });
           });
         });
+    });
+  });
+});
+
+describe('AccountsController duplicate account test', () => {
+  const user1_id = new mongoose.Types.ObjectId();
+  const user2_id = new mongoose.Types.ObjectId();
+  const account = {
+    _id: new mongoose.Types.ObjectId(),
+    region: 'global',
+    crew_name: 'testcrew0',
+    friend_id: valid_friend_id,
+    pirate_level: 7,
+    _captains: [],
+  };
+
+  const display_name1 = 'AccountsControllerGetUser';
+  const display_name2 = 'AccountsControllerGetUser2';
+  const username1 = 'accountscontrollergetuser';
+  const username2 = 'accountscontrollergetuser2';
+  const password = 'pass';
+  const salt = 'salt';
+  const user1 = {
+    _id: user1_id,
+    username1,
+    display_name1,
+    password,
+    salt,
+    _accounts: [account._id],
+  };
+  const user2 = {
+    _id: user2_id,
+    username2,
+    display_name2,
+    password,
+    salt,
+    _accounts: [],
+  };
+  const req = new RequestMock();
+  const res = new ResponseMock();
+
+  beforeEach('Store data', function beforeEach(done) {  // eslint-disable-line prefer-arrow-callback
+    connectToTestDB(() => {
+      const db_user1 = new UserModel(user1);
+      const db_user2 = new UserModel(user2);
+      const db_account = new AccountModel(account);
+      db_user1.save((e0) => {
+        if (e0) throw e0;
+        db_user2.save((e1) => {
+          if (e1) throw e1;
+          db_account.save((e2) => {
+            if (e2) throw e2;
+            done();
+          });
+        });
+      });
+    });
+  });
+
+  afterEach(function afterEach(done) {  // eslint-disable-line prefer-arrow-callback
+    dropTestDB(done);
+  });
+
+  function expectDBUnchanged(cb) {
+    UserModel
+      .findById(user1_id)
+      .exec((err, u1) => {
+        if (err) throw err;
+        expect(u1._accounts).to.have.lengthOf(1);
+        expect(u1._accounts[0].toString().valueOf()).to.equal(account._id.toString().valueOf());
+        expect(u1.password).to.equal(password);
+        expect(u1.salt).to.equal(salt);
+        UserModel
+          .findById(user2_id)
+          .exec((err2, u2) => {
+            if (err2) throw err2;
+            expect(u2._accounts).to.have.lengthOf(0);
+            expect(u2.password).to.equal(password);
+            expect(u2.salt).to.equal(salt);
+            cb();
+          });
+      });
+  }
+
+  it('.add should fail if friend id already exists', (done) => {
+    req.setBody(valid_account_add_request);
+    req.login({ _id: user2_id });
+    AccountsController.add(req, res, () => {
+      expect(req.getFlash('error_message')).to.equal('There already is an account with that friend ID!');
+      expect(res.getRedirectPath()).to.equal('/account');
+      expectDBUnchanged(done);
     });
   });
 });
