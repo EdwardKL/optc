@@ -1,6 +1,8 @@
 import React, { PropTypes } from 'react';
 import { Alert, Grid, Row, Nav, Navbar, NavItem, Input, Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
+import UsernameInput from '../../components/User/UsernameInput';
+import PasswordInput from '../../components/User/PasswordInput';
 
 export class Header extends React.Component {
   constructor(props, context) {
@@ -23,18 +25,8 @@ export class Header extends React.Component {
     let right_element =
       (<Navbar.Form pullRight id="login-bar">
         <form action="/login" method="POST">
-          <Input
-            placeholder="User Name"
-            bsSize="small"
-            name="username"
-            type="text"
-          />
-          <Input
-            placeholder="Password"
-            bsSize="small"
-            name="password"
-            type="password"
-          />
+          <UsernameInput bsSize="small" labeled={false} />
+          <PasswordInput bsSize="small" labeled={false} />
           <Button bsStyle="primary" bsSize="small" type="submit">Login</Button>
         </form>
       </Navbar.Form>);
