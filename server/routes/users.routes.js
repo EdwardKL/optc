@@ -4,7 +4,14 @@ import users from '../controllers/users.controller';
 
 module.exports = function user_routes(app) {
   // Auth
-  app.route('/signup').post(passport.authenticate('register', { successRedirect: '/', failureRedirect: '/signup', failureFlash: true }));
+  app.route('/signup').post((req, res, next) => {
+    if (!req.body.password || !req.body.username || req.body.password === '' || req.body.username === '') {
+      req.flash('error_message', 'Please enter both a username and password to signup.');
+      res.redirect('/signup');
+      return;
+    }
+    next();
+  }, passport.authenticate('register', { successRedirect: '/', failureRedirect: '/signup', failureFlash: true }));
 
   app.route('/login').post((req, res, next) => {
     if (!req.body.password || !req.body.username || req.body.password === '' || req.body.username === '') {

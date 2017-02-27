@@ -1,63 +1,55 @@
 import expect from 'expect';
 import TestUtils from 'react-addons-test-utils';
-import { Header } from '../../../components/Header/Header';
 import React from 'react';
 import expectJSX from 'expect-jsx';
-import { Link } from 'react-router';
-import { Alert, Grid, Row, Col, Button, Input, Nav, Navbar, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
+import { Alert, Grid, Row, Button, Nav, Navbar, NavItem } from 'react-bootstrap';
+import { Header } from '../../../components/Header/Header';
+import UsernameInput from '../../../components/User/UsernameInput';
+import PasswordInput from '../../../components/User/PasswordInput';
 
 expect.extend(expectJSX);
 
 const adStyle = { display: 'inline-block', width: '730px', height: '92px', lineHeight: '92px' };
 describe('header component signed out test', () => {
-  var getExpectedJSX = function (alerts) {
+  const getExpectedJSX = function (alerts) {
     // Just FYI, if you put <Grid> on the next line, this will crash. = =
     return (<Grid>
-            <Row>
-              <Navbar id="header-bar">
-                <Navbar.Header>
-                  <Navbar.Brand>
-                    <a href="/"><div className="nav navbar-nav" id="navbar-image"></div><span id="brand">Ohara</span></a>
-                  </Navbar.Brand>
-                  <Navbar.Toggle />
-                </Navbar.Header>
-                <Navbar.Collapse>
-                  <Nav>
-                    <NavItem href="/friend_finder" key="0">Friend Finder</NavItem>
-                    <NavItem href="/units" key="5">Units</NavItem>
-                    <NavItem href="/signup" key="1">Sign Up</NavItem>
-                    <NavItem href="https://github.com/EdwardKL/optc/issues" key="6">Report Bugs</NavItem>
-                  </Nav>
-                  <Navbar.Form pullRight id="login-bar">
-                    <form action="/login" method="POST">
-                      <Input
-                        placeholder="User Name"
-                        bsSize="small"
-                        name="username"
-                        type="text"
-                      />
-                      <Input
-                        placeholder="Password"
-                        bsSize="small"
-                        name="password"
-                        type="password"
-                      />
-                      <Button bsStyle="primary" bsSize="small" type="submit">Login</Button>
-                    </form>
-                  </Navbar.Form>
-                </Navbar.Collapse>
-              </Navbar>
-            </Row>
-            {alerts}
-            <Row><div id="grejvg34598fj34789fju">Please consider supporting Ohara by disabling adblock.</div></Row>
-            <Row id="gjeofh28348f32">
-              <ins className="adsbygoogle"
-                style={adStyle}
-                data-ad-client="ca-pub-3382549750623853"
-                data-ad-slot="6299615170"
-              ></ins>
-            </Row>
-          </Grid>);
+      <Row>
+        <Navbar id="header-bar">
+          <Navbar.Header>
+            <Navbar.Brand>
+              <a href="/"><div className="nav navbar-nav" id="navbar-image" /><span id="brand">Ohara</span></a>
+            </Navbar.Brand>
+            <Navbar.Toggle />
+          </Navbar.Header>
+          <Navbar.Collapse>
+            <Nav>
+              <NavItem href="/friend_finder" key="0">Friend Finder</NavItem>
+              <NavItem href="/units" key="5">Units</NavItem>
+              <NavItem href="/signup" key="1">Sign Up</NavItem>
+              <NavItem href="https://github.com/EdwardKL/optc/issues" key="6">Report Bugs</NavItem>
+            </Nav>
+            <Navbar.Form pullRight id="login-bar">
+              <form action="/login" method="POST">
+                <UsernameInput bsSize="small" labeled={false} />
+                <PasswordInput bsSize="small" labeled={false} />
+                <Button bsStyle="primary" bsSize="small" type="submit">Login</Button>
+              </form>
+            </Navbar.Form>
+          </Navbar.Collapse>
+        </Navbar>
+      </Row>
+      {alerts}
+      <Row><div id="grejvg34598fj34789fju">Please consider supporting Ohara by disabling adblock.</div></Row>
+      <Row id="gjeofh28348f32">
+        <ins
+          className="adsbygoogle"
+          style={adStyle}
+          data-ad-client="ca-pub-3382549750623853"
+          data-ad-slot="6299615170"
+        />
+      </Row>
+    </Grid>);
   };
 
   it('should render the header when signed out properly', () => {
@@ -88,8 +80,8 @@ describe('header component signed out test', () => {
     const output = renderer.getRenderOutput();
     expect(output).toEqualJSX(getExpectedJSX(
       <Row>
-          <div />
-          <Alert bsStyle="danger" id="error-alert">{error_message}</Alert>
+        <div />
+        <Alert bsStyle="danger" id="error-alert">{error_message}</Alert>
       </Row>));
   });
 
@@ -102,15 +94,15 @@ describe('header component signed out test', () => {
     const output = renderer.getRenderOutput();
     expect(output).toEqualJSX(getExpectedJSX(
       <Row>
-          <Alert bsStyle="info" id="info-alert">{info_message}</Alert>
-          <Alert bsStyle="danger" id="error-alert">{error_message}</Alert>
+        <Alert bsStyle="info" id="info-alert">{info_message}</Alert>
+        <Alert bsStyle="danger" id="error-alert">{error_message}</Alert>
       </Row>));
   });
 });
 
 
 describe('header component signed in test', () => {
-  var user = { display_name: 'Test_Display_Name' };
+  const user = { display_name: 'Test_Display_Name' };
 
   it('should render the header when signed in properly', () => {
     const renderer = TestUtils.createRenderer();
@@ -123,7 +115,7 @@ describe('header component signed in test', () => {
           <Navbar id="header-bar">
             <Navbar.Header>
               <Navbar.Brand>
-                <a href="/"><div className="nav navbar-nav" id="navbar-image"></div><span id="brand">Ohara</span></a>
+                <a href="/"><div className="nav navbar-nav" id="navbar-image" /><span id="brand">Ohara</span></a>
               </Navbar.Brand>
               <Navbar.Toggle />
             </Navbar.Header>
@@ -147,11 +139,12 @@ describe('header component signed in test', () => {
         </Row>
         <Row><div id="grejvg34598fj34789fju">Please consider supporting Ohara by disabling adblock.</div></Row>
         <Row id="gjeofh28348f32">
-          <ins className="adsbygoogle"
+          <ins
+            className="adsbygoogle"
             style={adStyle}
             data-ad-client="ca-pub-3382549750623853"
             data-ad-slot="6299615170"
-          ></ins>
+          />
         </Row>
       </Grid>
     );

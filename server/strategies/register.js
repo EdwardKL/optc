@@ -1,12 +1,12 @@
-var passport = require('passport'),
+let passport = require('passport'),
   LocalStrategy = require('passport-local').Strategy,
   User = require('mongoose').model('User');
 
 module.exports = function () {
   passport.use('register', new LocalStrategy({
-    passReqToCallback: true
+    passReqToCallback: true,
   },
-    function (req, username, password, done) {
+    (req, username, password, done) => {
       // Validation
       if (username.length <= 1) {
         return done(null, false, req.flash('error_message', 'Usernames must be at least 2 characters long.'));
@@ -17,43 +17,42 @@ module.exports = function () {
       if (password.length <= 3) {
         return done(null, false, req.flash('error_message', 'Passwords must be at least 4 characters long.'));
       }
-      var password_confirmation = req.body['password_confirmation'];
+      const password_confirmation = req.body.password_confirmation;
       if (password !== password_confirmation) {
         return done(null, false, req.flash('error_message', 'Password confirmation does not match.'));
       }
-      var findOrCreateUser = function () {
+      const findOrCreateUser = function () {
         // find a user in Mongo with provided username
-        User.findByUsername(username, function (err, user) {
+        User.findByUsername(username, (err, user) => {
           // In case of any error return
           /* istanbul ignore if */
           if (err) {
-            console.log('Registration error: ' + err);
+            console.log(`Registration error: ${err}`);
             return done(err);
           }
           // already exists
           if (user) {
             return done(null, false, req.flash('error_message', 'User already exists.'));
-          } else {
-            var user = new User({
-              ...req.body,
-              display_name: username,
-            });
-            user.updateCredentials();
-            user.is_local = true;
-            var message = null;
-            console.log(user);
-            // Then save the user
-            user.save(function (err) {
-              /* istanbul ignore if */
-              if (err) {
-                console.log('Error saving user: ' + err);
-                throw err;
-              } else {
-                console.log('Registration successful');
-                return done(null, user);
-              }
-            });
           }
+          var user = new User({
+            ...req.body,
+            display_name: username,
+          });
+          user.updateCredentials();
+          user.is_local = true;
+          const message = null;
+          console.log(user);
+            // Then save the user
+          user.save((err) => {
+              /* istanbul ignore if */
+            if (err) {
+              console.log(`Error saving user: ${err}`);
+              throw err;
+            } else {
+              console.log('Registration successful');
+              return done(null, user);
+            }
+          });
         });
       };
 

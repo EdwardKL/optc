@@ -78,9 +78,9 @@ PasswordInput.defaultProps = {
 };
 
 PasswordInput.propTypes = {
-  passwordHelp: PropTypes.string.isRequired,
+  passwordHelp: PropTypes.string,
   bsSize: PropTypes.string,
-  needsConfirmation: PropTypes.bool.isRequired,
+  needsConfirmation: PropTypes.bool,
   labeled: PropTypes.bool,
 };
 
