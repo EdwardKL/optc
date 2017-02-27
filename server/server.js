@@ -3,37 +3,59 @@ import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import path from 'path';
 
+
+// React And Redux Setup
+import { Provider } from 'react-redux';
+import React from 'react';
+import { renderToString } from 'react-dom/server';
+import { match, RouterContext } from 'react-router';
+import { configureStore } from '../shared/redux/store/configureStore';
+
+// Models
+import './models/captain';
+import './models/captain_ability';
+import './models/special';
+import './models/unit';
+import User from './models/user';
+
 import { SE_PARAM } from '../constants/common';
 
-// Webpack Requirements
-import webpack from 'webpack';
-import config from '../webpack.config.dev';
-import webpackDevMiddleware from 'webpack-dev-middleware';
-import webpackHotMiddleware from 'webpack-hot-middleware';
+// Import required modules
+import routes from '../shared/routes';
+import { fetchComponentData, getGlobbedFiles } from './util/server_utils';
+import serverConfig from './config';
+
+import flash from 'connect-flash';
+
+// passport stuff
+import cookieParser from 'cookie-parser';
+import session from 'express-session';
+import passport from 'passport';
+
+import Header from '../shared/components/Header/Header';
+import Footer from '../shared/components/Footer/Footer';
+import unit_selections from '../data/unit_selections.json';
+import socket_selections from '../data/socket_selections.json';
+
+const MongoStore = require('connect-mongo')(session);
 
 // Initialize the Express App
 const app = new Express();
 console.log('App initialized.');
 let production = true;
 if (process.env.NODE_ENV !== 'production') {
+  // Webpack Requirements
+  const webpack = require('webpack'); // eslint-disable-line global-require
+  const webpackDevMiddleware = require('webpack-dev-middleware'); // eslint-disable-line global-require
+  const webpackHotMiddleware = require('webpack-hot-middleware'); // eslint-disable-line global-require
+  const config = require('../webpack.config.dev'); // eslint-disable-line global-require
+
   console.log('Not running production, disabling ads. Environment: ', process.env.NODE_ENV);
   production = false;
   const compiler = webpack(config);
   app.use(webpackDevMiddleware(compiler, { noInfo: true, publicPath: config.output.publicPath }));
   app.use(webpackHotMiddleware(compiler));
 }
-
-// React And Redux Setup
-import { configureStore } from '../shared/redux/store/configureStore';
-import { Provider } from 'react-redux';
-import React from 'react';
-import { renderToString } from 'react-dom/server';
-import { match, RouterContext } from 'react-router';
-
-// Import required modules
-import routes from '../shared/routes';
-import { fetchComponentData, getGlobbedFiles } from './util/server_utils';
-import serverConfig from './config';
 
 // MongoDB Connection
 mongoose.connect(serverConfig.mongoURL, (error) => {
@@ -44,25 +66,11 @@ mongoose.connect(serverConfig.mongoURL, (error) => {
   }
 });
 
-require('./models/captain');
-require('./models/captain_ability');
-require('./models/special');
-require('./models/unit');
-import User from './models/user';
-
 // Apply body Parser and server public assets and routes
 app.use(bodyParser.json({ limit: '20mb' }));
 app.use(bodyParser.urlencoded({ limit: '20mb', extended: false }));
 app.use(Express.static(path.resolve(__dirname, '../static')));
-
-const flash = require('connect-flash');
 app.use(flash());
-
-// passport stuff
-const cookieParser = require('cookie-parser');
-const session = require('express-session');
-const MongoStore = require('connect-mongo')(session);
-const passport = require('passport');
 
 passport.serializeUser((user, done) => {
   done(null, user._id);
@@ -94,8 +102,6 @@ getGlobbedFiles('./server/routes/*.routes.js').forEach((route) => {
   require(path.resolve(route))(app);
 });
 
-import Header from '../shared/components/Header/Header';
-import Footer from '../shared/components/Footer/Footer';
 // Render Initial HTML
 /* istanbul ignore next */
 const renderFullPage = (body_html, initialState) => {
@@ -148,8 +154,6 @@ const renderFullPage = (body_html, initialState) => {
 
 const protected_paths = ['/account', '/posts/api/post'];
 
-import unit_selections from '../data/unit_selections.json';
-import socket_selections from '../data/socket_selections.json';
 // Server Side Rendering based on routes matched by React-router.
 /* istanbul ignore next server is hard to test */
 app.use((req, res) => {
@@ -193,7 +197,6 @@ app.use((req, res) => {
     initialState.identity.user = user;
     const info_message = req.flash('info_message')[0];
     let error_message = req.flash('error_message')[0];
-    console.log('error_message: ', error_message);
     // Find the optional error param if present.
     if (!error_message && req.url.indexOf(SE_PARAM) !== -1) {
       error_message = 'You must sign in to do that.';
