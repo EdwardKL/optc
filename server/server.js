@@ -61,7 +61,7 @@ app.use(flash());
 // passport stuff
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
-// const MongoStore = require('connect-mongo')(session);
+const MongoStore = require('connect-mongo')(session);
 const passport = require('passport');
 
 passport.serializeUser((user, done) => {
@@ -75,10 +75,10 @@ passport.deserializeUser((id, done) => {
 
 app.use(cookieParser());
 app.use(session({
-  // store: new MongoStore({ mongooseConnection: mongoose.connection }),
-  secret: 'secret', // process.env.COOKIE_SECRET,
-  resave: true,
-  saveUninitialized: true,
+  store: new MongoStore({ mongooseConnection: mongoose.connection }),
+  secret: process.env.COOKIE_SECRET,
+  resave: false,
+  saveUninitialized: false,
 }));
 app.use(passport.initialize());
 app.use(passport.session());
