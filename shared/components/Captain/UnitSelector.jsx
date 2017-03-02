@@ -33,15 +33,10 @@ class UnitSelector extends Component {
       <Select name="unit_id"
               options={options}
               value={this.state.default_unit_id}
-              onChange={this.handleChange}>
+              onChange={this.handleChange}
+              className="captainEditorSelector">
       </Select>
       </Row>
-
-      // <Input type="select" label="Unit" placeholder="global" defaultValue={this.state.default_unit_id} onChange={this.state.onChange} name="unit_id" required>
-      //   {this.state.unit_selections.map(function (unit) {
-      //     return <option value={unit._id} key={unit._id}>{String(unit._id) + '. ' + unit.name}</option>;
-      //   })}
-      // </Input>
     );
   }
 }
