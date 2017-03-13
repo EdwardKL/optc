@@ -3,7 +3,6 @@ import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import path from 'path';
 
-
 // React And Redux Setup
 import { Provider } from 'react-redux';
 import React from 'react';

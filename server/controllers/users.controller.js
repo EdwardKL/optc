@@ -3,6 +3,8 @@ import UserModel from '../models/user';
 import { redirectIfLoggedOut, removeCaptains } from './utils';
 import { getErrorMessage } from '../../errors/error_handler';
 import ERROR_CODES from '../../constants/error_codes';
+import randtoken from 'rand-token';
+import sendMail from './mailer';
 
 exports.setUser = function setUser(req, res, next) {
   if (redirectIfLoggedOut(req, res, next)) return;
@@ -89,6 +91,62 @@ function removeAccounts(accounts, cb) {
       removeAccounts(accounts, cb);
     });
   });
+}
+
+exports.forgotPass = function forgot_pass(req, res, next) {
+  const username = UserModel.convertToUsername(req.body.username);
+  UserModel.findByUsername(username, (err, user) => {
+    if (err) {
+      console.log("User lookup error in forgot password route: ", err);
+      req.flash('error_message', getErrorMessage(ERROR_CODES.USERS_FORGOT_PASS_ERROR_1));
+      res.redirect('back');
+      next();
+      return;
+    }
+    if (!user) {
+      req.flash('error_message', "User: " + username + " not found.");
+      res.redirect('back');
+      next();
+      return;
+    }
+    if (!user.email) {
+      req.flash('error_message', "User has no associated email.");
+      res.redirect('back');
+      next();
+      return;
+    }
+    // We have an email. Generate a token.
+    const token = randtoken.generate(8);
+    user.update({ forgot_password_token: token, fpt_timestamp: Date.now }, (err2) => {
+      if (err2) {
+        console.log("User update error in forgot password route: ", err2);
+        req.flash('error_message', getErrorMessage(ERROR_CODES.USERS_FORGOT_PASS_ERROR_2));
+        res.redirect('back');
+        next();
+        return;
+      }
+      // Send an email.
+      const mailOptions = {
+        from: '"OPTC Ohara (noreply)" <' + process.env.MAIL_USER + '>',
+        to: user.email,
+        subject: "Resetting your Ohara password"
+        text: "Hi " + user.display_name + "!\n" +
+              "Please visit optc.herokuapp.com/reset_password and use your token '" + token +
+              "' to reset your password within the next 30 minutes. " +
+              "If you didn't ask for one, please ignore this email.",
+      }
+      if (!sendMail(mailOptions)) {
+        req.flash('error_message', "There was an error sending your password reset email.");
+        res.redirect('back');
+        next();
+        return;
+      }
+      req.flash('info_message', "Reset password token sent to associated email. You have 30 minutes to use this token.");
+      res.redirect('/');
+      next();
+      return;
+    });
+  }
 }
 
 // Deletes a user.

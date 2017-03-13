@@ -35,6 +35,12 @@ const ERROR_CODES = {
   USERS_DELETE_ERROR_2: {
     code: 11,
   },
+  USERS_FORGOT_PASS_ERROR_1: {
+    code: 12,
+  },
+  USERS_FORGOT_PASS_ERROR_2: {
+    code: 13,
+  },
 };
 
 export default ERROR_CODES;

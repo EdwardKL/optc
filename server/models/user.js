@@ -7,8 +7,10 @@ const Schema = mongoose.Schema;
 const userSchema = new Schema({
   username: { type: String, lowercase: true, trim: true },
   display_name: { type: String, trim: true },
-  // email: { type: String, trim: true },
+  email: { type: String, trim: true, unique: true },
   password: { type: String },
+  forgot_password_token: { type: String },
+  fpt_timestamp: { type: Date },
   salt: { type: String },
   _accounts: [{ type: Schema.Types.ObjectId, ref: 'Account' }],
   last_login: { type: Date, default: Date.now },

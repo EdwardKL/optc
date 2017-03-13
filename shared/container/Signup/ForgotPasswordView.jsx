@@ -13,14 +13,14 @@ function ForgotPassword(props) {
       </Row>
       <Row>
         <Col xs={6}>
-          <form action="/forgotpass" method="POST">
+          <form action="/auth/forgotpass" method="POST">
             <UsernameInput
               help="The email associated with this account will receive a password reset token."
             />
             <br />
             <Button bsStyle="primary" type="submit">
                 Request password reset
-              </Button>
+            </Button>
           </form>
         </Col>
       </Row>
