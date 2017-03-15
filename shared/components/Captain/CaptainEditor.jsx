@@ -60,8 +60,7 @@ export class CaptainEditor extends Component {
   }
 
   unitSelected(e) {
-    const unit = this.state.unit_selections[e.target.value - 1];
-    this.setState({ unit });
+    this.setState({ unit: this.state.unit_selections[e.value - 1] });
   }
 
   handleLevelChange(e) {

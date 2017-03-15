@@ -47,7 +47,7 @@ export class FriendFinderView extends Component {
 
   unitSelected(e) {
     this.setState({
-      unit: this.state.unit_selections[e.target.value - 1],
+      unit: this.state.unit_selections[e.value - 1],
       update: false
     });
   }
@@ -61,7 +61,6 @@ export class FriendFinderView extends Component {
 
   render() {
     let accountSet = new Set();
-
     return (
       <Grid id="content">
         <Row>
@@ -108,7 +107,7 @@ export class FriendFinderView extends Component {
         <Row>
           {this.state.friend_search_results.map( (result) => {
             let account = result.account;
-            if (!accountSet.has(account._id)) {
+            if (account && !accountSet.has(account._id)) {
               accountSet.add(account._id);
               return <Account edit={false} account_data={account} key={account._id}/>;
             }

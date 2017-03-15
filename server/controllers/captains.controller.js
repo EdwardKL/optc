@@ -30,8 +30,7 @@ function getSocketsFromRequest(req) {
 
 // Returns a captain model constructed from data in the given request.
 function getCaptainFromRequest(req, account) {
-  const id = req.body.captain_id ?
-      new mongoose.Types.ObjectId(req.body.captain_id) : new mongoose.Types.ObjectId();
+  const id = req.body.captain_id ? mongoose.Types.ObjectId(req.body.captain_id) : mongoose.Types.ObjectId();
   const captain = new CaptainModel({
     _id: id,
     current_level: req.body.current_level,
