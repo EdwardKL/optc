@@ -121,6 +121,7 @@ const renderFullPage = (body_html, initialState) => {
         <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-social/4.12.0/bootstrap-social.min.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="https://unpkg.com/react-select/dist/react-select.min.css">
         <link href='https://fonts.googleapis.com/css?family=Lato:400,300,700' rel='stylesheet' type='text/css'/>
         <link rel="shortcut icon" href="/img/robin_run.png" type="image/png" />
         ${ads}

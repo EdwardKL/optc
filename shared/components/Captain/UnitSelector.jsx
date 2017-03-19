@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { Modal, Input, Row, Col, Button } from 'react-bootstrap';
+import Select from 'react-select';
 
 class UnitSelector extends Component {
   constructor(props, context) {
@@ -8,15 +9,34 @@ class UnitSelector extends Component {
     this.state.default_unit_id = props.default_unit_id ? props.default_unit_id : 1;
     this.state.unit_selections = props.unit_selections;
     this.state.onChange = props.onChange;
+
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  handleChange(event) {
+    if (event) {
+      this.setState({default_unit_id : event.value});
+      this.state.onChange(event);
+    } else {
+      this.setState({default_unit_id : ''});
+    }
   }
 
   render() {
+    let options = [];
+    for (let i = 0; i < this.state.unit_selections.length; i++) {
+      options.push({ value: this.state.unit_selections[i]._id, label: this.state.unit_selections[i].name});
+    }
+
     return (
-      <Input type="select" label="Unit" placeholder="global" defaultValue={this.state.default_unit_id} onChange={this.state.onChange} name="unit_id" required>
-        {this.state.unit_selections.map(function (unit) {
-          return <option value={unit._id} key={unit._id}>{String(unit._id) + '. ' + unit.name}</option>;
-        })}
-      </Input>
+      <Row>
+      <Select name="unit_id"
+              options={options}
+              value={this.state.default_unit_id}
+              onChange={this.handleChange}
+              className="captainEditorSelector">
+      </Select>
+      </Row>
     );
   }
 }
