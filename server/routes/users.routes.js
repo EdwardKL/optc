@@ -34,6 +34,7 @@ module.exports = function user_routes(app) {
   app.route('/auth/forgotpass').post(users.forgotPass);
   app.route('/auth/delete').post(users.delete);
   app.route('/auth/oauth-signup').post(users.setUser);
+  app.route('/auth/set-email').post(users.setEmail);
 
   // Facebook signin routes
   /* istanbul ignore next oauth hard to test */

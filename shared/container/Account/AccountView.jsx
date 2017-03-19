@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import * as Actions from '../../redux/actions/actions';
-import { Grid, Row } from 'react-bootstrap';
+import { Grid, Row, Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import Account from '../../components/Account/Account';
 import AccountEditor from '../../components/Account/AccountEditor';
@@ -17,23 +17,27 @@ class AccountView extends React.Component {
 
   render() {
     const editor = (<div id="userButtons">
-      { this.state.user.is_local ? <PasswordEditor /> : <div/> } <UserDeleter />
+      { this.state.user.is_local ? <PasswordEditor /> : <div /> } <UserDeleter />
+    </div>);
+    const email = (<div id="accountEmail">
+      { this.state.user.is_local ? <div>{this.state.user.email ? <span>Your email: {this.state.user.email}</span> : <span>No email set.</span>} <a href="/auth/set-email">Set email</a></div> : <div />}
     </div>);
     return (
       <Grid id="content">
-          <Row id="accountHeaderRow">
-            <h2>
+        <Row id="accountHeaderRow">
+          <h2>
             {`${this.state.user.display_name}'s Accounts`}
-            </h2>
-            {this.state.edit ? editor : <div/>}
-            <hr/>
-          </Row>
-          <Row>
-            {this.state.user._accounts.map((account) => {
-              return <Account edit={this.state.edit} account_data={account} key={account._id}/>;
-            })}
-            {this.state.edit ? <AccountEditor edit={false} /> : <div/>}
-          </Row>
+          </h2>
+          {this.state.edit ? editor : <div />}
+          {this.state.edit ? email : <div />}
+          <hr />
+        </Row>
+        <Row>
+          {this.state.user._accounts.map((account) => {
+            return <Account edit={this.state.edit} account_data={account} key={account._id} />;
+          })}
+          {this.state.edit ? <AccountEditor edit={false} /> : <div />}
+        </Row>
       </Grid>
     );
   }

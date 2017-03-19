@@ -15,7 +15,7 @@ class UsernameInput extends Component {
 
   validateUserName() {
     const length = this.state.username.length;
-    if (this.state.username.length > 0) {
+    if (length > 0) {
       if (length > 1 && /^[a-zA-Z\-_0-9]+$/.test(this.state.username)) {
         return 'success';
       }

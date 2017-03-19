@@ -162,7 +162,7 @@ app.use((req, res) => {
       return res.status(500).end('Internal server error');
     }
 
-    if (req.url === '/auth/oauth-signup') {
+    if (req.url.indexOf('/auth/oauth-signup') !== -1) {
       // If not logged in OR has a username, redirect outta here.
       if (!req.user || (req.user.username && req.user.username.length > 0)) {
         return res.redirect('/');
@@ -170,9 +170,31 @@ app.use((req, res) => {
     }
 
     // This is an OAuth user with no username set yet. Redirect to get a username.
-    if (req.user && (!req.user.username || req.user.username.length === 0) && req.url.indexOf('/auth/oauth-signup') === -1) {
+    if (req.user && !req.user.username && req.url.indexOf('/auth/oauth-signup') === -1) {
       req.flash('info_message', 'You need a username to proceed.');
       return res.redirect('/auth/oauth-signup');
+    }
+
+    // Redirect user to set email flow.
+    if (req.user && req.user.is_local && !req.user.email &&
+        !req.user.asked_for_email &&
+        req.url.indexOf('/auth/set-email') === -1) {
+      req.flash('info_message',
+                    'Please consider setting an email, so we can contact you'
+                    + ' if you forget your password. This is optional and'
+                    + ' will be your only notice. If you want to set your'
+                    + ' email later, please visit your account page.');
+      req.user.update({ asked_for_email: true }, (e2, user) => {
+        if (e2) {
+          console.log('Error updating user with asked_for_email: ', e2);
+        }
+      });
+      return res.redirect('/auth/set-email');
+    }
+
+    // Oauth users shouldn't set emails.
+    if (req.url.indexOf('/auth/set-email') !== -1 && !req.user.is_local) {
+      return res.redirect('/');
     }
 
     if (protected_paths.indexOf(req.url) !== -1) {
@@ -225,7 +247,7 @@ app.use((req, res) => {
         res.status(200).end(renderFullPage(initialView, finalState));
       })
       .catch((err) => {
-        console.log('Error in server side rendering: ', err);
+        console.log('Error in server side rendering: ', err, err.stack);
         res.end(renderFullPage('Error', {}));
       });
   });

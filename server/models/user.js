@@ -7,7 +7,7 @@ const Schema = mongoose.Schema;
 const userSchema = new Schema({
   username: { type: String, lowercase: true, trim: true },
   display_name: { type: String, trim: true },
-  email: { type: String, trim: true, unique: true },
+  email: { type: String, trim: true },
   password: { type: String },
   forgot_password_token: { type: String },
   fpt_timestamp: { type: Date },
@@ -21,6 +21,8 @@ const userSchema = new Schema({
   _google_id: { type: String },
   _reddit_id: { type: String },
   _twitter_id: { type: String },
+  // Used to make sure we ask users for an email only once.
+  asked_for_email: { type: Boolean, default: false },
 });
 
 // Clears all sensitive data from the user.

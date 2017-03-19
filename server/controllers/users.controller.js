@@ -4,7 +4,7 @@ import { redirectIfLoggedOut, removeCaptains } from './utils';
 import { getErrorMessage } from '../../errors/error_handler';
 import ERROR_CODES from '../../constants/error_codes';
 import randtoken from 'rand-token';
-import sendMail from './mailer';
+import { mail } from './mailer';
 
 exports.setUser = function setUser(req, res, next) {
   if (redirectIfLoggedOut(req, res, next)) return;
@@ -117,7 +117,7 @@ exports.forgotPass = function forgot_pass(req, res, next) {
     }
     // We have an email. Generate a token.
     const token = randtoken.generate(8);
-    user.update({ forgot_password_token: token, fpt_timestamp: Date.now }, (err2) => {
+    user.update({ forgot_password_token: token, fpt_timestamp: Date.now() }, (err2) => {
       if (err2) {
         console.log('User update error in forgot password route: ', err2);
         req.flash('error_message', getErrorMessage(ERROR_CODES.USERS_FORGOT_PASS_ERROR_2));
@@ -135,7 +135,7 @@ exports.forgotPass = function forgot_pass(req, res, next) {
               }' to reset your password within the next 30 minutes. ` +
               'If you didn\'t ask for one, please ignore this email.',
       };
-      if (!sendMail(mailOptions)) {
+      if (!mail(mailOptions)) {
         req.flash('error_message', 'There was an error sending your password reset email.');
         res.redirect('back');
         next();
@@ -146,6 +146,23 @@ exports.forgotPass = function forgot_pass(req, res, next) {
       next();
       return;
     });
+  });
+};
+
+exports.setEmail = function set_email(req, res, next) {
+  if (redirectIfLoggedOut(req, res, next)) return;
+  UserModel.findByIdAndUpdate(req.user._id, { email: req.body.email }, (err, user) => {
+    if (err) {
+      console.log('Error setting email: ', err, err.stack);
+      req.flash('error_message', getErrorMessage(ERROR_CODES.USERS_SET_EMAIL_ERROR_1));
+      res.redirect('back');
+      next();
+      return;
+    }
+    req.flash('info_message', 'Successfully set email.');
+    res.redirect('/account');
+    next();
+    return;
   });
 };
 

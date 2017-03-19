@@ -1,7 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router';
-import { Grid, Row, Col, Panel, Pagination, Button, Well, Label, Input, ButtonInput, MenuItem } from 'react-bootstrap';
-import { LinkContainer } from 'react-router-bootstrap';
+import { Grid, Row, Col, Button } from 'react-bootstrap';
 import UsernameInput from '../../components/User/UsernameInput';
 
 function ForgotPassword(props) {

@@ -18,7 +18,16 @@ module.exports = function local_login() {
           return done(null, false, req.flash('error_message', 'Invalid password.'));
         }
         // User and password both match, return user from
-        // done method which will be treated like success
+        // done method which will be treated like success.
+        if (!user.email && !user.asked_for_email) {
+          // On server side, we will redirect the user to a set-email flow. Update flash accordingly.
+          return done(null, user,
+            req.flash('info_message',
+                      'Please consider setting an email, so we can contact you'
+                      + ' if you forget your password. This is optional and'
+                      + ' will be your only notice. If you want to set your'
+                      + ' email later, please visit your account page.'));
+        }
         return done(null, user, req.flash('info_message', `Welcome, ${user.display_name}!`));
       });
     }));
