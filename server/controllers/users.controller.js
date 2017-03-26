@@ -1,9 +1,9 @@
+import randtoken from 'rand-token';
 import AccountModel from '../models/account';
 import UserModel from '../models/user';
 import { redirectIfLoggedOut, removeCaptains } from './utils';
 import { getErrorMessage } from '../../errors/error_handler';
 import ERROR_CODES from '../../constants/error_codes';
-import randtoken from 'rand-token';
 import { mail } from './mailer';
 
 exports.setUser = function setUser(req, res, next) {

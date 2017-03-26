@@ -214,6 +214,51 @@ describe('UsersController.setPass', () => {
   });
 });
 
+describe('UsersController.setEmail', () => {
+  const req = new RequestMock();
+  const res = new ResponseMock();
+  const user = new UserModel();
+  user.updateCredentials();
+  const user_id = user._id;
+
+  it('should redirect if user is not logged in', (done) => {
+    UsersController.setEmail(req, res, () => {
+      expect(req.getFlash('error_message')).to.equal('Please sign in.');
+      expect(res.getRedirectPath()).to.equal('/signup');
+      done();
+    });
+  });
+
+  before(function before(done) {  // eslint-disable-line prefer-arrow-callback
+    connectToTestDB(() => {
+      const db_user = new UserModel({ _id: user_id });
+      db_user.updateCredentials();
+      db_user.save((err) => {
+        if (err) throw err;
+        done();
+      });
+    });
+  });
+
+  it('should succeed', (done) => {
+    req.login(user);
+    const email = 'asdf';
+    req.setBody({ email });
+    UsersController.setEmail(req, res, () => {
+      UserModel.findById(user_id, (err, user_result) => {
+        expect(req.getFlash('info_message')).to.equal('Successfully set email.');
+        expect(res.getRedirectPath()).to.equal('/account');
+        expect(user_result.email).to.equal(email);
+        done();
+      });
+    });
+  });
+
+  after(function after(done) {  // eslint-disable-line prefer-arrow-callback
+    dropTestDB(done);
+  });
+});
+
 describe('UsersController.delete', () => {
   const req = new RequestMock();
   const res = new ResponseMock();
@@ -229,7 +274,7 @@ describe('UsersController.delete', () => {
     current_rcv_ccs: 14,
     _unit: 15,
     _user: user_id,
-    region: 'global'
+    region: 'global',
   };
   const captain1 = {
     _id: new mongoose.Types.ObjectId(),
@@ -241,7 +286,7 @@ describe('UsersController.delete', () => {
     current_rcv_ccs: 1,
     _unit: 17,
     _user: user_id,
-    region: 'global'
+    region: 'global',
   };
   const account0 = {
     _id: new mongoose.Types.ObjectId(),
@@ -339,9 +384,9 @@ describe('UsersController.delete', () => {
     UserModel
       .find({})
       .populate({ path: '_accounts',
-                  populate: {
-                    path: '_captains',
-                    model: 'Captain' } })
+        populate: {
+          path: '_captains',
+          model: 'Captain' } })
       .exec((err, users) => {
         if (err) throw err;
         expect(users).to.have.lengthOf(1);
