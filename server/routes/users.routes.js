@@ -32,6 +32,7 @@ module.exports = function user_routes(app) {
 
   app.route('/auth/editpass').post(users.editPass);
   app.route('/auth/forgotpass').post(users.forgotPass);
+  app.route('/auth/resetpass').post(users.resetPass);
   app.route('/auth/delete').post(users.delete);
   app.route('/auth/oauth-signup').post(users.setUser);
   app.route('/auth/set-email').post(users.setEmail);

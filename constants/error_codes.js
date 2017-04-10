@@ -44,6 +44,12 @@ const ERROR_CODES = {
   USERS_SET_EMAIL_ERROR_1: {
     code: 14,
   },
+  USERS_RESET_PASS_ERROR_1: {
+    code: 14,
+  },
+  USERS_RESET_PASS_ERROR_2: {
+    code: 15,
+  },
 };
 
 export default ERROR_CODES;

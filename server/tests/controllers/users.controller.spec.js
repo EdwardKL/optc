@@ -6,6 +6,7 @@ import UsersController from '../../controllers/users.controller';
 import AccountModel from '../../models/account';
 import CaptainModel from '../../models/captain';
 import UserModel from '../../models/user';
+import PasswordResetTokenModel from '../../models/password_reset_token';
 import RequestMock from '../mocks/request.mock';
 import ResponseMock from '../mocks/response.mock';
 import { getErrorMessage } from '../../../errors/error_handler';
@@ -206,6 +207,113 @@ describe('UsersController.setPass', () => {
         expect(res.getRedirectPath()).to.equal('/account');
         done();
       });
+    });
+  });
+
+  after(function after(done) {  // eslint-disable-line prefer-arrow-callback
+    dropTestDB(done);
+  });
+});
+
+describe('UsersController.resetPass', () => {
+  const req = new RequestMock();
+  const res = new ResponseMock();
+  const username = 'test_user';
+  const username_no_token = 'user_with_no_token';
+  const token = 'token';
+  const old_password = 'some forgotten thing';
+  const user = new UserModel({
+    username,
+  });
+  const user_id = user._id;
+
+  // Checks that the given password is set for the user associated with username.
+  function checkPassword(pass) {
+    UserModel.findByUsername(username, (err, found_user) => {
+      console.log(found_user);
+      expect(found_user.authenticate(pass)).to.be.true;
+    });
+  }
+
+  before(function before(done) {  // eslint-disable-line prefer-arrow-callback
+    connectToTestDB(() => {
+      const db_user = new UserModel({ _id: user_id, username, password: old_password });
+      db_user.updateCredentials();
+      db_user.save((err) => {
+        if (err) throw err;
+        const db_user2 = new UserModel({ username: username_no_token });
+        db_user2.updateCredentials();
+        db_user2.save((err2) => {
+          if (err2) throw err2;
+          const db_token = new PasswordResetTokenModel({ _user_id: user_id, token });
+          db_token.save((err3) => {
+            if (err3) throw err3;
+            done();
+          });
+        });
+      });
+    });
+  });
+
+  it('should fail to find a user', (done) => {
+    req.setBody({ username: 'someunknownuser' });
+    UsersController.resetPass(req, res, () => {
+      expect(req.getFlash('error_message')).to
+        .equal('The user this token was registered to no longer exists.');
+      expect(res.getRedirectPath()).to.equal('back');
+      checkPassword(old_password);
+      done();
+    });
+  });
+
+  it('should fail to find a token', (done) => {
+    req.setBody({ username: username_no_token });
+    UsersController.resetPass(req, res, () => {
+      expect(req.getFlash('error_message')).to
+        .equal('No reset password token found. It may have expired.');
+      expect(res.getRedirectPath()).to.equal('back');
+      checkPassword(old_password);
+      done();
+    });
+  });
+
+  it('should fail if tokens mismatch', (done) => {
+    req.setBody({ username, token: 'wrong_token' });
+    UsersController.resetPass(req, res, () => {
+      expect(req.getFlash('error_message')).to.equal('Incorrect password token.');
+      expect(res.getRedirectPath()).to.equal('back');
+      checkPassword(old_password);
+      done();
+    });
+  });
+
+  it('should fail if the new password is too short', (done) => {
+    req.setBody({ username, token, password: 'asd' });
+    UsersController.resetPass(req, res, () => {
+      expect(req.getFlash('error_message')).to.equal('Password must be at least 4 characters long.');
+      expect(res.getRedirectPath()).to.equal('/account');
+      checkPassword(old_password);
+      done();
+    });
+  });
+
+  it('should fail if confirmation does not match', (done) => {
+    req.setBody({ username, token, password: 'asdf', password_confirmation: 'mismatch' });
+    UsersController.resetPass(req, res, () => {
+      expect(req.getFlash('error_message')).to.equal("New password doesn't match with confirmation.");
+      expect(res.getRedirectPath()).to.equal('/account');
+      checkPassword(old_password);
+      done();
+    });
+  });
+
+  it('should succeed', (done) => {
+    const password = 'this';
+    req.setBody({ username, token, password, password_confirmation: password });
+    UsersController.resetPass(req, res, () => {
+      expect(req.getFlash('info_message')).to.equal('Password updated.');
+      expect(res.getRedirectPath()).to.equal('/account');
+      done();
     });
   });
 
