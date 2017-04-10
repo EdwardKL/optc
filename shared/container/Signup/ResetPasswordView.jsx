@@ -18,7 +18,7 @@ function ResetPasswordView(props) {
               type="text"
               help="The reset password token we sent to your email."
               label="Reset Password Token"
-              name="username"
+              name="token"
               placeholder="Reset Password Token"
             />
             <PasswordInput passwordHelp="Must be more than 3 characters." needsConfirmation />
