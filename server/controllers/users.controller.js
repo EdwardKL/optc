@@ -1,6 +1,7 @@
 import randtoken from 'rand-token';
 import AccountModel from '../models/account';
 import UserModel from '../models/user';
+import PasswordResetTokenModel from '../models/password_reset_token';
 import { redirectIfLoggedOut, removeCaptains } from './utils';
 import { getErrorMessage } from '../../errors/error_handler';
 import ERROR_CODES from '../../constants/error_codes';
@@ -40,16 +41,8 @@ exports.setUser = function setUser(req, res, next) {
   });
 };
 
-// Edit password.
-exports.editPass = function editPass(req, res, next) {
-  if (redirectIfLoggedOut(req, res, next)) return;
-  // First make sure that the current pass is correct.
-  if (!req.user.authenticate(req.body.current_password)) {
-    req.flash('error_message', 'Wrong password.');
-    res.redirect('/account');
-    next();
-    return;
-  }
+// Shared with editPass and resetPass.
+function setPass(user_id, req, res, next) {
   if (req.body.password.length <= 3) {
     req.flash('error_message', 'Password must be at least 4 characters long.');
     res.redirect('/account');
@@ -62,7 +55,7 @@ exports.editPass = function editPass(req, res, next) {
     next();
     return;
   }
-  UserModel.findById(req.user._id, (err, user) => {
+  UserModel.findById(user_id, (err, user) => {
     if (err) throw err;
     if (!user) throw err;
     user.password = req.body.password;
@@ -75,6 +68,19 @@ exports.editPass = function editPass(req, res, next) {
       return;
     });
   });
+}
+
+// Edit password.
+exports.editPass = function editPass(req, res, next) {
+  if (redirectIfLoggedOut(req, res, next)) return;
+  // First make sure that the current pass is correct.
+  if (!req.user.authenticate(req.body.current_password)) {
+    req.flash('error_message', 'Wrong password.');
+    res.redirect('/account');
+    next();
+    return;
+  }
+  setPass(req.user._id, req, res, next);
 };
 
 // Recursively removes the accounts referred to by id by the given accounts array.
@@ -117,9 +123,13 @@ exports.forgotPass = function forgot_pass(req, res, next) {
     }
     // We have an email. Generate a token.
     const token = randtoken.generate(8);
-    user.update({ forgot_password_token: token, fpt_timestamp: Date.now() }, (err2) => {
+    const reset_token = PasswordResetTokenModel({
+      _user_id: user._id,
+      token,
+    });
+    reset_token.save((err2) => {
       if (err2) {
-        console.log('User update error in forgot password route: ', err2);
+        console.log('Reset token update error in forgot password route: ', err2);
         req.flash('error_message', getErrorMessage(ERROR_CODES.USERS_FORGOT_PASS_ERROR_2));
         res.redirect('back');
         next();
@@ -144,6 +154,48 @@ exports.forgotPass = function forgot_pass(req, res, next) {
       req.flash('info_message', 'Reset password token sent to associated email. You have 30 minutes to use this token.');
       res.redirect('/');
       next();
+      return;
+    });
+  });
+};
+
+exports.resetPass = function reset_password(req, res, next) {
+  UserModel.findByUsername(UserModel.convertToUsername(req.body.username), (err, user) => {
+    if (err) {
+      console.log('Reset password error in finding user: ', err);
+      req.flash('error_message', getErrorMessage(ERROR_CODES.USERS_RESET_PASS_ERROR_1));
+      res.redirect('back');
+      next();
+      return;
+    }
+    if (!user) {
+      console.log('Found an invalid user: ', req.body.username);
+      req.flash('error_message', 'The user this token was registered to no longer exists.');
+      res.redirect('back');
+      next();
+      return;
+    }
+    PasswordResetTokenModel.findOne({ _user_id: user._id }, (err2, token) => {
+      if (err2) {
+        console.log('Reset password error in finding token: ', err2);
+        req.flash('error_message', getErrorMessage(ERROR_CODES.USERS_RESET_PASS_ERROR_2));
+        res.redirect('back');
+        next();
+        return;
+      }
+      if (!token) {
+        req.flash('error_message', 'No reset password token found. It may have expired.');
+        res.redirect('back');
+        next();
+        return;
+      }
+      if (token.token !== req.body.token) {
+        req.flash('error_message', 'Incorrect password token.');
+        res.redirect('back');
+        next();
+        return;
+      }
+      setPass(user._id, req, res, next);
       return;
     });
   });

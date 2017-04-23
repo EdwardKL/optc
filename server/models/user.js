@@ -9,8 +9,6 @@ const userSchema = new Schema({
   display_name: { type: String, trim: true },
   email: { type: String, trim: true },
   password: { type: String },
-  forgot_password_token: { type: String },
-  fpt_timestamp: { type: Date },
   salt: { type: String },
   _accounts: [{ type: Schema.Types.ObjectId, ref: 'Account' }],
   last_login: { type: Date, default: Date.now },
