@@ -14,6 +14,7 @@ export class FriendFinderView extends Component {
     this.state.unit_selections = props.unit_selections;
     this.state.unit = props.params.captain_id ? this.state.unit_selections[props.params.captain_id - 1] : this.state.unit_selections[0];
     this.state.selected_region = 'global';
+    this.state.logged_in_user = props.logged_in_user;
     this.dispatch = props.dispatch;
     this.state.activePage = 1;
     this.state.num_pages = props.num_pages;
@@ -107,7 +108,8 @@ export class FriendFinderView extends Component {
         <Row>
           {this.state.friend_search_results.map( (result) => {
             let account = result.account;
-            if (account && !accountSet.has(account._id)) {
+            let loggedInUserAccounts = this.state.logged_in_user._accounts;
+            if (account && !accountSet.has(account._id) && loggedInUserAccounts.indexOf(account._id) < 0) {
               accountSet.add(account._id);
               return <Account edit={false} account_data={account} key={account._id}/>;
             }
@@ -163,7 +165,8 @@ function mapStateToProps(store) {
   return {
     friend_search_results: store.friendFinder.friend_search_results,
     unit_selections: store.identity.unit_selections,
-    num_pages: store.friendFinder.num_pages
+    num_pages: store.friendFinder.num_pages,
+    logged_in_user: store.identity.user
   };
 }
 
